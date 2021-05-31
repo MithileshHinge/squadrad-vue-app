@@ -1,0 +1,17 @@
+/*
+$primary: rgb(0, 119, 182);
+$secondary: rgb(230, 232, 230);
+$dark: rgb(13, 27, 42);
+$yiq-text-dark: $dark;
+$enable-shadows: true;
+$body-color: $dark;
+$dropdown-border-width: 0;
+$modal-content-border-width: 0;
+$modal-header-border-width: $border-width;
+$card-border-width: 0;
+*/
+
+$enable-responsive-font-sizes: true;
+
+@import 'bootstrap/scss/bootstrap.scss';
+@import 'bootstrap-vue/src/index.scss';
