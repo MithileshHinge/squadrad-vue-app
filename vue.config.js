@@ -32,4 +32,26 @@ module.exports = {
 				return options;
 			});
 	},
+	devServer: {
+		proxy: {
+			'^/api/public': {
+				target: 'http://localhost:3000',
+				secure: false,
+				changeOrigin: true,
+				pathRewrite: {
+					'^/api/public': '/public',
+				},
+				logLevel: 'debug',
+			},
+			'^/api/private': {
+				target: 'http://localhost:3000',
+				secure: false,
+				changeOrigin: true,
+				pathRewrite: {
+					'^/api/private': '/private',
+				},
+				logLevel: 'debug',
+			},
+		},
+	},
 };

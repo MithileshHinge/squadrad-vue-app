@@ -1,13 +1,15 @@
 <template>
 	<div id="app">
 		<TopNavbar :isAuthenticated="isAuthenticated" :isCreator="isCreator"></TopNavbar>
-		<router-view id="sq-the-app-body"></router-view>
+		<router-view id="sq-the-app-body" :isAuthenticated="isAuthenticated"></router-view>
 		<div v-if="isAuthenticated && showBottomNav" style="height: 3rem; z-index: -1000;"><!-- empty div same size as bottomnavbar, without this router-view is hidden behind bottomnavbar --></div>
 		<BottomNavbar v-if="isAuthenticated && showBottomNav" :isCreator="isCreator"></BottomNavbar>
 	</div>
 </template>
 
 <script>
+import { isEmpty } from 'underscore';
+import userService from '@/services/user.service';
 import TopNavbar from '@/components/TopNavbar.vue';
 import BottomNavbar from '@/components/BottomNavbar.vue';
 
@@ -23,7 +25,7 @@ export default {
 	},
 	computed: {
 		isAuthenticated() {
-			if (this.$route.path === '/') {
+			if (isEmpty(this.$store.state.user)) {
 				return false;
 			}
 			return true;
@@ -36,6 +38,12 @@ export default {
 			return false;
 		},
 	},
+	async mounted() {
+		const res = await userService.getUserSelf();
+		if (res && res.status === 200) {
+			this.$store.commit('updateUser', res.data.user);
+		}
+	},
 };
 </script>
 
@@ -43,6 +51,7 @@ export default {
 
 html {
 	font-size: 18px;
+	height: 100%;
 }
 
 /*
@@ -72,6 +81,7 @@ html {
 */
 
 body {
+	height: 100%;
 	font-family: Poppins, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -82,9 +92,11 @@ body {
 
 #app {
 	position: relative;
+	height: 100%;
 }
 
 #sq-the-app-body {
+	height: 100%;
 	margin-top: 3.375rem;
 }
 
@@ -293,6 +305,15 @@ $cta-shadow-opacity: 0.4;
 	}
 }
 
+.sq-form-invalid-feedback {
+	font-size: 0.625rem;
+	text-align: left;
+	margin-left: 0.75rem;
+	margin-bottom: 0.5rem;
+	width: auto;
+	color: $radical-red;
+}
+
 .sq-form-group {
 	margin-bottom: 0;
 }
@@ -363,6 +384,31 @@ $cta-shadow-opacity: 0.4;
 
 .bi-heart-fill {
 	color: $radical-red;
+}
+
+.sq-flowendpage {
+	padding: 4rem 1rem;
+}
+
+.sq-flowendpage-container {
+	padding: 3rem;
+	background-color: $my-color-light;
+	border-radius: 1.25rem;
+}
+
+.sq-flowendpage-title {
+	font-size: 1.25rem;
+	font-weight: 400;
+	text-align: center;
+	color: $my-color-dark;
+}
+
+.sq-flowendpage-text {
+	font-size: 0.875rem;
+	font-weight: 300;
+	text-align: center;
+	color: $my-color-dark;
+	padding-top: 2rem;
 }
 
 .sq-rupee::before {

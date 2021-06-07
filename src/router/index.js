@@ -5,6 +5,8 @@ import LandingPage from '../views/LandingPage.vue';
 import PostPage from '../views/PostPage.vue';
 import CreatorPage from '../views/CreatorPage.vue';
 import PageSettingsPage from '../views/PageSettingsPage.vue';
+import VerifyEmailPage from '../views/VerifyEmailPage.vue';
+import VerifyEmailSentPage from '../views/VerifyEmailSentPage.vue';
 import PageSettingsCreatorInfo from '../components/PageSettingsCreatorInfo.vue';
 
 Vue.use(VueRouter);
@@ -40,6 +42,16 @@ const routes = [
 				component: PageSettingsCreatorInfo,
 			},
 		],
+	},
+	{
+		path: '/auth/verify-email/check',
+		name: 'VerifyEmailPage',
+		component: VerifyEmailPage,
+	},
+	{
+		path: '/auth/verify-email/sent',
+		name: 'VerifyEmailSentPage',
+		component: VerifyEmailSentPage,
 	},
 	{
 		path: '/about',

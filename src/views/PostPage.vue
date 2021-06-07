@@ -1,7 +1,9 @@
 <template>
 	<div>
 		<PostComp :post="post"></PostComp>
-		<CommentComp v-for="comment in comments" :key="comment.comment_id" :comment="comment" class="mb-2"></CommentComp>
+		<b-container>
+			<CommentComp v-for="comment in comments" :key="comment.comment_id" :comment="comment" class="mb-2"></CommentComp>
+		</b-container>
 		<CommentInputBox/>
 	</div>
 </template>

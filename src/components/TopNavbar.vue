@@ -37,7 +37,7 @@
 				<b-nav-item class="sq-menu-item">Billing</b-nav-item>
 				<b-nav-item class="sq-menu-item">Help and FAQ</b-nav-item>
 				<b-nav-item class="sq-menu-item">Contact us</b-nav-item>
-				<b-nav-item class="sq-menu-item">Log out</b-nav-item>
+				<b-nav-item class="sq-menu-item" @click="logout">Log out</b-nav-item>
 			</b-navbar-nav>
 			<b-navbar-nav v-else class="ml-auto">
 				<!--b-nav-form id="the-searchbar" class="mt-auto mb-auto" action="https://google.com" autocomplete="off">
@@ -49,19 +49,20 @@
 					</b-input-group>
 				</b-nav-form-->
 
-				<b-nav-item class="sq-menu-item" v-b-toggle.sq-the-navmenu v-b-modal.sq-the-login-modal @click="isModalSignUp = false">Log in</b-nav-item>
-				<b-nav-item class="sq-menu-item" v-b-toggle.sq-the-navmenu v-b-modal.sq-the-login-modal @click="isModalSignUp = true">Sign up</b-nav-item>
+				<b-nav-item class="sq-menu-item" v-b-toggle.sq-the-navmenu @click="isModalSignUp = false; $bvModal.show('sq-the-login-modal');">Log in</b-nav-item>
+				<b-nav-item class="sq-menu-item" v-b-toggle.sq-the-navmenu @click="isModalSignUp = true; $bvModal.show('sq-the-login-modal');">Sign up</b-nav-item>
 				<b-nav-item class="sq-menu-item">Explore creators</b-nav-item>
 				<b-nav-item class="sq-menu-item">Pricing</b-nav-item>
 				<b-nav-item class="sq-menu-item">Help and FAQ</b-nav-item>
 				<b-nav-item class="sq-menu-item">Contact us</b-nav-item>
 			</b-navbar-nav>
 		</b-sidebar>
-		<login-modal :isSignUp="isModalSignUp"></login-modal>
+		<login-modal :isModalSignUp.sync="isModalSignUp" ></login-modal>
 	</b-navbar>
 </template>
 
 <script>
+import userService from '@/services/user.service';
 import LoginModal from './LoginModal.vue';
 
 export default {
@@ -76,6 +77,16 @@ export default {
 		return {
 			isModalSignUp: null,
 		};
+	},
+	methods: {
+		logout() {
+			userService.logout().then((res) => {
+				if (res && res.status === 200) {
+					this.$store.commit('updateUser', {});
+					this.$router.push('/');
+				}
+			});
+		},
 	},
 };
 </script>

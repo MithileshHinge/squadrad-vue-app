@@ -11,6 +11,15 @@ $modal-header-border-width: $border-width;
 $card-border-width: 0;
 */
 
+$theme-colors: (
+	"primary": $french-rose,
+	"dark": $my-color-dark,
+	"light": $my-color-light,
+	"danger": $my-color-danger,
+	"success": $my-color-success,
+	"warning": $my-color-warning
+);
+
 $enable-responsive-font-sizes: true;
 
 @import 'bootstrap/scss/bootstrap.scss';

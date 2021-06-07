@@ -13,6 +13,7 @@ $grayX: #B8B7BC;
 $gainsboro: #DBDBDE;
 $cultured-white: #f9f9fb;*/
 
+/* Theme grays */
 $space-cadet: #1C1F33;
 $independence: #444657;
 $sonic-silver: #727481;
@@ -23,12 +24,18 @@ $platinum: #ECECEE;
 $cultured-white: #F6F6F7;
 $cultured-white2: #F9F9FA;
 
+/* Theme colors */
 $french-rose: #FF3D77;
 $radical-red: #FF1E61;
 $mulberry-crayola: #BB57A4;
 $amethyst: #9964BB;
 $dodger-blue: #338AFF;
 $skyblue-crayola: #00DCF7;
+
+/* Theme signal colors */
+$my-color-danger: $radical-red;
+$my-color-success: #47F08B;
+$my-color-warning: #FFDF6B;
 
 $my-color-dark: $space-cadet;
 

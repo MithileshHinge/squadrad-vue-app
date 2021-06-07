@@ -4,10 +4,10 @@
 			<span class="sq-close-icon-bar"></span>
 		</template>
 		<template #default>
-			<h4 v-if="!isSignUp" class="sq-login-title">Log in</h4>
-			<h4 v-if="isSignUp" class="sq-login-title">Sign up</h4>
+			<h4 v-if="!isModalSignUp" class="sq-login-title">Log in</h4>
+			<h4 v-if="isModalSignUp" class="sq-login-title">Sign up</h4>
 			<div class="sq-login-body">
-				<b-button class="sq-btn-social-login sq-btn sq-shadow">
+				<b-button class="sq-btn-social-login sq-btn sq-shadow" href="http://localhost:3000/auth/google">
 					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="1.25rem" height="1.25rem" viewBox="0 0 48 48" class="abcRioButtonSvg sq-social-login-icon"><g><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></g></svg>
 					Continue with Google
 				</b-button>
@@ -21,50 +21,56 @@
 					<span class="sq-or-separator"></span>
 				</div>
 
-				<b-form @submit.stop.prevent="onSubmit">
-					<b-form-group v-if="isSignUp" class="sq-form-group">
-						<b-form-input name="fullname" v-model="$v.form.fullname.$model" :state="validateState('fullname')" placeholder="Full name" class="sq-form-input"></b-form-input>
+				<b-form @submit.prevent="onSubmit">
+					<b-form-group v-if="isModalSignUp" class="sq-form-group">
+						<b-form-input name="fullname" v-model="$v.form.fullname.$model" :state="validateState('fullname')" placeholder="Full name" class="sq-form-input" autocomplete="off" trim></b-form-input>
+						<b-form-invalid-feedback v-if="!$v.form.fullname.required" class="sq-form-invalid-feedback">Please enter your full name</b-form-invalid-feedback>
+						<b-form-invalid-feedback v-if="!$v.form.fullname.alphaSplit" class="sq-form-invalid-feedback">Are you sure you entered your name correctly?</b-form-invalid-feedback>
 					</b-form-group>
 					<b-form-group class="sq-form-group">
-						<b-form-input name="email" v-model="$v.form.email.$model" :state="validateState('email')" placeholder="Email" class="sq-form-input" type="email" trim></b-form-input>
-						<!--b-form-invalid-feedback>Please enter a valid email address</b-form-invalid-feedback-->
+						<b-form-input name="email" v-model="$v.form.email.$model" :state="validateState('email')" placeholder="Email" class="sq-form-input" type="email" autocomplete="off" trim></b-form-input>
+						<b-form-invalid-feedback v-if="$v.form.email.$invalid" class="sq-form-invalid-feedback">Please enter a valid email address</b-form-invalid-feedback>
 					</b-form-group>
-					<b-form-group v-if="!isSignUp" class="sq-form-group">
+					<b-form-group v-if="!isModalSignUp" class="sq-form-group">
 						<b-form-input name="loginPassword" v-model="$v.form.loginPassword.$model" :state="validateState('loginPassword')" placeholder="Password" class="sq-form-input" type="password"></b-form-input>
-						<!--b-form-invalid-feedback>Please enter your password</b-form-invalid-feedback-->
+						<b-form-invalid-feedback v-if="!$v.form.loginPassword.required" class="sq-form-invalid-feedback">Please enter your password</b-form-invalid-feedback>
 					</b-form-group>
-					<b-form-group v-if="isSignUp" class="sq-form-group">
+					<b-form-group v-if="isModalSignUp" class="sq-form-group">
 						<b-form-input name="signupPassword" v-model="$v.form.signupPassword.$model" :state="validateState('signupPassword')" placeholder="Password" class="sq-form-input" type="password"></b-form-input>
-						<!--b-form-invalid-feedback>Please enter your password</b-form-invalid-feedback-->
+						<b-form-invalid-feedback v-if="!$v.form.signupPassword.required" class="sq-form-invalid-feedback">Please enter a new password</b-form-invalid-feedback>
+						<b-form-invalid-feedback v-if="!$v.form.signupPassword.minLength" class="sq-form-invalid-feedback">Password must have at least {{ $v.form.signupPassword.$params.minLength.min }} characters</b-form-invalid-feedback>
 					</b-form-group>
-					<b-form-group v-if="isSignUp" class="sq-form-group">
+					<b-form-group v-if="isModalSignUp" class="sq-form-group">
 						<b-form-input name="confirmPassword" v-model="$v.form.confirmPassword.$model" :state="validateState('confirmPassword')" placeholder="Confirm password" class="sq-form-input" type="password"></b-form-input>
-						<!--b-form-invalid-feedback>Please enter your password</b-form-invalid-feedback-->
+						<b-form-invalid-feedback v-if="$v.form.confirmPassword.$invalid" class="sq-form-invalid-feedback">Please re-enter the same password</b-form-invalid-feedback>
 					</b-form-group>
 					<b-button id="sq-the-login-submit-btn" class="sq-btn-social-login sq-btn sq-shadow" type="submit">{{ submitText }}</b-button>
 				</b-form>
 			</div>
-			<div v-if="!isSignUp" class="sq-text text-center">New to Squadrad? <b-link class="sq-link" @click="isSignUp = true">Sign up</b-link></div>
-			<div v-if="isSignUp" class="sq-text text-center">Already on Squadrad? <b-link class="sq-link" @click="isSignUp = false">Log in</b-link></div>
+			<div v-if="!isModalSignUp" class="sq-text text-center">New to Squadrad? <b-link class="sq-link" @click="$emit('update:isModalSignUp', true)">Sign up</b-link></div>
+			<div v-if="isModalSignUp" class="sq-text text-center">Already on Squadrad? <b-link class="sq-link" @click="$emit('update:isModalSignUp', false)">Log in</b-link></div>
 		</template>
 	</b-modal>
 </template>
 
 <script>
+import userService from '@/services/user.service';
 import {
 	required,
 	requiredIf,
+	alpha,
 	email,
+	minLength,
 	sameAs,
 } from 'vuelidate/lib/validators';
 
 export default {
 	props: {
-		isSignUp: Boolean,
+		isModalSignUp: Boolean,
 	},
 	computed: {
 		submitText() {
-			if (this.isSignUp) {
+			if (this.isModalSignUp) {
 				return 'Sign up with email';
 			}
 			return 'Log in with email';
@@ -85,33 +91,45 @@ export default {
 		return {
 			form: {
 				fullname: {
-					required: requiredIf(() => this.isSignUp),
+					required: requiredIf(() => this.isModalSignUp),
+					alphaSplit: (value) => (value ? value.split(' ').every((word) => (word ? alpha(word) : false)) : true),
 				},
 				email: {
 					required,
 					email,
 				},
 				loginPassword: {
-					required: requiredIf(() => !this.isSignUp),
+					required: requiredIf(() => !this.isModalSignUp),
 				},
 				signupPassword: {
-					required: requiredIf(() => this.isSignUp),
+					required: requiredIf(() => this.isModalSignUp),
+					minLength: minLength(8),
 				},
 				confirmPassword: {
-					required: requiredIf(() => this.isSignUp),
+					required: requiredIf(() => this.isModalSignUp),
 					sameAsPassword: sameAs('signupPassword'),
 				},
 			},
 		};
 	},
 	methods: {
-		validateState(name) {
-			console.log(this.$v);
-			const { $dirty, $invalid } = this.$v.form[name];
-			if ($dirty) {
-				return ($invalid ? false : null);
+		validateState(name, validator) {
+			if (validator) {
+				const { $dirty } = this.$v.form[name];
+				if ($dirty) {
+					console.log(this.$v.form[name][validator]);
+					return (this.$v.form[name][validator]);
+				}
+			} else {
+				const { $dirty, $invalid } = this.$v.form[name];
+				if ($dirty) {
+					return ($invalid ? false : null);
+				}
 			}
 			return null;
+		},
+		loginWithGoogle() {
+			this.$router.push('/api/auth/google');
 		},
 		onSubmit() {
 			console.log('onSubmit');
@@ -119,10 +137,44 @@ export default {
 			if (this.$v.form.$anyError) {
 				return;
 			}
-			if (this.isSignUp) {
+			if (this.isModalSignUp) {
 				console.log('sign up submitted');
+				userService.registerUser(this.form.fullname, this.form.email, this.form.signupPassword, this.form.confirmPassword)
+					.then((res) => {
+						if (!res || res.status === 500) {
+							this.$bvToast.toast('Oops! Something went wrong on our end. Please try again.', {
+								noCloseButton: true,
+								variant: 'danger',
+								toaster: 'b-toaster-bottom-center',
+							});
+						} else if (res.status === 200) {
+							this.$bvModal.hide('sq-the-login-modal');
+							this.$router.push('/auth/verify-email/sent');
+						}
+					});
 			} else {
 				console.log('log in submitted');
+				userService.loginWithEmail(this.form.email, this.form.loginPassword)
+					.then((res) => {
+						console.log(res);
+						if (!res || res.status === 500) {
+							this.$bvToast.toast('Oops! Something went wrong on our end. Please try again.', {
+								noCloseButton: true,
+								variant: 'danger',
+								toaster: 'b-toaster-bottom-center',
+							});
+						} else if (res.status === 200) {
+							this.$store.commit('updateUser', res.data.user);
+							this.$bvModal.hide('sq-the-login-modal');
+							this.$router.push('/feed');
+						} else if (res.status === 401) {
+							this.$bvToast.toast('Sorry, incorrect email or password. Please try again.', {
+								noCloseButton: true,
+								variant: 'danger',
+								toaster: 'b-toaster-bottom-center',
+							});
+						}
+					});
 			}
 		},
 	},
@@ -195,7 +247,7 @@ export default {
 	left: calc(50% - 1.166rem);
 	padding-left: 1.166rem;
 	padding-right: 1.166rem;
-	background-color: #ffffff;
+	background-color: $my-color-gray8;
 }
 
 #sq-the-login-modal .sq-form-input {
