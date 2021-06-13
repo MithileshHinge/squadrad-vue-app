@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+
+// Pages
 import HomePage from '../views/HomePage.vue';
 import LandingPage from '../views/LandingPage.vue';
 import PostPage from '../views/PostPage.vue';
@@ -7,6 +9,9 @@ import CreatorPage from '../views/CreatorPage.vue';
 import PageSettingsPage from '../views/PageSettingsPage.vue';
 import VerifyEmailPage from '../views/VerifyEmailPage.vue';
 import VerifyEmailSentPage from '../views/VerifyEmailSentPage.vue';
+
+// Children components
+import LoginModal from '../components/LoginModal.vue';
 import PageSettingsCreatorInfo from '../components/PageSettingsCreatorInfo.vue';
 
 Vue.use(VueRouter);
@@ -16,6 +21,18 @@ const routes = [
 		path: '/',
 		name: 'Landing',
 		component: LandingPage,
+		children: [
+			{
+				path: 'login',
+				component: LoginModal,
+				props: { isModalSignUp: false },
+			},
+			{
+				path: 'signup',
+				component: LoginModal,
+				props: { isModalSignUp: true },
+			},
+		],
 	},
 	{
 		path: '/feed',

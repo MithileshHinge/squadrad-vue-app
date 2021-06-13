@@ -1,5 +1,8 @@
 <template>
-<b-img src="@/assets/squadrad-fav.png" fluid left></b-img>
+	<div>
+		<b-img src="@/assets/squadrad-fav.png" fluid left></b-img>
+		<router-view></router-view>
+	</div>
 </template>
 
 <script>

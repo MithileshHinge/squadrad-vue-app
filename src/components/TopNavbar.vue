@@ -16,8 +16,8 @@
 			<b-nav-item class="sq-navbar-nav-item">Explore creators</b-nav-item>
 			<b-nav-item class="sq-navbar-nav-item">Pricing</b-nav-item>
 			<b-nav-item class="sq-navbar-nav-item mr-auto">Help and FAQ</b-nav-item>
-			<b-nav-item id="sq-the-navbar-login-button" class="sq-navbar-nav-item mr-2" link-classes="sq-btn-cta sq-btn" v-b-modal.sq-the-login-modal @click="isModalSignUp = false">Log in</b-nav-item>
-			<b-nav-item class="sq-navbar-nav-item mr-3" v-b-modal.sq-the-login-modal @click="isModalSignUp = true">Sign up</b-nav-item>
+			<b-nav-item id="sq-the-navbar-login-button" class="sq-navbar-nav-item mr-2" link-classes="sq-btn-cta sq-btn" to="/login">Log in</b-nav-item>
+			<b-nav-item class="sq-navbar-nav-item mr-3" to="/signup">Sign up</b-nav-item>
 		</b-navbar-nav>
 		<b-sidebar id="sq-the-navmenu" is-nav right shadow no-header class="sq-sidebar">
 			<b-navbar-nav v-if="isAuthenticated" class="ml-auto">
@@ -48,35 +48,24 @@
 						<b-form-input id="the-searchinput" size="sm" class="p-0" placeholder="search"></b-form-input>
 					</b-input-group>
 				</b-nav-form-->
-
-				<b-nav-item class="sq-menu-item" v-b-toggle.sq-the-navmenu @click="isModalSignUp = false; $bvModal.show('sq-the-login-modal');">Log in</b-nav-item>
-				<b-nav-item class="sq-menu-item" v-b-toggle.sq-the-navmenu @click="isModalSignUp = true; $bvModal.show('sq-the-login-modal');">Sign up</b-nav-item>
+				<b-nav-item class="sq-menu-item" to="/login">Log in</b-nav-item>
+				<b-nav-item class="sq-menu-item" to="/signup">Sign up</b-nav-item>
 				<b-nav-item class="sq-menu-item">Explore creators</b-nav-item>
 				<b-nav-item class="sq-menu-item">Pricing</b-nav-item>
 				<b-nav-item class="sq-menu-item">Help and FAQ</b-nav-item>
 				<b-nav-item class="sq-menu-item">Contact us</b-nav-item>
 			</b-navbar-nav>
 		</b-sidebar>
-		<login-modal :isModalSignUp.sync="isModalSignUp" ></login-modal>
 	</b-navbar>
 </template>
 
 <script>
 import userService from '@/services/user.service';
-import LoginModal from './LoginModal.vue';
 
 export default {
 	props: {
 		isAuthenticated: Boolean,
 		isCreator: Boolean,
-	},
-	components: {
-		LoginModal,
-	},
-	data() {
-		return {
-			isModalSignUp: null,
-		};
 	},
 	methods: {
 		logout() {

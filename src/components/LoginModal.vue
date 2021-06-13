@@ -1,5 +1,5 @@
 <template>
-	<b-modal id="sq-the-login-modal" centered modal-class="sq-shadow">
+	<b-modal id="sq-the-login-modal" centered modal-class="sq-shadow" :visible="true" @hide="$router.push('/')">
 		<template #modal-header-close>
 			<span class="sq-close-icon-bar"></span>
 		</template>
@@ -44,11 +44,14 @@
 						<b-form-input name="confirmPassword" v-model="$v.form.confirmPassword.$model" :state="validateState('confirmPassword')" placeholder="Confirm password" class="sq-form-input" type="password"></b-form-input>
 						<b-form-invalid-feedback v-if="$v.form.confirmPassword.$invalid" class="sq-form-invalid-feedback">Please re-enter the same password</b-form-invalid-feedback>
 					</b-form-group>
-					<b-button id="sq-the-login-submit-btn" class="sq-btn-social-login sq-btn sq-shadow" type="submit">{{ submitText }}</b-button>
+						<b-button id="sq-the-login-submit-btn" class="sq-btn-social-login sq-btn sq-shadow" type="submit" :disabled="formSubmitted">
+							<b-overlay :show="formSubmitted" rounded="pill" opacity="0.6" spinner-small spinner-variant="primary" class="d-inline-block" no-wrap/>
+							{{ submitText }}
+						</b-button>
 				</b-form>
 			</div>
-			<div v-if="!isModalSignUp" class="sq-text text-center">New to Squadrad? <b-link class="sq-link" @click="$emit('update:isModalSignUp', true)">Sign up</b-link></div>
-			<div v-if="isModalSignUp" class="sq-text text-center">Already on Squadrad? <b-link class="sq-link" @click="$emit('update:isModalSignUp', false)">Log in</b-link></div>
+			<div v-if="!isModalSignUp" class="sq-text text-center">New to Squadrad? <b-link class="sq-link" to="/signup">Sign up</b-link></div>
+			<div v-if="isModalSignUp" class="sq-text text-center">Already on Squadrad? <b-link class="sq-link" to="/login">Log in</b-link></div>
 		</template>
 	</b-modal>
 </template>
@@ -85,6 +88,7 @@ export default {
 				signupPassword: null,
 				confirmPassword: null,
 			},
+			formSubmitted: false,
 		};
 	},
 	validations() {
@@ -141,6 +145,7 @@ export default {
 				console.log('sign up submitted');
 				userService.registerUser(this.form.fullname, this.form.email, this.form.signupPassword, this.form.confirmPassword)
 					.then((res) => {
+						this.formSubmitted = false;
 						if (!res || res.status === 500) {
 							this.$bvToast.toast('Oops! Something went wrong on our end. Please try again.', {
 								noCloseButton: true,
@@ -152,10 +157,12 @@ export default {
 							this.$router.push('/auth/verify-email/sent');
 						}
 					});
+				this.formSubmitted = true;
 			} else {
 				console.log('log in submitted');
 				userService.loginWithEmail(this.form.email, this.form.loginPassword)
 					.then((res) => {
+						this.formSubmitted = false;
 						console.log(res);
 						if (!res || res.status === 500) {
 							this.$bvToast.toast('Oops! Something went wrong on our end. Please try again.', {
@@ -175,6 +182,7 @@ export default {
 							});
 						}
 					});
+				this.formSubmitted = true;
 			}
 		},
 	},
