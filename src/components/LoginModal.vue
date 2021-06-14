@@ -146,16 +146,19 @@ export default {
 				userService.registerUser(this.form.fullname, this.form.email, this.form.signupPassword, this.form.confirmPassword)
 					.then((res) => {
 						this.formSubmitted = false;
-						if (!res || res.status === 500) {
-							this.$bvToast.toast('Oops! Something went wrong on our end. Please try again.', {
-								noCloseButton: true,
-								variant: 'danger',
-								toaster: 'b-toaster-bottom-center',
-							});
-						} else if (res.status === 200) {
+						if (res.status === 200) {
 							this.$bvModal.hide('sq-the-login-modal');
 							this.$router.push('/auth/verify-email/sent');
 						}
+					})
+					.catch((err) => {
+						const res = err.response;
+						this.formSubmitted = false;
+						this.$bvToast.toast(res.data.msg, {
+							noCloseButton: true,
+							variant: 'danger',
+							toaster: 'b-toaster-bottom-center',
+						});
 					});
 				this.formSubmitted = true;
 			} else {
@@ -164,23 +167,20 @@ export default {
 					.then((res) => {
 						this.formSubmitted = false;
 						console.log(res);
-						if (!res || res.status === 500) {
-							this.$bvToast.toast('Oops! Something went wrong on our end. Please try again.', {
-								noCloseButton: true,
-								variant: 'danger',
-								toaster: 'b-toaster-bottom-center',
-							});
-						} else if (res.status === 200) {
+						if (res.status === 200) {
 							this.$store.commit('updateUser', res.data.user);
 							this.$bvModal.hide('sq-the-login-modal');
 							this.$router.push('/feed');
-						} else if (res.status === 401) {
-							this.$bvToast.toast('Sorry, incorrect email or password. Please try again.', {
-								noCloseButton: true,
-								variant: 'danger',
-								toaster: 'b-toaster-bottom-center',
-							});
 						}
+					})
+					.catch((err) => {
+						const res = err.response;
+						this.formSubmitted = false;
+						this.$bvToast.toast(res.data.msg, {
+							noCloseButton: true,
+							variant: 'danger',
+							toaster: 'b-toaster-bottom-center',
+						});
 					});
 				this.formSubmitted = true;
 			}
@@ -263,7 +263,7 @@ export default {
 }
 
 #sq-the-login-modal .sq-text {
-	font-size: 0.625rem;
+	font-size: 0.75rem;
 	color: $my-color-gray1;
 }
 

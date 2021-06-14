@@ -35,14 +35,17 @@ export default {
 	created() {
 		userService.verifyEmail(this.$route.query.token)
 			.then((res) => {
+				if (res.status === 200) {
+					this.isEmailVerified = true;
+					this.title = 'Welcome aboard!';
+					this.text = 'Please login to begin your journey with us. We are so glad to have you!';
+				}
+			}).catch((err) => {
+				const res = err.response;
 				if (!res || res.status === 500) {
 					this.isEmailVerified = false;
 					this.title = 'Oops! Something went wrong on our end.';
 					this.text = 'We are deeply sorry for the inconvenience. Please try again after some time. If you keep facing this issue, we urge you to reach out to us at contact@squadrad.com';
-				} else if (res.status === 200) {
-					this.isEmailVerified = true;
-					this.title = 'Welcome aboard!';
-					this.text = 'Please login to begin your journey with us. We are so glad to have you!';
 				} else if (res.status === 401) {
 					this.isEmailVerified = false;
 					if (res.err === 'Token expired') {

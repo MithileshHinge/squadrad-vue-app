@@ -1,3 +1,4 @@
 export default function (err) {
-	console.error(err);
+	console.log(err);
+	throw err;
 }
