@@ -23,25 +23,25 @@
 
 				<b-form @submit.prevent="onSubmit">
 					<b-form-group v-if="isModalSignUp" class="sq-form-group">
-						<b-form-input name="fullname" v-model="$v.form.fullname.$model" :state="validateState('fullname')" placeholder="Full name" class="sq-form-input" autocomplete="off" trim></b-form-input>
+						<b-form-input name="fullname" v-model="$v.form.fullname.$model" :state="validateState('fullname')" placeholder="Full name" class="sq-modal-form-input" autocomplete="off" trim></b-form-input>
 						<b-form-invalid-feedback v-if="!$v.form.fullname.required" class="sq-form-invalid-feedback">Please enter your full name</b-form-invalid-feedback>
 						<b-form-invalid-feedback v-if="!$v.form.fullname.alphaSplit" class="sq-form-invalid-feedback">Are you sure you entered your name correctly?</b-form-invalid-feedback>
 					</b-form-group>
 					<b-form-group class="sq-form-group">
-						<b-form-input name="email" v-model="$v.form.email.$model" :state="validateState('email')" placeholder="Email" class="sq-form-input" type="email" autocomplete="off" trim></b-form-input>
+						<b-form-input name="email" v-model="$v.form.email.$model" :state="validateState('email')" placeholder="Email" class="sq-modal-form-input" type="email" autocomplete="off" trim></b-form-input>
 						<b-form-invalid-feedback v-if="$v.form.email.$invalid" class="sq-form-invalid-feedback">Please enter a valid email address</b-form-invalid-feedback>
 					</b-form-group>
 					<b-form-group v-if="!isModalSignUp" class="sq-form-group">
-						<b-form-input name="loginPassword" v-model="$v.form.loginPassword.$model" :state="validateState('loginPassword')" placeholder="Password" class="sq-form-input" type="password"></b-form-input>
+						<b-form-input name="loginPassword" v-model="$v.form.loginPassword.$model" :state="validateState('loginPassword')" placeholder="Password" class="sq-modal-form-input" type="password"></b-form-input>
 						<b-form-invalid-feedback v-if="!$v.form.loginPassword.required" class="sq-form-invalid-feedback">Please enter your password</b-form-invalid-feedback>
 					</b-form-group>
 					<b-form-group v-if="isModalSignUp" class="sq-form-group">
-						<b-form-input name="signupPassword" v-model="$v.form.signupPassword.$model" :state="validateState('signupPassword')" placeholder="Password" class="sq-form-input" type="password"></b-form-input>
+						<b-form-input name="signupPassword" v-model="$v.form.signupPassword.$model" :state="validateState('signupPassword')" placeholder="Password" class="sq-modal-form-input" type="password"></b-form-input>
 						<b-form-invalid-feedback v-if="!$v.form.signupPassword.required" class="sq-form-invalid-feedback">Please enter a new password</b-form-invalid-feedback>
 						<b-form-invalid-feedback v-if="!$v.form.signupPassword.minLength" class="sq-form-invalid-feedback">Password must have at least {{ $v.form.signupPassword.$params.minLength.min }} characters</b-form-invalid-feedback>
 					</b-form-group>
 					<b-form-group v-if="isModalSignUp" class="sq-form-group">
-						<b-form-input name="confirmPassword" v-model="$v.form.confirmPassword.$model" :state="validateState('confirmPassword')" placeholder="Confirm password" class="sq-form-input" type="password"></b-form-input>
+						<b-form-input name="confirmPassword" v-model="$v.form.confirmPassword.$model" :state="validateState('confirmPassword')" placeholder="Confirm password" class="sq-modal-form-input" type="password"></b-form-input>
 						<b-form-invalid-feedback v-if="$v.form.confirmPassword.$invalid" class="sq-form-invalid-feedback">Please re-enter the same password</b-form-invalid-feedback>
 					</b-form-group>
 						<b-button id="sq-the-login-submit-btn" class="sq-btn-social-login sq-btn sq-shadow" type="submit" :disabled="formSubmitted">
@@ -258,7 +258,7 @@ export default {
 	background-color: $my-color-gray8;
 }
 
-#sq-the-login-modal .sq-form-input {
+#sq-the-login-modal .sq-modal-form-input {
 	margin-bottom: 0.5rem;
 }
 

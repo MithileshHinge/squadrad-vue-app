@@ -148,6 +148,12 @@ $placeholder-color: rgba($color: $my-color-dark, $alpha: 0.33);
 .custom-control-input:focus~.custom-control-label::before {
 	box-shadow: 0 0 0 0.2rem rgba($color: $french-rose, $alpha: 0.25);
 }
+
+// Aligns toggle switches with label
+.custom-switch.b-custom-control-lg, .input-group-lg .custom-switch {
+	top: -0.125rem;
+}
+
 /* --------------- End Form --------------- */
 
 /* --------------- Modal --------------- */
@@ -173,6 +179,12 @@ $placeholder-color: rgba($color: $my-color-dark, $alpha: 0.33);
 
 .sq-background-gray {
 	background-color: $my-color-gray7;
+}
+
+.sq-page-title {
+	padding-top: 1.5rem;
+	font-size: 1.25rem;
+	font-weight: 500;
 }
 
 .sq-nav-item .nav-link {
@@ -305,9 +317,26 @@ $cta-shadow-opacity: 0.4;
 	}
 }
 
-.sq-form-input {
+.sq-modal-form-input {
 	font-weight: 300;
 	font-size: 0.8125rem;
+	line-height: 1.25rem;
+	background-color: $my-color-gray6;
+	color: $my-color-gray1;
+	border: none;
+	border-radius: 50px;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	transition: 0.5s;
+	&:focus {
+		box-shadow: 0 0 0 0.0625rem $french-rose;
+		color: $my-color-gray1;
+	}
+}
+
+.sq-form-input {
+	font-weight: 300;
+	font-size: 1rem;
 	line-height: 1.25rem;
 	background-color: $my-color-gray6;
 	color: $my-color-gray1;
@@ -335,17 +364,22 @@ $cta-shadow-opacity: 0.4;
 	margin-bottom: 0;
 }
 
+.sq-form-section {
+	margin: 1.5rem 0;
+	padding: 1.5rem 1.5rem 0 1.5rem;
+	border-top: 1px solid $my-color-gray5;
+}
+
 .sq-form-label {
-	//margin-left: 0.75rem;
-	font-size: 0.8125rem;
-	font-weight: 500;
+	font-size: 1rem;
+	font-weight: 400;
 	color: $my-color-dark;
 	letter-spacing: -0.01em;
 }
 
 .sq-form-textarea {
 	font-weight: 300;
-	font-size: 0.8125rem;
+	font-size: 1rem;
 	background-color: $my-color-gray6;
 	color: $my-color-gray1;
 	border: none;
