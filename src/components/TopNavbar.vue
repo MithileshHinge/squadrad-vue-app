@@ -30,7 +30,7 @@
 					</b-input-group>
 				</b-nav-form-->
 				<b-nav-item v-if="isCreator" to="/creator/settings" class="sq-menu-item">Page settings</b-nav-item>
-				<b-nav-item class="sq-menu-item">Post from my Creators</b-nav-item>
+				<b-nav-item class="sq-menu-item" to="/feed">Post from my Creators</b-nav-item>
 				<b-nav-item class="sq-menu-item">My Squads</b-nav-item>
 				<b-nav-item v-if="!isCreator" class="sq-menu-item">Start a membership page</b-nav-item>
 				<b-nav-item class="sq-menu-item">Account settings</b-nav-item>

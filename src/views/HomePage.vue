@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import postService from '@/services/post.service';
+// import postService from '@/services/post.service';
 import PostComp from '@/components/PostComp.vue';
 
 export default {
@@ -47,17 +47,19 @@ export default {
 		PostComp,
 	},
 	methods: {
+		/*
 		populateFeed() {
 			postService.getPostsFromMyCreators()
 				.then();
 		},
+		*/
 	},
 	created() {
-		this.populateFeed();
+		// this.populateFeed();
 	},
 	watch: {
 		// eslint-disable-next-line quote-props
-		'$route': 'populateFeed',
+		// '$route': 'populateFeed',
 	},
 };
 </script>
