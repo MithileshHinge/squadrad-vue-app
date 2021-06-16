@@ -2,9 +2,9 @@
 	<div>
 		<div class="sq-page-title">Creator info</div>
 		<b-form id="sq-the-creator-info-form" @submit.prevent>
-			<div class="sq-form-section border-0 pt-0">
+			<div class="sq-form-section">
 				<b-form-group>
-					<b-form-file class="sq-choose-profile-pic" style="display: none;"></b-form-file>
+					<b-form-file style="display: none;"></b-form-file>
 					<b-avatar size="8.5rem">
 						<b-img src="@/assets/tushar.png"></b-img>
 						<b-button class="sq-btn-change-profile-pic">
