@@ -162,7 +162,7 @@ $placeholder-color: rgba($color: $my-color-dark, $alpha: 0.33);
 }
 
 .modal-content {
-	border-radius: 1.25rem;
+	border-radius: 1.11rem;
 	border: none;
 	background-color: $my-color-gray8;
 }
@@ -176,10 +176,6 @@ $placeholder-color: rgba($color: $my-color-dark, $alpha: 0.33);
 	display:none;
 }
 /* --------------- End Modal --------------- */
-
-.sq-background-gray {
-	background-color: $my-color-gray7;
-}
 
 .sq-page-title {
 	padding-top: 1.5rem;
@@ -218,14 +214,11 @@ $placeholder-color: rgba($color: $my-color-dark, $alpha: 0.33);
 }
 /* --------------- End close icon --------------- */
 
-.sq-shadow {
-	box-shadow: 2px 8px 15px rgba($color: $my-color-dark, $alpha: 0.15) !important;
-}
-
 .sq-btn {
 	background-color: #ffffff;
-	background-position: -14.75rem 0, 0 0;
-	background-image: linear-gradient(45deg, rgba($color: $my-color-gray5, $alpha: 0.0) 10%, rgba($color: $my-color-gray5, $alpha: 0.2) 47%, rgba($color: $my-color-gray5, $alpha: 0.8) 55%, rgba($color: $my-color-gray5, $alpha: 0.8) 70%, rgba($color: $my-color-gray5, $alpha: 0.0) 83%);
+	background-position: 80%;
+	background-size: 200%;
+	background-image: linear-gradient(45deg, rgba($color: $my-color-gray5, $alpha: 0.0) 5%, rgba($color: $my-color-gray5, $alpha: 0.2) 23%, rgba($color: $my-color-gray5, $alpha: 0.8) 28%, rgba($color: $my-color-gray5, $alpha: 0.8) 35%, rgba($color: $my-color-gray5, $alpha: 0.0) 41%);
 	background-repeat: no-repeat;
 	color: $my-color-gray1;
 	border: none;
@@ -236,14 +229,14 @@ $placeholder-color: rgba($color: $my-color-dark, $alpha: 0.33);
 	&:focus, &:hover {
 		background-color: $my-color-gray1;
 		color: #ffffff;
-		background-position-x: 14.75rem;
+		background-position-x: -80%;
 		transition: background-position 1s ease, background-image 0.4s ease, background-color 0.4s ease;
 	}
 	&:not(:disabled):not(.disabled):active {
 		background-color: #ffffff;
 		color: $my-color-gray1;
 		box-shadow: none;
-		background-position-x: 14.75rem;
+		background-position-x: -80%;
 		transition: background-position 1s ease, background-image 0.4s ease, background-color 0.4s ease;
 	}
 }
@@ -253,7 +246,7 @@ $placeholder-color: rgba($color: $my-color-dark, $alpha: 0.33);
 	.sq-btn:hover {
 		background-color: $my-color-gray1;
 		color: #ffffff;
-		background-position-x: 14.75rem;
+		background-position-x: -80%;
 		transition: background-position 1s ease, background-image 0.4s ease, background-color 0.4s ease;
 	}
 }
@@ -395,7 +388,7 @@ $cta-shadow-opacity: 0.4;
 	background-color: $my-color-gray6;
 	color: $my-color-gray1;
 	border: none;
-	border-radius: 1.25rem;
+	border-radius: 1.28rem;
 	padding: 1rem;
 	transition: 0.5s;
 	&:focus {
@@ -420,24 +413,14 @@ $cta-shadow-opacity: 0.4;
 	color: $radical-red !important;
 }
 
-.sq-text {
-	font-size: 0.875rem;
-	font-weight: 300;
-	text-align: left;
-	color: $my-color-dark;
+.sq-card-flat {
+	border: none;
+	border-radius: 1.11rem;
+	background-color: $my-color-gray7;
 }
 
-.sq-subtext {
-	font-size: 0.75rem;
-	color: $my-color-gray2;
-}
-
-.sq-muted {
-	color: $my-color-gray2;
-}
-
-.sq-font-regular {
-	font-weight: 400;
+.sq-card-flat-lg {
+	border-radius: 1.28rem;
 }
 
 .sq-empty-state-text {
@@ -456,7 +439,7 @@ $cta-shadow-opacity: 0.4;
 .sq-flowendpage-container {
 	padding: 3rem;
 	background-color: $my-color-light;
-	border-radius: 1.25rem;
+	border-radius: 1.11rem;
 }
 
 .sq-flowendpage-title {
@@ -478,6 +461,38 @@ $cta-shadow-opacity: 0.4;
 	content: '₹';
 	font-family: Lato;
 	font-weight: 400;
+}
+
+.sq-background-gray {
+	background-color: $my-color-gray7;
+}
+
+.sq-text {
+	font-size: 0.875rem;
+	font-weight: 300;
+	text-align: left;
+	color: $my-color-dark;
+}
+
+.sq-subtext {
+	font-size: 0.75rem;
+	color: $my-color-gray2;
+}
+
+.sq-muted {
+	color: $my-color-gray2 !important;
+}
+
+.sq-font-regular {
+	font-weight: 400 !important;
+}
+
+.sq-color-danger {
+	color: $my-color-danger !important;
+}
+
+.sq-shadow {
+	box-shadow: 2px 8px 15px rgba($color: $my-color-dark, $alpha: 0.15) !important;
 }
 
 </style>

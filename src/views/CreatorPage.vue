@@ -80,7 +80,7 @@
 		</b-row>
 		<b-row no-gutters align-h="center">
 			<b-col class="mt-2 px-3" cols="auto">
-				<b-card class="sq-creator-card-about p-2">
+				<b-card class="sq-card-flat p-2">
 					<b-card-text class="sq-text text-center">
 						{{ creator.about }}
 					</b-card-text>
@@ -97,7 +97,7 @@
 		</b-row>
 		<b-row no-gutters align-h="center">
 			<b-col class="mt-2" cols="auto">
-				<b-card class="sq-creator-card-about p-1">
+				<b-card class="sq-card-flat p-1">
 					<PostComp v-for="post in posts" :key="post.id" :post="post"></PostComp>
 				</b-card>
 			</b-col>
@@ -278,16 +278,10 @@ export default {
 
 .sq-creator-card {
 	border: none;
-	border-radius: 1.25rem;
+	border-radius: 1.11rem;
 	min-width: 18.75rem;
 	max-width: 18.75rem;
 	box-shadow: 4px 10px 25px 0 rgba($color: $my-color-dark, $alpha: 0.10);
-}
-
-.sq-creator-card-about {
-	border: none;
-	border-radius: 1.25rem;
-	background-color: $my-color-gray7;
 }
 
 .sq-creator-squad-card-img {
