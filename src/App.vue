@@ -183,6 +183,7 @@ $placeholder-color: rgba($color: $my-color-dark, $alpha: 0.33);
 
 .sq-page-title {
 	padding-top: 1.5rem;
+	padding-bottom: 1.5rem;
 	font-size: 1.25rem;
 	font-weight: 500;
 }
@@ -317,6 +318,17 @@ $cta-shadow-opacity: 0.4;
 	}
 }
 
+.sq-btn-change-profile-pic {
+	position: absolute;
+	width: 100%;
+	top: 60%;
+	bottom: 0;
+	border: 1px solid rgba($color: $my-color-light, $alpha: 0.25);
+	background-color: rgba($color: $my-color-light, $alpha: 0.25);
+	backdrop-filter: blur(5px);
+	color: $my-color-light;
+}
+
 .sq-modal-form-input {
 	font-weight: 300;
 	font-size: 0.8125rem;
@@ -365,7 +377,7 @@ $cta-shadow-opacity: 0.4;
 }
 
 .sq-form-section {
-	margin: 1.5rem 0;
+	margin-bottom: 1.5rem;
 	padding: 1.5rem 1.5rem 0 1.5rem;
 	border-top: 1px solid $my-color-gray5;
 }

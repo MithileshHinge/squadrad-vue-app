@@ -15,7 +15,7 @@
 		</b-row>
 		<b-row no-gutters>
 			<b-col id="sq-the-page-bio">
-				{{ creator.pageBio}}
+				is creating {{ creator.pageBio }}
 			</b-col>
 		</b-row>
 		<b-row no-gutters align-h="center">
