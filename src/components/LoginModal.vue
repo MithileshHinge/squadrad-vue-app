@@ -64,6 +64,7 @@ import {
 	alpha,
 	email,
 	minLength,
+	maxLength,
 	sameAs,
 } from 'vuelidate/lib/validators';
 
@@ -96,10 +97,12 @@ export default {
 			form: {
 				fullname: {
 					required: requiredIf(() => this.isModalSignUp),
+					maxLength: maxLength(50),
 					alphaSplit: (value) => (value ? value.split(' ').every((word) => (word ? alpha(word) : false)) : true),
 				},
 				email: {
 					required,
+					maxLength: maxLength(320),
 					email,
 				},
 				loginPassword: {
