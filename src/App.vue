@@ -360,13 +360,12 @@ $cta-shadow-opacity: 0.4;
 	font-size: 0.625rem;
 	text-align: left;
 	margin-left: 0.75rem;
-	margin-bottom: 0.5rem;
 	width: auto;
 	color: $radical-red;
 }
 
 .sq-form-group {
-	margin-bottom: 0;
+	margin-bottom: 0.5rem;
 }
 
 .sq-form-section {

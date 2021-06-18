@@ -258,10 +258,6 @@ export default {
 	background-color: $my-color-gray8;
 }
 
-#sq-the-login-modal .sq-modal-form-input {
-	margin-bottom: 0.5rem;
-}
-
 #sq-the-login-modal .sq-text {
 	font-size: 0.75rem;
 	color: $my-color-gray1;
