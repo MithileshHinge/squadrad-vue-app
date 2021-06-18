@@ -30,7 +30,7 @@
 					</b-form-group>
 					<b-form-group class="sq-form-group">
 						<b-form-input name="email" v-model="$v.form.email.$model" :state="validateState($v.form.email)" placeholder="Email" class="sq-modal-form-input" type="email" autocomplete="off" trim></b-form-input>
-						<b-form-invalid-feedback v-if="!$v.form.email.email" class="sq-form-invalid-feedback">Please enter a valid email address</b-form-invalid-feedback>
+						<b-form-invalid-feedback v-if="!$v.form.email.email || !$v.form.email.required" class="sq-form-invalid-feedback">Please enter a valid email address</b-form-invalid-feedback>
 						<b-form-invalid-feedback v-if="!$v.form.email.maxLength" class="sq-form-invalid-feedback">Exceeded max character limit</b-form-invalid-feedback>
 					</b-form-group>
 					<b-form-group v-if="!isModalSignUp" class="sq-form-group">
@@ -38,7 +38,7 @@
 						<b-form-invalid-feedback v-if="!$v.form.loginPassword.required" class="sq-form-invalid-feedback">Please enter your password</b-form-invalid-feedback>
 					</b-form-group>
 					<b-form-group v-if="isModalSignUp" class="sq-form-group">
-						<b-form-input name="signupPassword" v-model="$v.form.signupPassword.$model" :state="validateState($v.form.fullname.signupPassword)" placeholder="Password" class="sq-modal-form-input" type="password"></b-form-input>
+						<b-form-input name="signupPassword" v-model="$v.form.signupPassword.$model" :state="validateState($v.form.signupPassword)" placeholder="Password" class="sq-modal-form-input" type="password"></b-form-input>
 						<b-form-invalid-feedback v-if="!$v.form.signupPassword.required" class="sq-form-invalid-feedback">Please enter a new password</b-form-invalid-feedback>
 						<b-form-invalid-feedback v-if="!$v.form.signupPassword.minLength" class="sq-form-invalid-feedback">Password must have at least {{ $v.form.signupPassword.$params.minLength.min }} characters</b-form-invalid-feedback>
 					</b-form-group>
@@ -177,7 +177,7 @@ export default {
 			}
 		},
 	},
-	mixins: validateStateMixin,
+	mixins: [validateStateMixin],
 };
 </script>
 
