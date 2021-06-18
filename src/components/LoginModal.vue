@@ -22,34 +22,40 @@
 				</div>
 
 				<b-form @submit.prevent="onSubmit">
-					<b-form-group v-if="isModalSignUp" class="sq-form-group">
-						<b-form-input name="fullname" v-model="$v.form.fullname.$model" :state="validateState($v.form.fullname)" placeholder="Full name" class="sq-modal-form-input" autocomplete="off" trim></b-form-input>
-						<b-form-invalid-feedback v-if="!$v.form.fullname.required" class="sq-form-invalid-feedback">Please enter your full name</b-form-invalid-feedback>
-						<b-form-invalid-feedback v-if="!$v.form.fullname.alphaSplit" class="sq-form-invalid-feedback">Are you sure you entered your name correctly?</b-form-invalid-feedback>
-						<b-form-invalid-feedback v-if="!$v.form.fullname.maxLength" class="sq-form-invalid-feedback">Exceeded max character limit</b-form-invalid-feedback>
-					</b-form-group>
-					<b-form-group class="sq-form-group">
-						<b-form-input name="email" v-model="$v.form.email.$model" :state="validateState($v.form.email)" placeholder="Email" class="sq-modal-form-input" type="email" autocomplete="off" trim></b-form-input>
-						<b-form-invalid-feedback v-if="!$v.form.email.email || !$v.form.email.required" class="sq-form-invalid-feedback">Please enter a valid email address</b-form-invalid-feedback>
-						<b-form-invalid-feedback v-if="!$v.form.email.maxLength" class="sq-form-invalid-feedback">Exceeded max character limit</b-form-invalid-feedback>
-					</b-form-group>
-					<b-form-group v-if="!isModalSignUp" class="sq-form-group">
-						<b-form-input name="loginPassword" v-model="$v.form.loginPassword.$model" :state="validateState($v.form.loginPassword)" placeholder="Password" class="sq-modal-form-input" type="password"></b-form-input>
-						<b-form-invalid-feedback v-if="!$v.form.loginPassword.required" class="sq-form-invalid-feedback">Please enter your password</b-form-invalid-feedback>
-					</b-form-group>
-					<b-form-group v-if="isModalSignUp" class="sq-form-group">
-						<b-form-input name="signupPassword" v-model="$v.form.signupPassword.$model" :state="validateState($v.form.signupPassword)" placeholder="Password" class="sq-modal-form-input" type="password"></b-form-input>
-						<b-form-invalid-feedback v-if="!$v.form.signupPassword.required" class="sq-form-invalid-feedback">Please enter a new password</b-form-invalid-feedback>
-						<b-form-invalid-feedback v-if="!$v.form.signupPassword.minLength" class="sq-form-invalid-feedback">Password must have at least {{ $v.form.signupPassword.$params.minLength.min }} characters</b-form-invalid-feedback>
-					</b-form-group>
-					<b-form-group v-if="isModalSignUp" class="sq-form-group">
-						<b-form-input name="confirmPassword" v-model="$v.form.confirmPassword.$model" :state="validateState($v.form.confirmPassword)" placeholder="Confirm password" class="sq-modal-form-input" type="password"></b-form-input>
-						<b-form-invalid-feedback v-if="$v.form.confirmPassword.$invalid" class="sq-form-invalid-feedback">Please re-enter the same password</b-form-invalid-feedback>
-					</b-form-group>
-						<b-button id="sq-the-login-submit-btn" class="sq-btn-social-login sq-btn sq-shadow" type="submit" :disabled="formSubmitted">
-							<b-overlay :show="formSubmitted" rounded="pill" opacity="0.6" spinner-small spinner-variant="primary" class="d-inline-block" no-wrap/>
-							{{ submitText }}
-						</b-button>
+					<FormInputGroup v-if="isModalSignUp" name="fullname" v-model="form.fullname" :validationModel="$v.form.fullname" inputClass="sq-modal-form-input" placeholder="Full name" trim
+						:invalidFeedbacks="{
+							required: 'Please enter your full name',
+							alphaSplit: 'Are you sure you entered your name correctly?',
+							maxLength: 'Exceeded max character limit',
+						}"
+					/>
+					<FormInputGroup name="email" v-model="form.email" :validationModel="$v.form.email" inputClass="sq-modal-form-input" placeholder="Email" type="email" autocomplete="off" trim
+						:invalidFeedbacks="{
+							required: 'Please enter your email address',
+							email: 'Please enter a valid email address',
+							maxLength: 'Exceeded max character limit',
+						}"
+					/>
+					<FormInputGroup v-if="!isModalSignUp" name="loginPassword" v-model="form.loginPassword" :validationModel="$v.form.loginPassword" inputClass="sq-modal-form-input" placeholder="Password" type="password"
+						:invalidFeedbacks="{
+							required: 'Please enter your password',
+						}"
+					/>
+					<FormInputGroup v-if="isModalSignUp" name="signupPassword" v-model="form.signupPassword" :validationModel="$v.form.signupPassword" inputClass="sq-modal-form-input" placeholder="Password" type="password"
+						:invalidFeedbacks="{
+							required: 'Please enter a new password',
+							minLength: `Password must have at least ${$v.form.signupPassword.$params.minLength.min} characters`,
+						}"
+					/>
+					<FormInputGroup v-if="isModalSignUp" name="confirmPassword" v-model="form.confirmPassword" :validationModel="$v.form.confirmPassword" inputClass="sq-modal-form-input" placeholder="Confirm password" type="password"
+						:invalidFeedbacks="{
+							default: 'Please re-enter the same password',
+						}"
+					/>
+					<b-button id="sq-the-login-submit-btn" class="sq-btn-social-login sq-btn sq-shadow" type="submit" :disabled="formSubmitted">
+						<b-overlay :show="formSubmitted" rounded="pill" opacity="0.6" spinner-small spinner-variant="primary" class="d-inline-block" no-wrap/>
+						{{ submitText }}
+					</b-button>
 				</b-form>
 			</div>
 			<div v-if="!isModalSignUp" class="sq-text text-center">New to Squadrad? <b-link class="sq-link" to="/signup">Sign up</b-link></div>
@@ -69,7 +75,7 @@ import {
 	maxLength,
 	sameAs,
 } from 'vuelidate/lib/validators';
-import validateStateMixin from '@/mixins/validateStateMixin';
+import FormInputGroup from '@/components/FormInputGroup.vue';
 
 export default {
 	props: {
@@ -177,7 +183,9 @@ export default {
 			}
 		},
 	},
-	mixins: [validateStateMixin],
+	components: {
+		FormInputGroup,
+	},
 };
 </script>
 
