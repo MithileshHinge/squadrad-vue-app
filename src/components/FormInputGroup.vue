@@ -1,5 +1,5 @@
 <template>
-	<b-form-group class="sq-form-group" :label-for="inputId" label-align="left">
+	<b-form-group :label="label" class="sq-form-group" :label-for="inputId" label-align="left">
 		<b-form-input :name="name" :id="inputId" :class="inputClass" v-model="inputVal" :state="validateState(validationModel)" :placeholder="placeholder" :type="type" :size="size" :trim="trim"/>
 		<b-form-invalid-feedback v-for="invalidValidator in invalidValidatorsArray" :key="invalidValidator" class="sq-form-invalid-feedback">
 			{{ invalidFeedbacks[invalidValidator] }}
@@ -12,6 +12,7 @@ import validateStateMixin from '@/mixins/validateStateMixin';
 
 export default {
 	props: {
+		label: String,
 		name: String,
 		inputId: String,
 		inputClass: String,

@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="sq-page-title">Creator info</div>
-		<b-form id="sq-the-creator-info-form" @submit.prevent>
+		<b-form id="sq-the-creator-info-form" @submit.prevent="saveCreator">
 			<div class="sq-form-section">
 				<b-form-group>
 					<b-form-file style="display: none;"></b-form-file>
@@ -23,12 +23,18 @@
 						</b-col>
 					</b-row>
 				</b-form-group-->
-				<b-form-group label="Creator name:" label-class="sq-form-label" label-for="sq-the-form-creator-name" label-align="left">
-					<b-form-input id="sq-the-form-creator-name" class="sq-form-input" v-model="creatorInfoForm.creatorName" trim placeholder="e.g. John Doe" size="lg"></b-form-input>
-				</b-form-group>
-				<b-form-group label="is creating:" label-class="sq-form-label" label-for="sq-the-form-is-creating" label-align="left">
-					<b-form-input id="sq-the-form-is-creating" class="sq-form-input" v-model="creatorInfoForm.creatingWhat" trim placeholder="e.g. Entertainment videos" size="lg"></b-form-input>
-				</b-form-group>
+				<FormInputGroup label="Creator name:" inputId="sq-the-form-creator-name" inputClass="sq-form-input" v-model="creatorInfoForm.creatorName" :validationModel="$v.creatorInfoForm.creatorName" placeholder="e.g. John Doe" size="lg" trim
+					:invalidFeedbacks="{
+						required: 'Please tell us the name of your page',
+						maxLength: 'Exceeded max character limit',
+					}"
+				/>
+				<FormInputGroup label="is creating:" inputId="sq-the-form-is-creating" inputClass="sq-form-input" v-model="creatorInfoForm.creatingWhat" :validationModel="$v.creatorInfoForm.creatingWhat" placeholder="e.g. Entertainment videos" size="lg" trim
+					:invalidFeedbacks="{
+						required: 'Please tell us what you create',
+						maxLength: 'Exceeded max character limit',
+					}"
+				/>
 			</div>
 			<div class="sq-form-section">
 				<b-form-group class="align-items-center" label="Display number of members:" label-class="sq-form-label" label-for="sq-the-supporters-visibility" label-align="left" label-cols="auto">
@@ -41,16 +47,25 @@
 					<b-form-checkbox id="sq-the-otp-visibility" v-model="creatorInfoForm.otpVisibility" switch size="lg" class="text-left"/>
 				</b-form-group>
 			</div>
-			<div class="sq-form-section pb-2">
+			<div class="sq-form-section pb-5">
 				<b-form-group class="align-items-center" label="About section:" label-class="sq-form-label" label-for="sq-the-otp-visibility" label-align="left">
 					<b-form-textarea id="sq-the-form-about-section" class="sq-form-textarea text-center" v-model="creatorInfoForm.about" placeholder="Tell your fans about this page" rows="3" size="lg"/>
 				</b-form-group>
 			</div>
+			<ButtonSubmit :isSaving="isSaving" :isSaved="isSaved"/>
 		</b-form>
 	</div>
 </template>
 
 <script>
+import {
+	required,
+	maxLength,
+} from 'vuelidate/lib/validators';
+import validateStateMixin from '@/mixins/validateStateMixin';
+import FormInputGroup from '@/components/FormInputGroup.vue';
+import ButtonSubmit from '@/components/ButtonSubmit.vue';
+
 export default {
 	data() {
 		return {
@@ -62,6 +77,8 @@ export default {
 				otpVisibility: true,
 				about: '',
 			},
+			isSaved: false,
+			isSaving: false,
 		};
 	},
 	methods: {
@@ -73,7 +90,34 @@ export default {
 			input.style.width = `${hide.offsetWidth}px`;
 		},
 		*/
+		saveCreator() {
+			if (this.isSaved) return;
+			this.isSaving = true;
+			setTimeout(() => {
+				this.isSaving = false;
+				this.isSaved = true;
+			}, 1000);
+		},
 	},
+	validations() {
+		return {
+			creatorInfoForm: {
+				creatorName: {
+					required,
+					maxLength: maxLength(50),
+				},
+				creatingWhat: {
+					required,
+					maxLength: maxLength(50),
+				},
+			},
+		};
+	},
+	components: {
+		FormInputGroup,
+		ButtonSubmit,
+	},
+	mixins: [validateStateMixin],
 };
 </script>
 
