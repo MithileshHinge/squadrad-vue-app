@@ -6,7 +6,7 @@
 				<b-form-group>
 					<b-form-file style="display: none;"></b-form-file>
 					<b-avatar size="8.5rem">
-						<b-img src="@/assets/tushar.png"></b-img>
+						<b-img src="@/assets/tushar.png" class="w-100 h-100"></b-img>
 						<b-button class="sq-btn-change-profile-pic">
 							<b-icon-pencil-fill/>
 						</b-button>

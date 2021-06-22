@@ -31,6 +31,7 @@ export default {
 	left: 20%;
 	background-color: $my-color-dark;
 	color: $my-color-light;
+	z-index: 500;
 	//background-image: linear-gradient(35deg, $mulberry-crayola, $french-rose, $mulberry-crayola);
 }
 

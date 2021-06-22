@@ -311,7 +311,7 @@ $cta-shadow-opacity: 0.4;
 	}
 }
 
-.sq-btn-change-profile-pic {
+.sq-btn-change-profile-pic, .sq-btn-change-profile-pic:focus, .sq-btn-change-profile-pic:hover, .sq-btn-change-profile-pic:not(:disabled):not(.disabled):active:focus, .sq-btn-change-profile-pic:not(:disabled):not(.disabled):active {
 	position: absolute;
 	width: 100%;
 	top: 60%;
@@ -320,6 +320,18 @@ $cta-shadow-opacity: 0.4;
 	background-color: rgba($color: $my-color-light, $alpha: 0.25);
 	backdrop-filter: blur(5px);
 	color: $my-color-light;
+	box-shadow: none;
+	transition: font-size 0.1s;
+	&:active {
+		font-size: 120%;
+	}
+}
+
+// if browser supports hover (not touch-screen): this is to prevent sticky hover state on touch-screen devices
+@media (hover: hover) {
+	.sq-btn-change-profile-pic:hover {
+		font-size: 120%;
+	}
 }
 
 .sq-modal-form-input {
