@@ -72,7 +72,6 @@ import {
 	required,
 	maxLength,
 } from 'vuelidate/lib/validators';
-import validateStateMixin from '@/mixins/validateStateMixin';
 import FormInputGroup from '@/components/FormInputGroup.vue';
 import ButtonSubmit from '@/components/ButtonSubmit.vue';
 
@@ -127,7 +126,6 @@ export default {
 		FormInputGroup,
 		ButtonSubmit,
 	},
-	mixins: [validateStateMixin],
 };
 </script>
 
