@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<div class="sq-page-title">Creator info</div>
-		<b-form id="sq-the-creator-info-form" @submit.prevent="saveCreator">
-			<div class="sq-form-section">
+		<b-form id="sq-the-creator-info-form" class="overflow-auto" @submit.prevent="saveCreator">
+			<b-card class="sq-form-card">
 				<b-form-group>
 					<b-form-file style="display: none;"></b-form-file>
 					<b-avatar size="8.5rem">
@@ -23,36 +23,46 @@
 						</b-col>
 					</b-row>
 				</b-form-group-->
-				<FormInputGroup label="Creator name:" inputId="sq-the-form-creator-name" inputClass="sq-form-input" v-model="creatorInfoForm.creatorName" :validationModel="$v.creatorInfoForm.creatorName" placeholder="e.g. John Doe" size="lg" trim
+				<FormInputGroup label="Name of your page" inputId="sq-the-form-creator-name" inputClass="sq-form-input" v-model="creatorInfoForm.creatorName" :validationModel="$v.creatorInfoForm.creatorName" placeholder="e.g. John Doe" size="lg" trim
 					:invalidFeedbacks="{
 						required: 'Please tell us the name of your page',
 						maxLength: 'Exceeded max character limit',
 					}"
 				/>
-				<FormInputGroup label="is creating:" inputId="sq-the-form-is-creating" inputClass="sq-form-input" v-model="creatorInfoForm.creatingWhat" :validationModel="$v.creatorInfoForm.creatingWhat" placeholder="e.g. Entertainment videos" size="lg" trim
+				<FormInputGroup label="What are you creating?" inputId="sq-the-form-is-creating" inputClass="sq-form-input" v-model="creatorInfoForm.creatingWhat" :validationModel="$v.creatorInfoForm.creatingWhat" placeholder="e.g. Entertainment videos, comics, music, etc" size="lg" trim
 					:invalidFeedbacks="{
 						required: 'Please tell us what you create',
 						maxLength: 'Exceeded max character limit',
 					}"
 				/>
-			</div>
-			<div class="sq-form-section">
+				<b-form-group class="text-left" label="Which sounds correct?" label-class="sq-form-label" label-align="left">
+					<b-form-radio name="plural" v-model="creatorInfoForm.plural" :value="false" class="sq-text">
+						{{creatorInfoForm.creatorName}} is creating {{creatorInfoForm.creatingWhat}}
+					</b-form-radio>
+					<b-form-radio name="plural" v-model="creatorInfoForm.plural" :value="true" class="sq-text">
+						{{creatorInfoForm.creatorName}} are creating {{creatorInfoForm.creatingWhat}}
+					</b-form-radio>
+				</b-form-group>
+			</b-card>
+			<b-card class="sq-form-card">
 				<b-form-group class="align-items-center" label="Display number of members:" label-class="sq-form-label" label-for="sq-the-supporters-visibility" label-align="left" label-cols="auto">
-					<b-form-checkbox id="sq-the-supporters-visibility" v-model="creatorInfoForm.supportersVisibility" switch size="lg" class="text-left"/>
+					<b-form-checkbox id="sq-the-supporters-visibility" v-model="creatorInfoForm.supportersVisibility" switch size="lg" class="text-right"/>
 				</b-form-group>
 				<b-form-group class="align-items-center" label="Display monthly earnings:" label-class="sq-form-label" label-for="sq-the-earnings-visibility" label-align="left" label-cols="auto">
-					<b-form-checkbox id="sq-the-earnings-visibility" v-model="creatorInfoForm.earningsVisibility" switch size="lg" class="text-left"/>
+					<b-form-checkbox id="sq-the-earnings-visibility" v-model="creatorInfoForm.earningsVisibility" switch size="lg" class="text-right"/>
 				</b-form-group>
-				<b-form-group class="align-items-center" label="Display one time earnings:" label-class="sq-form-label" label-for="sq-the-otp-visibility" label-align="left" label-cols="auto">
-					<b-form-checkbox id="sq-the-otp-visibility" v-model="creatorInfoForm.otpVisibility" switch size="lg" class="text-left"/>
+				<b-form-group class="align-items-center mb-0" label="Display one time earnings:" label-class="sq-form-label" label-for="sq-the-otp-visibility" label-align="left" label-cols="auto">
+					<b-form-checkbox id="sq-the-otp-visibility" v-model="creatorInfoForm.otpVisibility" switch size="lg" class="text-right"/>
 				</b-form-group>
-			</div>
-			<div class="sq-form-section pb-5">
-				<b-form-group class="align-items-center" label="About section:" label-class="sq-form-label" label-for="sq-the-otp-visibility" label-align="left">
+			</b-card>
+			<b-card class="sq-form-card">
+				<b-form-group class="align-items-center" label="About section:" label-class="sq-form-label" label-for="sq-the-form-about-section" label-align="left">
 					<b-form-textarea id="sq-the-form-about-section" class="sq-form-textarea text-center" v-model="creatorInfoForm.about" placeholder="Tell your fans about this page" rows="3" size="lg"/>
 				</b-form-group>
-			</div>
+			</b-card>
 			<ButtonSubmit :isSaving="isSaving" :isSaved="isSaved"/>
+			<!-- div to clear fixed submit button from occluding last card-->
+			<div style="height: 3.5rem;"/>
 		</b-form>
 	</div>
 </template>

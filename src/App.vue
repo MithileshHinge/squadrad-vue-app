@@ -377,13 +377,19 @@ $cta-shadow-opacity: 0.4;
 }
 
 .sq-form-group {
-	margin-bottom: 0.5rem;
+	margin-bottom: 1.5rem;
 }
 
 .sq-form-section {
 	margin-bottom: 1.5rem;
 	padding: 1.5rem 1.5rem 0 1.5rem;
 	border-top: 1px solid $my-color-gray5;
+}
+
+.sq-form-card {
+	margin: 1.25rem;
+	border-radius: 1.28rem;
+	background-color: $my-color-light;
 }
 
 .sq-form-label {
