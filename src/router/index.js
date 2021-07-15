@@ -5,6 +5,7 @@ import VueRouter from 'vue-router';
 import HomePage from '../views/HomePage.vue';
 import LandingPage from '../views/LandingPage.vue';
 import PostPage from '../views/PostPage.vue';
+import AccountSettingsPage from '../views/AccountSettingsPage.vue';
 import CreatorPage from '../views/CreatorPage.vue';
 import PageSettingsPage from '../views/PageSettingsPage.vue';
 import VerifyEmailPage from '../views/VerifyEmailPage.vue';
@@ -69,6 +70,11 @@ const routes = [
 		path: '/auth/verify-email/sent',
 		name: 'VerifyEmailSentPage',
 		component: VerifyEmailSentPage,
+	},
+	{
+		path: '/user/settings',
+		name: 'AccountsSettingsPage',
+		component: AccountSettingsPage,
 	},
 	{
 		path: '/about',
