@@ -263,6 +263,10 @@ export default {
 	color: $my-color-gray1;
 }
 
+#sq-the-login-modal .sq-form-group {
+	margin-bottom: 0.5rem;
+}
+
 #sq-the-login-submit-btn {
 	margin-top: 0.125rem;
 }
