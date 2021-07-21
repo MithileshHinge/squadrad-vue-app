@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import { isEmpty } from 'underscore';
-import userService from '@/services/user.service';
 import creatorService from '@/services/creator.service';
 import TopNavbar from '@/components/TopNavbar.vue';
 import BottomNavbar from '@/components/BottomNavbar.vue';
@@ -21,13 +19,10 @@ export default {
 	},
 	computed: {
 		isAuthenticated() {
-			if (isEmpty(this.$store.state.user)) {
-				return false;
-			}
-			return true;
+			return (this.$store.state.user.user_id > 0);
 		},
 		isCreator() {
-			return !isEmpty(this.$store.state.creator);
+			return (this.$store.state.creator.user_id > 0);
 		},
 		showBottomNav() {
 			const showPaths = ['/feed', '/explore', '/notifications', '/messages', '/creator'];
@@ -37,29 +32,27 @@ export default {
 			return false;
 		},
 	},
-	async mounted() {
-		try {
-			const resUser = await userService.getUserSelf();
-			if (resUser && resUser.status === 200) {
-				this.$store.commit('updateUser', resUser.data.user);
+	methods: {
+		async fetchCreator() {
+			try {
+				creatorService.getCreatorSelf()
+					.then((res) => {
+						if (res && res.status === 200) {
+							this.$store.commit('updateCreator', res.data.creator);
+						}
+					}).catch((err) => {
+						if (err.response && err.response.status === 500) {
+							this.$bvToast.toast(err.response.data.msg, {
+								noCloseButton: true,
+								variant: 'danger',
+								toaster: 'b-toaster-bottom-center',
+							});
+						}
+					});
+			} catch (err) {
+				console.log(err);
 			}
-			creatorService.getCreatorSelf()
-				.then((res) => {
-					if (res && res.status === 200) {
-						this.$store.commit('updateCreator', res.data.creator);
-					}
-				}).catch((err) => {
-					if (err.response && err.response.status === 500) {
-						this.$bvToast.toast(err.response.data.msg, {
-							noCloseButton: true,
-							variant: 'danger',
-							toaster: 'b-toaster-bottom-center',
-						});
-					}
-				});
-		} catch (err) {
-			console.log(err);
-		}
+		},
 	},
 };
 </script>

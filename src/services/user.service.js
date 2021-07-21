@@ -26,13 +26,17 @@ export default {
 		return api.get('/private/logout')
 			.catch((err) => handleError(err));
 	},
+	validate() {
+		return api.get('/public/validate')
+			.then((res) => (res.data.isValid))
+			.catch((err) => handleError(err));
+	},
 	getUserSelf() {
 		return api.get('/private/user')
 			.catch((err) => handleError(err));
 	},
-	validate() {
-		return api.get('/public/validate')
-			.then((res) => (res.data.isValid))
+	updateUser(user) {
+		return api.put('/private/user', user)
 			.catch((err) => handleError(err));
 	},
 };

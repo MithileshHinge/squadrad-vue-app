@@ -51,14 +51,31 @@ import ButtonSubmit from '@/components/ButtonSubmit.vue';
 export default {
 	data() {
 		return {
-			userInfoForm: {},
+			userInfoForm: {
+				name: this.$store.state.user.name,
+				email: this.$store.state.user.email,
+			},
 			isSaving: false,
 			isSaved: true,
 		};
 	},
+	watch: {
+		// eslint-disable-next-line
+		'userInfoForm.name': function () {
+			this.isSaved = false;
+		},
+	},
 	methods: {
 		saveUser() {
-
+			this.isSaving = true;
+			this.isSaved = false;
+			const user = {
+				name: this.userInfoForm.name,
+			};
+			this.$store.dispatch('updateUser', user).then(() => {
+				this.isSaved = true;
+				this.isSaving = false;
+			});
 		},
 	},
 	validations() {

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from '../store';
 
 // Pages
 import HomePage from '../views/HomePage.vue';
@@ -90,6 +91,13 @@ const router = new VueRouter({
 	mode: 'history',
 	base: process.env.BASE_URL,
 	routes,
+});
+
+// Fetch User and Creator data before entering route
+router.beforeEach((to, from, next) => {
+	store.dispatch('fetchUser').then(() => {
+		next();
+	});
 });
 
 export default router;

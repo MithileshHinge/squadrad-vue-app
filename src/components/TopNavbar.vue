@@ -33,7 +33,7 @@
 				<b-nav-item class="sq-menu-item" to="/feed">Post from my Creators</b-nav-item>
 				<b-nav-item class="sq-menu-item">My Squads</b-nav-item>
 				<b-nav-item v-if="!isCreator" class="sq-menu-item">Start a membership page</b-nav-item>
-				<b-nav-item class="sq-menu-item">Account settings</b-nav-item>
+				<b-nav-item to="/user/settings" class="sq-menu-item">Account settings</b-nav-item>
 				<b-nav-item class="sq-menu-item">Billing</b-nav-item>
 				<b-nav-item class="sq-menu-item">Help and FAQ</b-nav-item>
 				<b-nav-item class="sq-menu-item">Contact us</b-nav-item>
