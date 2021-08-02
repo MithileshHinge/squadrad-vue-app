@@ -39,4 +39,12 @@ export default {
 		return api.put('/private/user', user)
 			.catch((err) => handleError(err));
 	},
+	changePassword(oldPassword, newPassword) {
+		return api.put('/private/user/password', { oldPassword, newPassword })
+			.catch((err) => handleError(err));
+	},
+	deleteUser(password) {
+		return api.post('/private/user/delete', { password })
+			.catch((err) => handleError(err));
+	},
 };

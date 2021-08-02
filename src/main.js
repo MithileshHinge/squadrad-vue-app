@@ -1,5 +1,6 @@
 import '@babel/polyfill';
 import 'mutationobserver-shim';
+import 'animate.css';
 import Vue from 'vue';
 import Vuelidate from 'vuelidate';
 import './plugins/bootstrap-vue';

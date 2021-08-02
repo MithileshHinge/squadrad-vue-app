@@ -48,10 +48,10 @@ export default {
 					this.text = 'We are deeply sorry for the inconvenience. Please try again after some time. If you keep facing this issue, we urge you to reach out to us at contact@squadrad.com';
 				} else if (res.status === 401) {
 					this.isEmailVerified = false;
-					if (res.err === 'Token expired') {
+					if (res.msg === 'Token expired') {
 						this.title = 'Sorry, the link has expired.';
 						this.text = 'Worry not! We have sent a new link to your email address.'; // TODO: API call to resend new link
-					} else if (res.err === 'Invalid token') {
+					} else if (res.msg === 'Invalid token') {
 						this.title = 'Sorry, the link is incorrect.';
 						this.text = 'Please cross-check the link you have followed with the one you have received in the verification email.';
 					}

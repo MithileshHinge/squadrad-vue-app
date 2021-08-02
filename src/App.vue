@@ -219,7 +219,11 @@ $placeholder-color: rgba($color: $my-color-dark, $alpha: 0.33);
 	font-size: 0.8125rem;
 	padding: 0.5rem 1rem;
 	line-height: 1.25rem;
-	&:focus, &:hover {
+	&:focus {
+		background-color: #ffffff;
+		color: $my-color-gray1;
+	}
+	&:hover {
 		background-color: $my-color-gray1;
 		color: #ffffff;
 		background-position-x: -80%;
@@ -236,7 +240,7 @@ $placeholder-color: rgba($color: $my-color-dark, $alpha: 0.33);
 
 // if browser supports hover (not touch-screen): this is to prevent sticky hover state on touch-screen devices
 @media (hover: hover) {
-	.sq-btn:hover {
+	.sq-btn:hover, .sq-btn:focus {
 		background-color: $my-color-gray1;
 		color: #ffffff;
 		background-position-x: -80%;
@@ -272,7 +276,12 @@ $cta-shadow-opacity: 0.4;
 		background-position-x: inherit;
 		background-size: inherit;
 	}
-	&:focus, &:hover {
+	&:focus {
+		color: #ffffff;
+		background-color: transparent;
+		box-shadow: none;
+	}
+	&:hover {
 		color: #ffffff;
 		background-color: transparent;
 		background-image: inherit;
@@ -293,7 +302,7 @@ $cta-shadow-opacity: 0.4;
 
 // if browser supports hover (not touch-screen): this is to prevent sticky hover state on touch-screen devices
 @media (hover: hover) {
-	.sq-btn-cta:hover {
+	.sq-btn-cta:hover, .sq-btn-cta:focus {
 		color: #ffffff;
 		background-color: transparent;
 		background-image: inherit;
@@ -367,10 +376,6 @@ $cta-shadow-opacity: 0.4;
 	margin-left: 0.75rem;
 	width: auto;
 	color: $radical-red;
-}
-
-.sq-form-group {
-	margin-bottom: 1.5rem;
 }
 
 .sq-form-section {

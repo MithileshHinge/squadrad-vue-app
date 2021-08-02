@@ -1,16 +1,29 @@
 <template>
-	<b-button type="submit" :class="`${isSaved? 'sq-btn-form-save-done': ''} sq-btn-form-save sq-btn sq-shadow`" :disabled="isSaving">
-		<b-icon-check-circle v-if="isSaved" variant="success" class="mr-2"/>
-		<b-spinner v-if="isSaving" class="mr-2" small/>
-		{{ isSaved ? 'All changes saved' : 'Save changes' }}
+	<transition v-if="!isModalButton" enter-active-class="animate__animated animate__fadeInUp" leave-active-class="animate__animated animate__fadeOutDown">
+		<b-button v-if="show" type="submit" :class="`${isProcessed? 'sq-btn-form-process-done': ''} sq-btn-form-process sq-btn sq-shadow`" :disabled="isProcessing">
+			<b-icon-check-circle v-if="isProcessed" variant="success" class="mr-2"/>
+			<b-spinner v-if="isProcessing" class="mr-2" small/>
+			{{ isProcessed ? (buttonTextDone || 'All changes saved') : (buttonText || 'Save changes') }}
+		</b-button>
+	</transition>
+	<b-button v-else type="submit" :class="`${isProcessed? 'sq-btn-form-process-done': ''} sq-btn-modal-form-process sq-btn sq-shadow`" :disabled="isProcessing">
+		<b-icon-check-circle v-if="isProcessed" variant="success" class="mr-2"/>
+		<b-spinner v-if="isProcessing" class="mr-2" small variant="primary"/>
+		{{ isProcessed ? (buttonTextDone || 'All changes saved') : (buttonText || 'Save changes') }}
 	</b-button>
 </template>
 
 <script>
 export default {
+	data() {
+		return {
+			show: false,
+		};
+	},
 	props: {
-		isSaved: Boolean,
-		isSaving: Boolean,
+		isProcessed: Boolean,
+		isProcessing: Boolean,
+		isModalButton: Boolean,
 		buttonText: {
 			type: String,
 			default: 'Save changes',
@@ -20,11 +33,29 @@ export default {
 			default: 'All changes saved',
 		},
 	},
+	watch: {
+		// eslint-disable-next-line
+		isProcessed: function () {
+			if (this.isProcessed) {
+				setTimeout(() => {
+					this.show = false;
+				}, 2000);
+			} else {
+				this.show = true;
+			}
+		},
+		// eslint-disable-next-line
+		isProcessing: function () {
+			if (this.isProcessing) {
+				this.show = true;
+			}
+		},
+	},
 };
 </script>
 
 <style lang="scss" scoped>
-.sq-btn-form-save {
+.sq-btn-form-process {
 	position: fixed;
 	width: 60%;
 	bottom: 1rem;
@@ -35,7 +66,14 @@ export default {
 	//background-image: linear-gradient(35deg, $mulberry-crayola, $french-rose, $mulberry-crayola);
 }
 
-.sq-btn-form-save-done {
+.sq-btn-modal-form-process {
+	width: 100%;
+	background-color: $my-color-dark;
+	color: $my-color-light;
+	margin-top: 1rem;
+}
+
+.sq-btn-form-process-done {
 	background-image: none;
 	background-color: $my-color-light;
 	color: $my-color-dark;

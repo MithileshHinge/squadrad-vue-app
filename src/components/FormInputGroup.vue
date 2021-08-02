@@ -1,6 +1,6 @@
 <template>
-	<b-form-group :label="label" class="sq-form-group" :label-for="inputId" label-align="left">
-		<b-form-input :name="name" :id="inputId" :class="inputClass" v-model="inputVal" :state="validateState(validationModel)" :placeholder="placeholder" :type="type" :size="size" :trim="trim"/>
+	<b-form-group :label="label" :label-class="labelClass" class="sq-form-group" :label-for="inputId" label-align="left">
+		<b-form-input :name="name" :id="inputId" :class="inputClass" v-model="inputVal" :state="validateState(validationModel)" :placeholder="placeholder" :type="type" :size="size" :trim="trim" :autocomplete="autocomplete"/>
 		<b-form-invalid-feedback v-for="invalidValidator in invalidValidatorsArray" :key="invalidValidator" class="sq-form-invalid-feedback">
 			{{ invalidFeedbacks[invalidValidator] }}
 		</b-form-invalid-feedback>
@@ -13,6 +13,7 @@ import validateStateMixin from '@/mixins/validateStateMixin';
 export default {
 	props: {
 		label: String,
+		labelClass: String,
 		name: String,
 		inputId: String,
 		inputClass: String,
@@ -23,6 +24,7 @@ export default {
 		type: String,
 		size: String,
 		trim: Boolean,
+		autocomplete: String,
 	},
 	computed: {
 		inputVal: {
@@ -45,3 +47,11 @@ export default {
 	mixins: [validateStateMixin],
 };
 </script>
+
+<style lang="scss" scoped>
+
+.sq-form-group {
+	margin-bottom: 1.5rem;
+}
+
+</style>
