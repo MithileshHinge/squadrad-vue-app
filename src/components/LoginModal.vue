@@ -22,32 +22,32 @@
 				</div>
 
 				<b-form @submit.prevent="onSubmit">
-					<FormInputGroup v-if="isModalSignUp" name="fullname" v-model="form.fullname" :validationModel="$v.form.fullname" inputClass="sq-modal-form-input" placeholder="Full name" trim
+					<FormInputGroup v-if="isModalSignUp" name="fullname" v-model="form.fullname" :validationModel="$v.form.fullname" modal placeholder="Full name" trim
 						:invalidFeedbacks="{
 							required: 'Please enter your full name',
 							alphaSplit: 'Are you sure you entered your name correctly?',
 							maxLength: 'Exceeded max character limit',
 						}"
 					/>
-					<FormInputGroup name="email" v-model="form.email" :validationModel="$v.form.email" inputClass="sq-modal-form-input" placeholder="Email" type="email" autocomplete="off" trim
+					<FormInputGroup name="email" v-model="form.email" :validationModel="$v.form.email" modal placeholder="Email" type="email" autocomplete="off" trim
 						:invalidFeedbacks="{
 							required: 'Please enter your email address',
 							email: 'Please enter a valid email address',
 							maxLength: 'Exceeded max character limit',
 						}"
 					/>
-					<FormInputGroup v-if="!isModalSignUp" name="loginPassword" v-model="form.loginPassword" :validationModel="$v.form.loginPassword" inputClass="sq-modal-form-input" placeholder="Password" type="password"
+					<FormInputGroup v-if="!isModalSignUp" name="loginPassword" v-model="form.loginPassword" :validationModel="$v.form.loginPassword" modal placeholder="Password" type="password"
 						:invalidFeedbacks="{
 							required: 'Please enter your password',
 						}"
 					/>
-					<FormInputGroup v-if="isModalSignUp" name="signupPassword" v-model="form.signupPassword" :validationModel="$v.form.signupPassword" inputClass="sq-modal-form-input" placeholder="Password" type="password"
+					<FormInputGroup v-if="isModalSignUp" name="signupPassword" v-model="form.signupPassword" :validationModel="$v.form.signupPassword" modal placeholder="Password" type="password"
 						:invalidFeedbacks="{
 							required: 'Please enter a new password',
 							minLength: `Password must have at least ${$v.form.signupPassword.$params.minLength.min} characters`,
 						}"
 					/>
-					<FormInputGroup v-if="isModalSignUp" name="confirmPassword" v-model="form.confirmPassword" :validationModel="$v.form.confirmPassword" inputClass="sq-modal-form-input" placeholder="Confirm password" type="password"
+					<FormInputGroup v-if="isModalSignUp" name="confirmPassword" v-model="form.confirmPassword" :validationModel="$v.form.confirmPassword" modal placeholder="Confirm password" type="password"
 						:invalidFeedbacks="{
 							default: 'Please re-enter the same password',
 						}"

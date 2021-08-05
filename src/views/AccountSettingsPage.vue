@@ -12,7 +12,7 @@
 						</b-button>
 					</b-avatar>
 				</b-form-group>
-				<FormInputGroup label="Name" inputId="sq-the-form-name" inputClass="sq-form-input" v-model="userInfoForm.name" :validationModel="$v.userInfoForm.name" size="lg" trim autocomplete="off"
+				<FormInputGroup label="Name" inputId="sq-the-form-name" v-model="userInfoForm.name" :validationModel="$v.userInfoForm.name" size="lg" trim autocomplete="off"
 					:invalidFeedbacks="{
 						required: 'Please enter your full name',
 						alphaSplit: 'Are you sure you entered your name correctly?',
@@ -38,12 +38,12 @@
 		</b-form>
 		<CustomModal modalId="sq-the-modal-change-password" modalTitle="Change password">
 			<b-form @submit.prevent="changePassword">
-				<FormInputGroup label="Old password" labelClass="sq-text" inputClass="sq-modal-form-input" v-model="changePasswordForm.oldPassword" :validationModel="$v.changePasswordForm.oldPassword" type="password"
+				<FormInputGroup label="Old password" labelClass="sq-text" modal v-model="changePasswordForm.oldPassword" :validationModel="$v.changePasswordForm.oldPassword" type="password"
 					:invalidFeedbacks="{
 						required: 'Please enter your old password',
 					}"
 				/>
-				<FormInputGroup label="New password" labelClass="sq-text" inputClass="sq-modal-form-input" v-model="changePasswordForm.newPassword" :validationModel="$v.changePasswordForm.newPassword" type="password"
+				<FormInputGroup label="New password" labelClass="sq-text" modal v-model="changePasswordForm.newPassword" :validationModel="$v.changePasswordForm.newPassword" type="password"
 					:invalidFeedbacks="{
 						required: 'Please enter a new password',
 						minLength: `Password must have at least ${$v.changePasswordForm.newPassword.$params.minLength.min} characters`,
@@ -56,7 +56,7 @@
 			<b-form @submit.prevent="deleteUser">
 				<div class="sq-text">Please enter your password to confirm deletion.</div>
 				<div class="sq-text sq-subtext sq-color-danger mb-2">Warning: This action cannot be undone. If you want temporary deactivation, you can click the Deactivate account button instead.</div>
-				<FormInputGroup inputClass="sq-modal-form-input" v-model="deleteUserForm.password" :validationModel="$v.deleteUserForm.password" type="password"
+				<FormInputGroup modal v-model="deleteUserForm.password" :validationModel="$v.deleteUserForm.password" type="password"
 					:invalidFeedbacks="{
 						required: 'Password is required to delete your account',
 					}"

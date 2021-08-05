@@ -23,13 +23,13 @@
 						</b-col>
 					</b-row>
 				</b-form-group-->
-				<FormInputGroup label="Name of your page" inputId="sq-the-form-creator-name" inputClass="sq-form-input" v-model="creatorInfoForm.creatorName" :validationModel="$v.creatorInfoForm.creatorName" placeholder="e.g. John Doe" size="lg" trim
+				<FormInputGroup label="Name of your page" inputId="sq-the-form-creator-name" v-model="creatorInfoForm.creatorName" :validationModel="$v.creatorInfoForm.creatorName" placeholder="e.g. John Doe" size="lg" trim
 					:invalidFeedbacks="{
 						required: 'Please tell us the name of your page',
 						maxLength: 'Exceeded max character limit',
 					}"
 				/>
-				<FormInputGroup label="What are you creating?" inputId="sq-the-form-is-creating" inputClass="sq-form-input" v-model="creatorInfoForm.creatingWhat" :validationModel="$v.creatorInfoForm.creatingWhat" placeholder="e.g. Entertainment videos, comics, music, etc" size="lg" trim
+				<FormInputGroup label="What are you creating?" inputId="sq-the-form-is-creating" v-model="creatorInfoForm.creatingWhat" :validationModel="$v.creatorInfoForm.creatingWhat" placeholder="e.g. Entertainment videos, comics, music, etc" size="lg" trim
 					:invalidFeedbacks="{
 						required: 'Please tell us what you create',
 						maxLength: 'Exceeded max character limit',
