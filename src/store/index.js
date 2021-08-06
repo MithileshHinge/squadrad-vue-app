@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import userService from '@/services/user.service';
+import creatorService from '@/services/creator.service';
 
 Vue.use(Vuex);
 
@@ -46,7 +47,7 @@ export default new Vuex.Store({
 			state.user = { ...state.user, ...user };
 		},
 		updateCreator(state, creator) {
-			state.creator = creator;
+			state.creator = { ...state.creator, ...creator };
 		},
 	},
 	actions: {
@@ -68,6 +69,16 @@ export default new Vuex.Store({
 				}
 			} catch (err) {
 				console.error(err);
+			}
+		},
+		async fetchCreator({ commit }) {
+			try {
+				const resCreator = await creatorService.getCreatorSelf();
+				if (resCreator && resCreator.status === 200) {
+					await commit('updateCreator', resCreator.data.creator);
+				}
+			} catch (err) {
+				console.log(err);
 			}
 		},
 	},

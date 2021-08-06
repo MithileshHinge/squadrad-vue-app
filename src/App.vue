@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import creatorService from '@/services/creator.service';
 import TopNavbar from '@/components/TopNavbar.vue';
 import BottomNavbar from '@/components/BottomNavbar.vue';
 
@@ -30,28 +29,6 @@ export default {
 				return true;
 			}
 			return false;
-		},
-	},
-	methods: {
-		async fetchCreator() {
-			try {
-				creatorService.getCreatorSelf()
-					.then((res) => {
-						if (res && res.status === 200) {
-							this.$store.commit('updateCreator', res.data.creator);
-						}
-					}).catch((err) => {
-						if (err.response && err.response.status === 500) {
-							this.$bvToast.toast(err.response.data.msg, {
-								noCloseButton: true,
-								variant: 'danger',
-								toaster: 'b-toaster-bottom-center',
-							});
-						}
-					});
-			} catch (err) {
-				console.log(err);
-			}
 		},
 	},
 };

@@ -107,7 +107,9 @@ const router = new VueRouter({
 // Fetch User and Creator data before entering route
 router.beforeEach((to, from, next) => {
 	store.dispatch('fetchUser').then(() => {
-		next();
+		store.dispatch('fetchCreator').finally(() => {
+			next();
+		});
 	});
 });
 
