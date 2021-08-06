@@ -18,10 +18,10 @@ export default {
 	},
 	computed: {
 		isAuthenticated() {
-			return (this.$store.state.user.user_id > 0);
+			return (this.$store.state.user.userId > 0);
 		},
 		isCreator() {
-			return (this.$store.state.creator.user_id > 0);
+			return (this.$store.state.creator.userId > 0);
 		},
 		showBottomNav() {
 			const showPaths = ['/feed', '/explore', '/notifications', '/messages', '/creator'];

@@ -30,10 +30,10 @@
 		</b-row>
 		<b-row no-gutters class="p-2 mt-1" align-v="center">
 			<b-col @click="openPost">
-				<b-link class="sq-text float-left sq-post-num-comments">{{ post.num_comments }} Comments</b-link>
+				<b-link class="sq-text float-left sq-post-num-comments">{{ post.numComments }} Comments</b-link>
 			</b-col>
 			<b-col cols="auto" class="px-1 sq-text">
-				{{ post.num_likes }}
+				{{ post.numLikes }}
 			</b-col>
 			<b-col cols="auto" class="sq-post-action-icon">
 				<b-icon-heart-fill v-if="liked" @click="toggleLike"></b-icon-heart-fill>

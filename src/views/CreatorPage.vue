@@ -174,8 +174,8 @@ export default {
 				description: 'New comic exclusive pre-release for you guys! Let me know your thoughts in the comments',
 				time: '3d',
 				path: 'brownpaperbag-comic.png',
-				num_comments: 4,
-				num_likes: 30,
+				numComments: 4,
+				numLikes: 30,
 			},
 			{
 				id: 2,
@@ -183,8 +183,8 @@ export default {
 				description: 'New comic exclusive pre-release for you guys! Let me know your thoughts in the comments',
 				time: '3d',
 				path: 'brownpaperbag-comic.png',
-				num_comments: 4,
-				num_likes: 30,
+				numComments: 4,
+				numLikes: 30,
 			}],
 		};
 	},

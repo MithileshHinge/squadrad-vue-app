@@ -2,7 +2,7 @@
 	<div>
 		<PostComp :post="post"></PostComp>
 		<b-container>
-			<CommentComp v-for="comment in comments" :key="comment.comment_id" :comment="comment" class="mb-2"></CommentComp>
+			<CommentComp v-for="comment in comments" :key="comment.commentId" :comment="comment" class="mb-2"></CommentComp>
 		</b-container>
 		<CommentInputBox/>
 	</div>
@@ -18,10 +18,10 @@ export default {
 		return {
 			comments: [
 				{
-					comment_id: 1,
-					user_id: 1,
+					commentId: 1,
+					userId: 1,
 					username: 'Mithilesh Hinge',
-					root_id: null,
+					rootId: null,
 					isReply: false,
 					comment: 'Dhaapu',
 					timestamp: '2h',
@@ -29,10 +29,10 @@ export default {
 					replies: 2,
 				},
 				{
-					comment_id: 3,
-					user_id: 1,
+					commentId: 3,
+					userId: 1,
 					username: 'Mithilesh Hinge',
-					root_id: 1,
+					rootId: 1,
 					isReply: true,
 					comment: 'Khudka comic bana',
 					timestamp: '7m',
@@ -40,10 +40,10 @@ export default {
 					replies: 0,
 				},
 				{
-					comment_id: 2,
-					user_id: 1,
+					commentId: 2,
+					userId: 1,
 					username: 'Mithilesh Hinge',
-					root_id: null,
+					rootId: null,
 					isReply: false,
 					comment: 'Boooooo',
 					timestamp: '1h',
@@ -58,8 +58,8 @@ export default {
 				description: 'New comic exclusive pre-release for you guys! Let me know your thoughts in the comments',
 				time: '3d',
 				path: 'brownpaperbag-comic.png',
-				num_comments: 4,
-				num_likes: 30,
+				numComments: 4,
+				numLikes: 30,
 			},
 		};
 	},

@@ -8,9 +8,9 @@ export default {
 	},
 	becomeCreator(pageName, plural, creatingWhat) {
 		return api.post('/private/creator', {
-			page_name: pageName,
+			pageName,
 			plural,
-			creating_what: creatingWhat,
+			creatingWhat,
 		}).catch((err) => handleError(err));
 	},
 };
