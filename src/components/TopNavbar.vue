@@ -16,7 +16,7 @@
 			<b-nav-item class="sq-navbar-nav-item">Explore creators</b-nav-item>
 			<b-nav-item class="sq-navbar-nav-item">Pricing</b-nav-item>
 			<b-nav-item class="sq-navbar-nav-item mr-auto">Help and FAQ</b-nav-item>
-			<b-nav-item id="sq-the-navbar-login-button" class="sq-navbar-nav-item mr-2" link-classes="sq-btn-cta sq-btn" to="/login">Log in</b-nav-item>
+			<b-nav-item class="sq-navbar-nav-item mr-2" id="sq-the-navbar-login-button" link-classes="sq-btn-cta sq-btn" to="/login">Log in</b-nav-item>
 			<b-nav-item class="sq-navbar-nav-item mr-3" to="/signup">Sign up</b-nav-item>
 		</b-navbar-nav>
 		<b-sidebar id="sq-the-navmenu" is-nav right shadow no-header class="sq-sidebar">
@@ -29,11 +29,11 @@
 						<b-form-input id="the-searchinput" size="sm" class="p-0" placeholder="search"></b-form-input>
 					</b-input-group>
 				</b-nav-form-->
-				<b-nav-item v-if="isCreator" to="/creator/settings" class="sq-menu-item">Page settings</b-nav-item>
+				<b-nav-item class="sq-menu-item" v-if="isCreator" to="/creator/settings">Page settings</b-nav-item>
 				<b-nav-item class="sq-menu-item" to="/feed">Post from my Creators</b-nav-item>
 				<b-nav-item class="sq-menu-item">My Squads</b-nav-item>
-				<b-nav-item v-if="!isCreator" class="sq-menu-item">Start a membership page</b-nav-item>
-				<b-nav-item to="/user/settings" class="sq-menu-item">Account settings</b-nav-item>
+				<b-nav-item class="sq-menu-item" v-if="!isCreator" to="/creator/start">Start a membership page</b-nav-item>
+				<b-nav-item class="sq-menu-item" to="/user/settings">Account settings</b-nav-item>
 				<b-nav-item class="sq-menu-item">Billing</b-nav-item>
 				<b-nav-item class="sq-menu-item">Help and FAQ</b-nav-item>
 				<b-nav-item class="sq-menu-item">Contact us</b-nav-item>

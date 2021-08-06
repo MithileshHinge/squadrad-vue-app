@@ -23,7 +23,7 @@
 						</b-col>
 					</b-row>
 				</b-form-group-->
-				<FormInputGroup label="Name of your page" inputId="sq-the-form-creator-name" v-model="creatorInfoForm.creatorName" :validationModel="$v.creatorInfoForm.creatorName" placeholder="e.g. John Doe" size="lg" trim
+				<FormInputGroup label="Name of your page" inputId="sq-the-form-creator-name" v-model="creatorInfoForm.pageName" :validationModel="$v.creatorInfoForm.pageName" placeholder="e.g. John Doe" size="lg" trim
 					:invalidFeedbacks="{
 						required: 'Please tell us the name of your page',
 						maxLength: 'Exceeded max character limit',
@@ -37,10 +37,10 @@
 				/>
 				<b-form-group class="text-left" label="Which sounds correct?" label-class="sq-form-label" label-align="left">
 					<b-form-radio name="plural" v-model="creatorInfoForm.plural" :value="false" class="sq-text">
-						{{creatorInfoForm.creatorName}} is creating {{creatorInfoForm.creatingWhat}}
+						{{creatorInfoForm.pageName}} is creating {{creatorInfoForm.creatingWhat}}
 					</b-form-radio>
 					<b-form-radio name="plural" v-model="creatorInfoForm.plural" :value="true" class="sq-text">
-						{{creatorInfoForm.creatorName}} are creating {{creatorInfoForm.creatingWhat}}
+						{{creatorInfoForm.pageName}} are creating {{creatorInfoForm.creatingWhat}}
 					</b-form-radio>
 				</b-form-group>
 			</b-card>
@@ -79,8 +79,9 @@ export default {
 	data() {
 		return {
 			creatorInfoForm: {
-				creatorName: '',
+				pageName: '',
 				creatingWhat: '',
+				plural: false,
 				supportersVisibility: true,
 				earningsVisibility: false,
 				otpVisibility: true,
@@ -111,7 +112,7 @@ export default {
 	validations() {
 		return {
 			creatorInfoForm: {
-				creatorName: {
+				pageName: {
 					required,
 					maxLength: maxLength(50),
 				},

@@ -8,6 +8,7 @@ import LandingPage from '../views/LandingPage.vue';
 import PostPage from '../views/PostPage.vue';
 import AccountSettingsPage from '../views/AccountSettingsPage.vue';
 import CreatorPage from '../views/CreatorPage.vue';
+import BecomeCreatorPage from '../views/BecomeCreatorPage.vue';
 import PageSettingsPage from '../views/PageSettingsPage.vue';
 import VerifyEmailPage from '../views/VerifyEmailPage.vue';
 import VerifyEmailSentPage from '../views/VerifyEmailSentPage.vue';
@@ -50,6 +51,11 @@ const routes = [
 		path: '/creator',
 		name: 'CreatorPage',
 		component: CreatorPage,
+	},
+	{
+		path: '/creator/start',
+		name: 'BecomeCreatorPage',
+		component: BecomeCreatorPage,
 	},
 	{
 		path: '/creator/settings',
