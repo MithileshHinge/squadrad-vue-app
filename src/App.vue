@@ -61,7 +61,7 @@ export default {
 
 html {
 	font-size: 18px;
-	height: 100%;
+	min-height: 100%;
 }
 
 /*
@@ -91,7 +91,7 @@ html {
 */
 
 body {
-	height: 100%;
+	min-height: calc(100% - 3.375rem);
 	font-family: Poppins, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -102,11 +102,11 @@ body {
 
 #app {
 	position: relative;
-	height: 100%;
+	min-height: 100%;
 }
 
 #sq-the-app-body {
-	height: 100%;
+	min-height: 100%;
 	margin-top: 3.375rem;
 }
 
