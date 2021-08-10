@@ -60,7 +60,7 @@
 					<b-form-textarea id="sq-the-form-about-section" class="sq-form-textarea text-center" v-model="creatorInfoForm.about" placeholder="Tell your fans about this page" rows="3" size="lg"/>
 				</b-form-group>
 			</b-card>
-			<ButtonSubmit :isProcessing="isSaving" :isProcessed="isSaved"/>
+			<ButtonSubmit :isProcessing="isSaving" :isProcessed="isSaved" :isModalButton="false"/>
 			<!-- div to clear fixed submit button from occluding last card-->
 			<div style="height: 3.5rem;"/>
 		</b-form>
@@ -79,17 +79,31 @@ export default {
 	data() {
 		return {
 			creatorInfoForm: {
-				pageName: '',
-				creatingWhat: '',
-				plural: false,
-				supportersVisibility: true,
-				earningsVisibility: false,
-				otpVisibility: true,
-				about: '',
+				pageName: this.$store.state.creator.pageName,
+				creatingWhat: this.$store.state.creator.creatingWhat,
+				plural: this.$store.state.creator.plural,
+				supportersVisibility: this.$store.state.creator.supportersVisibility,
+				earningsVisibility: this.$store.state.creator.earningsVisibility,
+				otpVisibility: this.$store.state.creator.otpVisibility,
+				about: this.$store.state.creator.about,
 			},
-			isSaved: false,
+			isSaved: true,
 			isSaving: false,
 		};
+	},
+	watch: {
+		creatorInfoForm: {
+			handler() {
+				this.isSaved = true;
+				// Compare form data with store state, if anything is different set isSaved to false
+				Object.keys(this.creatorInfoForm).forEach((field) => {
+					if (this.creatorInfoForm[field] !== this.$store.state.creator[field]) {
+						this.isSaved = false;
+					}
+				});
+			},
+			deep: true,
+		},
 	},
 	methods: {
 		/*
@@ -101,12 +115,13 @@ export default {
 		},
 		*/
 		saveCreator() {
-			if (this.isSaved) return;
 			this.isSaving = true;
-			setTimeout(() => {
+			this.$store.dispatch('updateCreator', this.creatorInfoForm).then(() => {
 				this.isSaving = false;
 				this.isSaved = true;
-			}, 1000);
+			}).catch((err) => {
+				console.log(`error123: ${err}`);
+			});
 		},
 	},
 	validations() {

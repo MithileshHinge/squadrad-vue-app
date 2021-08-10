@@ -13,4 +13,8 @@ export default {
 			creatingWhat,
 		}).catch((err) => handleError(err));
 	},
+	updateCreator(creator) {
+		return api.put('/private/creator', creator)
+			.catch((err) => handleError(err));
+	},
 };

@@ -15,6 +15,7 @@
 		<b-spinner v-if="isProcessing" class="mr-2" small variant="primary"/>
 		{{ isProcessed ? (buttonTextDone || 'All changes saved') : (buttonText || 'Save changes') }}
 	</b-button>
+	<!-- TODO: add way to get failure in saving changes -->
 </template>
 
 <script>

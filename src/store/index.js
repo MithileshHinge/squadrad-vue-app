@@ -56,6 +56,8 @@ export default new Vuex.Store({
 				const resUser = await userService.getUserSelf();
 				if (resUser && resUser.status === 200) {
 					await commit('updateUser', resUser.data.user);
+				} else {
+					console.log(resUser);
 				}
 			} catch (err) {
 				console.log(err);
@@ -66,6 +68,8 @@ export default new Vuex.Store({
 				const res = await userService.updateUser(user);
 				if (res && res.status === 200) {
 					await commit('updateUser', user);
+				} else {
+					console.log(res);
 				}
 			} catch (err) {
 				console.error(err);
@@ -76,9 +80,23 @@ export default new Vuex.Store({
 				const resCreator = await creatorService.getCreatorSelf();
 				if (resCreator && resCreator.status === 200) {
 					await commit('updateCreator', resCreator.data.creator);
+				} else {
+					console.log(resCreator);
 				}
 			} catch (err) {
 				console.log(err);
+			}
+		},
+		async updateCreator({ commit }, creator) {
+			try {
+				const res = await creatorService.updateCreator(creator);
+				if (res && res.status === 200) {
+					await commit('updateCreator', creator);
+				} else {
+					console.log(res);
+				}
+			} catch (err) {
+				console.error(err);
 			}
 		},
 	},
