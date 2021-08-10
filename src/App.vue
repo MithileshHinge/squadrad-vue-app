@@ -405,6 +405,14 @@ $cta-shadow-opacity: 0.4;
 	color: $radical-red !important;
 }
 
+.sq-card {
+	border: none;
+	border-radius: 1.11rem;
+	min-width: 18.75rem;
+	max-width: 18.75rem;
+	box-shadow: 4px 10px 25px 0 rgba($color: $my-color-dark, $alpha: 0.10);
+}
+
 .sq-card-flat {
 	border: none;
 	border-radius: 1.11rem;

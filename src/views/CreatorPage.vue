@@ -57,14 +57,7 @@
 		</b-row>
 		<b-row no-gutters align-h="center">
 			<b-col v-for="(squad, i) in squads" :key="squad.id" class="mt-3 mx-2" cols="auto">
-				<b-card class="sq-creator-card p-2">
-					<b-card-img v-if="squad.image" :src="/*require('@/assets/'+squad.image)*/'https://placekitten.com/60/60'" class="sq-creator-squad-card-img rounded-circle mb-2" top/>
-					<b-card-title :title="squad.title" class="sq-creator-section-heading justify-content-center mb-2"/>
-					<b-card-text class="sq-text mb-4 text-center">
-						{{ squad.description }}
-					</b-card-text>
-					<b-button :ref="'sqRefJoinBtn'+squad.id" class="sq-creator-squad-join-btn sq-btn-cta sq-btn my-1" :style="`background-image: linear-gradient(22deg, ${getJoinBtnGradients[i]}, ${getJoinBtnGradients[i + 1]}, ${getJoinBtnGradients[i]});`">Join squad at <span class="sq-rupee"/>{{ squad.amount }}/month</b-button>
-				</b-card>
+				<SquadCard :squad="squad" :squadNo="i" :totalSquads="squads.length"/>
 			</b-col>
 		</b-row>
 		<b-row no-gutters align-h="center" class="mt-5 mb-2">
@@ -106,8 +99,7 @@
 </template>
 
 <script>
-import chroma from 'chroma-js';
-import scssColors from '@/scss/_export.scss';
+import SquadCard from '@/components/SquadCard.vue';
 import PostComp from '@/components/PostComp.vue';
 
 export default {
@@ -188,19 +180,8 @@ export default {
 			}],
 		};
 	},
-	computed: {
-		getJoinBtnGradients() {
-			try {
-				console.log(scssColors);
-				// eslint-disable-next-line camelcase, no-undef
-				return chroma.scale([scssColors.skyblueCrayola, scssColors.dodgerBlue, scssColors.amethyst, scssColors.frenchRose]).mode('lrgb').colors(this.squads.length + 1);
-			} catch (error) {
-				console.error(error);
-			}
-			return null;
-		},
-	},
 	components: {
+		SquadCard,
 		PostComp,
 	},
 };
@@ -274,23 +255,6 @@ export default {
 	font-weight: 500;
 	color: $my-color-dark;
 	letter-spacing: -0.01em;
-}
-
-.sq-creator-card {
-	border: none;
-	border-radius: 1.11rem;
-	min-width: 18.75rem;
-	max-width: 18.75rem;
-	box-shadow: 4px 10px 25px 0 rgba($color: $my-color-dark, $alpha: 0.10);
-}
-
-.sq-creator-squad-card-img {
-	width: 4rem;
-	height: 4rem;
-}
-
-.sq-creator-squad-join-btn {
-	width: 13.75rem;
 }
 
 </style>
