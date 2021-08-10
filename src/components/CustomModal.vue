@@ -18,10 +18,6 @@ export default {
 		modalId: String,
 		modalTitle: String,
 		modalStatic: Boolean,
-		primaryBtnText: String,
-		secondaryBtnText: String,
-		primaryBtnFunc: Function,
-		secondaryBtnFunc: Function,
 	},
 };
 </script>
