@@ -38,12 +38,12 @@
 		</b-form>
 		<CustomModal modalId="sq-the-modal-change-password" modalTitle="Change password">
 			<b-form @submit.prevent="changePassword">
-				<FormInputGroup label="Old password" labelClass="sq-text" modal v-model="changePasswordForm.oldPassword" :validationModel="$v.changePasswordForm.oldPassword" type="password"
+				<FormInputGroup label="Old password" modal v-model="changePasswordForm.oldPassword" :validationModel="$v.changePasswordForm.oldPassword" type="password"
 					:invalidFeedbacks="{
 						required: 'Please enter your old password',
 					}"
 				/>
-				<FormInputGroup label="New password" labelClass="sq-text" modal v-model="changePasswordForm.newPassword" :validationModel="$v.changePasswordForm.newPassword" type="password"
+				<FormInputGroup label="New password" modal v-model="changePasswordForm.newPassword" :validationModel="$v.changePasswordForm.newPassword" type="password"
 					:invalidFeedbacks="{
 						required: 'Please enter a new password',
 						minLength: `Password must have at least ${$v.changePasswordForm.newPassword.$params.minLength.min} characters`,

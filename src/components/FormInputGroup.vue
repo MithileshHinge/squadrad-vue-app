@@ -1,5 +1,5 @@
 <template>
-	<b-form-group :label="label" :label-class="labelClass" class="sq-form-group" :label-for="inputId" label-align="left">
+	<b-form-group :label="label" :label-class="(modal ? 'sq-text' : 'sq-form-label' ) + ' ' + (labelClass || '')" class="sq-form-group" :label-for="inputId" label-align="left">
 		<b-form-input :name="name" :id="inputId" :class="(modal ? 'sq-modal-form-input' : 'sq-form-input') + ' ' + (inputClass || '')" v-model="inputVal" :state="validateState(validationModel)" :placeholder="placeholder" :type="type" :size="size" :trim="trim" :autocomplete="autocomplete"/>
 		<b-form-invalid-feedback v-for="invalidValidator in invalidValidatorsArray" :key="invalidValidator" class="sq-form-invalid-feedback">
 			{{ invalidFeedbacks[invalidValidator] }}
