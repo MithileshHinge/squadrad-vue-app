@@ -389,6 +389,12 @@ $cta-shadow-opacity: 0.4;
 	}
 }
 
+.sq-modal-form-textarea {
+	font-size: 0.8125rem;
+	border-radius: 1.04rem;
+	padding: 0.5rem 0.75rem;
+}
+
 .sq-menu-item .nav-link {
 	font-size: 1.25rem;
 	padding: 1.875rem 0 0 1.25rem;

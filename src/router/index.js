@@ -16,6 +16,7 @@ import VerifyEmailSentPage from '../views/VerifyEmailSentPage.vue';
 // Children components
 import LoginModal from '../components/LoginModal.vue';
 import PageSettingsCreatorInfo from '../components/PageSettingsCreatorInfo.vue';
+import PageSettingsSquads from '../components/PageSettingsSquads.vue';
 
 Vue.use(VueRouter);
 
@@ -65,6 +66,10 @@ const routes = [
 			{
 				path: 'info',
 				component: PageSettingsCreatorInfo,
+			},
+			{
+				path: 'squads',
+				component: PageSettingsSquads,
 			},
 		],
 	},

@@ -1,6 +1,6 @@
 <template>
 	<b-form-group :label="label" :label-class="(modal ? 'sq-text' : 'sq-form-label' ) + ' ' + (labelClass || '')" class="sq-form-group" :label-for="inputId" label-align="left">
-		<b-form-input :name="name" :id="inputId" :class="(modal ? 'sq-modal-form-input' : 'sq-form-input') + ' ' + (inputClass || '')" v-model="inputVal" :state="validateState(validationModel)" :placeholder="placeholder" :type="type" :size="size" :trim="trim" :autocomplete="autocomplete"/>
+		<b-form-input :name="name" :id="inputId" :class="(modal ? 'sq-modal-form-input' : 'sq-form-input') + ' ' + (inputClass || '')" v-model="inputVal" :state="validationModel ? validateState(validationModel) : null" :placeholder="placeholder" :type="type" :size="size" :trim="trim" :autocomplete="autocomplete"/>
 		<b-form-invalid-feedback v-for="invalidValidator in invalidValidatorsArray" :key="invalidValidator" class="sq-form-invalid-feedback">
 			{{ invalidFeedbacks[invalidValidator] }}
 		</b-form-invalid-feedback>
@@ -18,7 +18,7 @@ export default {
 		name: String,
 		inputId: String,
 		inputClass: String,
-		value: String,
+		value: [String, Number],
 		validationModel: Object,
 		invalidFeedbacks: Object,
 		placeholder: String,
@@ -38,6 +38,7 @@ export default {
 			},
 		},
 		invalidValidatorsArray() {
+			if (!this.invalidFeedbacks) return [];
 			const validators = Object.keys(this.invalidFeedbacks);
 			return validators.filter((validator) => {
 				if (validator === 'default') return this.validationModel.$invalid;
