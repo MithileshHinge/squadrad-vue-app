@@ -32,7 +32,7 @@
 					</div>
 				</b-form-group>
 			</div>
-			<ButtonSubmit :isProcessing="isSaving" :isProcessed="isSaved" :isModalButton="false"/>
+			<ButtonSubmit :isProcessing="isSaving" :isProcessed="isSaved"/>
 			<!-- div to clear fixed submit button from occluding last card-->
 			<div style="height: 3.5rem;"/>
 		</b-form>
@@ -49,7 +49,7 @@
 						minLength: `Password must have at least ${$v.changePasswordForm.newPassword.$params.minLength.min} characters`,
 					}"
 				/>
-				<ButtonSubmit :isProcessing="isPasswordChanging" :isProcessed="isPasswordChanged" :isModalButton="true" buttonText="Change password" buttonTextDone="Password changed"/>
+				<ButtonSubmit :isProcessing="isPasswordChanging" :isProcessed="isPasswordChanged" modal buttonText="Change password" buttonTextDone="Password changed"/>
 			</b-form>
 		</CustomModal>
 		<CustomModal modalId="sq-the-modal-delete-user" modalTitle="Delete account">
@@ -61,7 +61,7 @@
 						required: 'Password is required to delete your account',
 					}"
 				/>
-				<ButtonSubmit :isProcessing="isAccountDeleting" :isProcessed="isAccountDeleted" :isModalButton="true" buttonText="Delete account" buttonTextDone="Account deleted"/>
+				<ButtonSubmit :isProcessing="isAccountDeleting" :isProcessed="isAccountDeleted" modal buttonText="Delete account" buttonTextDone="Account deleted"/>
 			</b-form>
 		</CustomModal>
 		<!--CustomModal modalId="sq-the-modal-cropper" modalTitle="Crop picture" @shown="setUpVueCropper" @hide="resetFileInput">
