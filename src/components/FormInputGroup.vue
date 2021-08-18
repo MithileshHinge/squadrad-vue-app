@@ -1,6 +1,6 @@
 <template>
-	<b-form-group :label="label" :label-class="(modal ? 'sq-text' : 'sq-form-label' ) + ' ' + (labelClass || '')" class="sq-form-group" :label-for="inputId" label-align="left">
-		<b-form-input :name="name" :id="inputId" :class="(modal ? 'sq-modal-form-input' : 'sq-form-input') + ' ' + (inputClass || '')" v-model="inputVal" :state="validationModel ? validateState(validationModel) : null" :placeholder="placeholder" :type="type" :size="size" :trim="trim" :autocomplete="autocomplete"/>
+	<b-form-group :label="label" :label-class="(modal ? 'sq-text' : 'sq-form-label' ) + ' ' + (labelClass || '')" class="sq-form-group" :label-for="inputId" label-align="left" :description="description">
+		<b-form-input :id="inputId" :class="(modal ? 'sq-modal-form-input' : 'sq-form-input') + ' ' + (inputClass || '')" v-model="inputVal" :state="validationModel ? validateState(validationModel) : null" v-bind="$attrs"/>
 		<b-form-invalid-feedback v-for="invalidValidator in invalidValidatorsArray" :key="invalidValidator" class="sq-form-invalid-feedback">
 			{{ invalidFeedbacks[invalidValidator] }}
 		</b-form-invalid-feedback>
@@ -15,17 +15,12 @@ export default {
 		modal: Boolean,
 		label: String,
 		labelClass: String,
-		name: String,
+		description: String,
 		inputId: String,
 		inputClass: String,
 		value: [String, Number],
 		validationModel: Object,
 		invalidFeedbacks: Object,
-		placeholder: String,
-		type: String,
-		size: String,
-		trim: Boolean,
-		autocomplete: String,
 	},
 	computed: {
 		inputVal: {
