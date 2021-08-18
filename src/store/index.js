@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import userService from '@/services/user.service';
 import creatorService from '@/services/creator.service';
+import squadService from '@/services/squad.service';
 
 Vue.use(Vuex);
 
@@ -41,6 +42,7 @@ export default new Vuex.Store({
 			deactivated: null,
 			blocked: null,
 		},
+		squads: [],
 	},
 	mutations: {
 		updateUser(state, user) {
@@ -48,6 +50,20 @@ export default new Vuex.Store({
 		},
 		updateCreator(state, creator) {
 			state.creator = { ...state.creator, ...creator };
+		},
+		updateAllSquads(state, squads) {
+			state.squads = squads;
+		},
+		addNewSquad(state, squad) {
+			state.squads.push(squad);
+		},
+		updateSquad(state, squad) {
+			const i = state.squads.findIndex((s) => s.squadId === squad.squadId);
+			if (i >= 0) state.squads[i] = { ...state.squad, ...squad };
+		},
+		deleteSquad(state, squadId) {
+			const i = state.squads.findIndex((s) => s.squadId === squadId);
+			if (i >= 0) state.squads.splice(i, 1);
 		},
 	},
 	actions: {
@@ -92,6 +108,54 @@ export default new Vuex.Store({
 				const res = await creatorService.updateCreator(creator);
 				if (res && res.status === 200) {
 					await commit('updateCreator', creator);
+				} else {
+					console.log(res);
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		},
+		async addNewSquad({ commit }, squad) {
+			try {
+				const res = await squadService.addNewSquad(squad);
+				if (res && res.status === 200) {
+					await commit('addNewSquad', res.data.squad);
+				} else {
+					console.log(res);
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		},
+		async fetchAllSquads({ commit, state }) {
+			try {
+				const resSquads = await squadService.getAllSquads(state.user.userId);
+				if (resSquads && resSquads.status === 200) {
+					await commit('updateAllSquads', resSquads.data);
+				} else {
+					console.log(resSquads);
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		},
+		async updateSquad({ commit }, squad) {
+			try {
+				const res = await squadService.updateSquad(squad);
+				if (res && res.status === 200) {
+					await commit('updateSquad', squad);
+				} else {
+					console.log(res);
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		},
+		async deleteSquad({ commit }, squadId) {
+			try {
+				const res = await squadService.deleteSquad(squadId);
+				if (res && res.status === 200) {
+					await commit('deleteSquad', squadId);
 				} else {
 					console.log(res);
 				}

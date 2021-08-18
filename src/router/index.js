@@ -70,6 +70,11 @@ const routes = [
 			{
 				path: 'squads',
 				component: PageSettingsSquads,
+				beforeEnter(to, from, next) {
+					store.dispatch('fetchAllSquads').finally(() => {
+						next();
+					});
+				},
 			},
 		],
 	},

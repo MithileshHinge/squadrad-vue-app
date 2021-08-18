@@ -14,14 +14,14 @@
 				</b-button-->
 			</b-row>
 			<b-row no-gutters align-h="center">
-				<b-col v-for="(squad, i) in squads" :key="squad.id" class="mt-3 mx-2" cols="auto">
-					<SquadCard :squad="squad" :squadNo="i" :totalSquads="squads.length" edit @edit="editSquad(squad.id)"/>
+				<b-col v-for="(squad, i) in squads" :key="squad.squadId" class="mt-3 mx-2" cols="auto">
+					<SquadCard :squad="squad" :squadNo="i" :totalSquads="squads.length" edit @edit="editSquad(squad.squadId)" @delete="deleteSquad(squad.squadId)"/>
 				</b-col>
 			</b-row>
 			<div style="height: 1.5rem"/>
 		</b-container>
 		<CustomModal modalId="sq-the-modal-edit-squad" :modalTitle="isEditModal ? 'Edit squad' : 'Add new squad'">
-			<b-form>
+			<b-form @submit.prevent="onSubmit">
 				<b-form-group>
 					<b-row no-gutters class="text-left">
 						<label class="sq-text">Squad image (optional)</label>
@@ -45,15 +45,24 @@
 					<b-form-textarea class="sq-modal-form-textarea sq-form-textarea" v-model="squadForm.description" placeholder="Tell your fans about the benifits they'll get by joining this squad" rows="3" size="sm"/>
 					<b-form-invalid-feedback v-if="!$v.squadForm.description.maxLength" class="sq-form-invalid-feedback">Exceeded max character limit</b-form-invalid-feedback>
 				</b-form-group>
-				<FormInputGroup type="number" number modal label="Monthly pricing" v-model="squadForm.amount" :validationModel="$v.squadForm.amount" placeholder="Enter amount"
+				<FormInputGroup :readonly="isEditModal" type="number" number modal label="Monthly pricing" v-model="squadForm.amount" :validationModel="$v.squadForm.amount" placeholder="Enter amount"
 					:invalidFeedbacks="{
 						required: 'Please enter the monthly subscription charge',
 						minValue: 'Amount must be greater than 30',
+						isAmountUnique: 'You already have a squad of the same amount',
 					}"
 				/>
 				<FormInputGroup type="number" number modal label="Limit squad members (optional)" v-model="squadForm.supportersLimit" placeholder="Max limit"/>
-				<ButtonSubmit modal :isProcessing="isSaving" :isProcessed="isSaved" :buttonText="isEditModal ? 'Save squad' : 'Add squad'"/>
+				<ButtonSubmit modal :isProcessing="isSaving" :isProcessed="isSaved" :buttonText="isEditModal ? 'Save squad' : 'Add squad'" :buttonTextDone="isEditModal ? 'Squad saved' : 'Squad added'"/>
 			</b-form>
+		</CustomModal>
+		<CustomModal modalId="sq-the-modal-delete-squad" modalTitle="Confirm delete squad?">
+			<div>
+				<div class="sq-text mb-2">
+					All posts exclusive to this squad will become free. This action cannot be undone. Do you wish to continue?
+				</div>
+				<ButtonSubmit modal :isProcessing="isDeleting" :isProcessed="isDeleted" buttonText="Confirm delete" buttonTextDone="Squad deleted" @click="confirmDeleteSquad"/>
+			</div>
 		</CustomModal>
 	</div>
 </template>
@@ -65,6 +74,10 @@ import CustomModal from '@/components/CustomModal.vue';
 import FormInputGroup from '@/components/FormInputGroup.vue';
 import ButtonSubmit from '@/components/ButtonSubmit.vue';
 import ImageCropModal from '@/components/ImageCropModal.vue';
+
+function isAmountUnique(value) {
+	return this.$store.state.squads.findIndex((s) => s.amount === Number.parseFloat(value)) < 0;
+}
 
 export default {
 	data() {
@@ -80,39 +93,15 @@ export default {
 			isEditModal: true,
 			isSaving: false,
 			isSaved: false,
-			squads: [
-				{
-					id: 1,
-					title: 'RTBees',
-					image: 'tushar.png',
-					description: 'Early access to all videos',
-					amount: 50,
-					supportersLimit: null,
-				},
-				{
-					id: 2,
-					title: 'RTBees Pro',
-					description: 'All the benefits from previous squad and your name would be mentioned in my video description',
-					amount: 100,
-					supportersLimit: null,
-				},
-				{
-					id: 3,
-					title: 'RTBees Pro Max',
-					description: 'All the benefits from previous squad and your name would be mentioned in my video description',
-					amount: 250,
-					supportersLimit: null,
-				},
-				{
-					id: 4,
-					title: 'RTQueenBee',
-					image: 'tushar.png',
-					description: 'All the benefits from the previous squads. Get 10 one on one training sessions with RTB Team',
-					amount: 15000,
-					supportersLimit: null,
-				},
-			],
+			isDeleting: false,
+			isDeleted: false,
 		};
+	},
+	computed: {
+		squads() {
+			const { squads } = this.$store.state;
+			return squads.sort((a, b) => a.amount > b.amount);
+		},
 	},
 	methods: {
 		addSquad() {
@@ -125,13 +114,27 @@ export default {
 				supportersLimit: null,
 			};
 			this.isEditModal = false;
+			this.isSaved = false;
 			this.$bvModal.show('sq-the-modal-edit-squad');
 		},
-		editSquad(id) {
-			console.log(id);
-			this.squadForm = this.squads.find((s) => s.id === id);
+		editSquad(squadId) {
+			this.squadForm = this.squads.find((s) => s.squadId === squadId);
 			this.isEditModal = true;
+			this.isSaved = false;
 			this.$bvModal.show('sq-the-modal-edit-squad');
+		},
+		deleteSquad(squadId) {
+			this.isDeleted = false;
+			this.squadForm.squadId = squadId;
+			this.$bvModal.show('sq-the-modal-delete-squad');
+		},
+		async confirmDeleteSquad() {
+			this.isDeleting = true;
+			this.isDeleted = false;
+			await this.$store.dispatch('deleteSquad', this.squadForm.squadId);
+			this.isDeleting = false;
+			this.isDeleted = true;
+			this.$bvModal.hide('sq-the-modal-delete-squad');
 		},
 		editSquadImageClicked() {
 			document.getElementById('sq-the-squad-image-file-input').click();
@@ -139,14 +142,26 @@ export default {
 		editSquadImage(event) {
 			const reader = new FileReader();
 			reader.onload = (e) => {
-				this.$bvModal.show('sq-the-modal-cropper');
 				this.squadForm.image = e.target.result;
+				this.$bvModal.show('sq-the-modal-cropper');
 			};
 			reader.readAsDataURL(event.target.files[0]);
 			return false;
 		},
 		resetFileInput() {
 			this.$refs.sqRefSquadImageFileInput.reset();
+		},
+		async onSubmit() {
+			this.isSaving = true;
+			this.isSaved = false;
+			if (this.isEditModal) {
+				await this.$store.dispatch('updateSquad', this.squadForm);
+			} else {
+				await this.$store.dispatch('addNewSquad', this.squadForm);
+			}
+			this.isSaving = false;
+			this.isSaved = true;
+			this.$bvModal.hide('sq-the-modal-edit-squad');
 		},
 	},
 	validations: {
@@ -161,6 +176,7 @@ export default {
 			amount: {
 				required,
 				minValue: minValue(30),
+				isAmountUnique,
 			},
 		},
 	},
