@@ -429,6 +429,19 @@ $cta-shadow-opacity: 0.4;
 	border-radius: 1.28rem;
 }
 
+.sq-card-heading {
+	display: flex;
+	align-items: center;
+	font-size: 1rem;
+	font-weight: 500;
+	color: $my-color-dark;
+	letter-spacing: -0.01em;
+}
+
+.sq-card-btn {
+	width: 13.75rem;
+}
+
 .sq-empty-state-text {
 	width: 100%;
 	text-align: center;
