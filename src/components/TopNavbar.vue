@@ -31,7 +31,7 @@
 				</b-nav-form-->
 				<b-nav-item class="sq-menu-item" v-if="isCreator" to="/creator/settings">Page settings</b-nav-item>
 				<b-nav-item class="sq-menu-item" to="/feed">Post from my Creators</b-nav-item>
-				<b-nav-item class="sq-menu-item" to="/creator/settings/squads">My Squads</b-nav-item>
+				<b-nav-item class="sq-menu-item">My Squads</b-nav-item>
 				<b-nav-item class="sq-menu-item" v-if="!isCreator" to="/creator/start">Start a membership page</b-nav-item>
 				<b-nav-item class="sq-menu-item" to="/user/settings">Account settings</b-nav-item>
 				<b-nav-item class="sq-menu-item">Billing</b-nav-item>
