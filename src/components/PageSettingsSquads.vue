@@ -83,7 +83,7 @@ export default {
 	data() {
 		return {
 			squadForm: {
-				id: null,
+				squadId: null,
 				title: '',
 				image: '',
 				description: '',
@@ -106,7 +106,7 @@ export default {
 	methods: {
 		addSquad() {
 			this.squadForm = {
-				id: null,
+				squadId: null,
 				title: '',
 				image: '',
 				description: '',
