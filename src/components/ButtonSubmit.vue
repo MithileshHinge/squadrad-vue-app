@@ -1,16 +1,16 @@
 <template>
-	<b-button v-if="isRouted" type="submit" class="sq-btn-routed sq-btn sq-shadow position-relative" :disabled="isProcessing">
+	<b-button v-if="isRouted" type="submit" class="sq-btn-routed sq-btn sq-shadow position-relative" :disabled="isProcessing" v-on="$listeners">
 		<b-overlay :show="isProcessing" rounded="pill" opacity="0.6" spinner-small spinner-variant="primary" class="d-inline-block" no-wrap/>
 		{{ (buttonText || 'Next') }}
 	</b-button>
 	<transition v-else-if="!modal" enter-active-class="animate__animated animate__fadeInUp" leave-active-class="animate__animated animate__fadeOutDown">
-		<b-button v-if="show" type="submit" :class="`${isProcessed? 'sq-btn-form-process-done': ''} sq-btn-form-process sq-btn sq-shadow`" :disabled="isProcessing">
+		<b-button v-if="show" type="submit" :class="`${isProcessed? 'sq-btn-form-process-done': ''} sq-btn-form-process sq-btn sq-shadow`" :disabled="isProcessing" v-on="$listeners">
 			<b-icon-check-circle v-if="isProcessed" variant="success" class="mr-2"/>
 			<b-spinner v-if="isProcessing" class="mr-2" small/>
 			{{ isProcessed ? (buttonTextDone || 'All changes saved') : (buttonText || 'Save changes') }}
 		</b-button>
 	</transition>
-	<b-button v-else type="submit" :class="`${isProcessed? 'sq-btn-form-process-done': ''} sq-btn-modal-form-process sq-btn sq-shadow`" :disabled="isProcessing">
+	<b-button v-else type="submit" :class="`${isProcessed? 'sq-btn-form-process-done': ''} sq-btn-modal-form-process sq-btn sq-shadow`" :disabled="isProcessing" v-on="$listeners">
 		<b-icon-check-circle v-if="isProcessed" variant="success" class="mr-2"/>
 		<b-spinner v-if="isProcessing" class="mr-2" small variant="primary"/>
 		{{ isProcessed ? (buttonTextDone || 'All changes saved') : (buttonText || 'Save changes') }}
