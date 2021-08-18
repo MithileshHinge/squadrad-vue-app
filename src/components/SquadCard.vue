@@ -1,6 +1,14 @@
 <template>
 	<b-card class="sq-card p-2">
-		<b-icon-trash v-if="edit" font-scale="0.9" class="sq-muted position-absolute" style="top: 0.8rem; right: 0.8rem;" @click="$emit('delete')"/>
+		<b-row v-if="edit" no-gutters class="mb-2 mx-n3 mt-n3">
+			<b-col cols="auto" align-self="start" class="p-0">
+				<span class="sq-muted sq-card-heading"><span class="sq-rupee"/>{{ squad.amount }}</span>
+			</b-col>
+			<b-col/>
+			<b-col cols="auto" align-self="end" class="p-0">
+				<b-icon-trash font-scale="0.9" class="sq-muted" @click="$emit('delete')"/>
+			</b-col>
+		</b-row>
 		<b-card-img v-if="squad.image" :src="/*require('@/assets/'+squad.image)*/'https://placekitten.com/60/60'" class="sq-squad-card-img rounded-circle mb-2" top/>
 		<b-card-title :title="squad.title" class="sq-card-heading justify-content-center mb-2"/>
 		<b-card-text class="sq-text mb-4 text-center">
