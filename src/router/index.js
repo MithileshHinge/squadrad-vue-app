@@ -17,6 +17,7 @@ import VerifyEmailSentPage from '../views/VerifyEmailSentPage.vue';
 import LoginModal from '../components/LoginModal.vue';
 import PageSettingsCreatorInfo from '../components/PageSettingsCreatorInfo.vue';
 import PageSettingsSquads from '../components/PageSettingsSquads.vue';
+import PageSettingsGoals from '../components/PageSettingsGoals.vue';
 
 Vue.use(VueRouter);
 
@@ -72,6 +73,15 @@ const routes = [
 				component: PageSettingsSquads,
 				beforeEnter(to, from, next) {
 					store.dispatch('fetchAllSquads').finally(() => {
+						next();
+					});
+				},
+			},
+			{
+				path: 'goals',
+				component: PageSettingsGoals,
+				beforeEnter(to, from, next) {
+					store.dispatch('fetchAllGoals').finally(() => {
 						next();
 					});
 				},

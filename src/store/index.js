@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import userService from '@/services/user.service';
 import creatorService from '@/services/creator.service';
 import squadService from '@/services/squad.service';
+import goalService from '@/services/goal.service';
 
 Vue.use(Vuex);
 
@@ -43,6 +44,7 @@ export default new Vuex.Store({
 			blocked: null,
 		},
 		squads: [],
+		goals: [],
 	},
 	mutations: {
 		updateUser(state, user) {
@@ -64,6 +66,20 @@ export default new Vuex.Store({
 		deleteSquad(state, squadId) {
 			const i = state.squads.findIndex((s) => s.squadId === squadId);
 			if (i >= 0) state.squads.splice(i, 1);
+		},
+		updateAllGoals(state, goals) {
+			state.goals = goals;
+		},
+		addNewGoal(state, goal) {
+			state.goals.push(goal);
+		},
+		updateGoal(state, goal) {
+			const i = state.goals.findIndex((g) => g.goalId === goal.goalId);
+			if (i >= 0) state.goals[i] = { ...state.goal, ...goal };
+		},
+		deleteGoal(state, goalId) {
+			const i = state.goals.findIndex((g) => g.goalId === goalId);
+			if (i >= 0) state.goals.splice(i, 1);
 		},
 	},
 	actions: {
@@ -156,6 +172,66 @@ export default new Vuex.Store({
 				const res = await squadService.deleteSquad(squadId);
 				if (res && res.status === 200) {
 					await commit('deleteSquad', squadId);
+				} else {
+					console.log(res);
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		},
+		async addNewGoal({ commit }, goal) {
+			try {
+				const res = await goalService.addNewGoal(goal);
+				if (res && res.status === 200) {
+					await commit('addNewGoal', res.data.goal);
+				} else {
+					console.log(res);
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		},
+		async fetchAllGoals({ commit, state }) {
+			try {
+				const resGoals = await goalService.getAllGoals(state.user.userId);
+				if (resGoals && resGoals.status === 200) {
+					await commit('updateAllGoals', resGoals.data);
+				} else {
+					console.log(resGoals);
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		},
+		async updateGoal({ commit }, goal) {
+			try {
+				const res = await goalService.updateGoal(goal);
+				if (res && res.status === 200) {
+					await commit('updateGoal', goal);
+				} else {
+					console.log(res);
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		},
+		async deleteGoal({ commit }, goalId) {
+			try {
+				const res = await goalService.deleteGoal(goalId);
+				if (res && res.status === 200) {
+					await commit('deleteGoal', goalId);
+				} else {
+					console.log(res);
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		},
+		async changeGoalType({ commit }, goalsTypeEarnings) {
+			try {
+				const res = await goalService.changeGoalType(goalsTypeEarnings);
+				if (res && res.status === 200) {
+					await commit('updateCreator', { goalsTypeEarnings });
 				} else {
 					console.log(res);
 				}
