@@ -53,6 +53,13 @@ const routes = [
 		path: '/creator',
 		name: 'CreatorPage',
 		component: CreatorPage,
+		beforeEnter(to, from, next) {
+			store.dispatch('fetchAllSquads').finally(() => {
+				store.dispatch('fetchAllGoals').finally(() => {
+					next();
+				});
+			});
+		},
 	},
 	{
 		path: '/creator/start',

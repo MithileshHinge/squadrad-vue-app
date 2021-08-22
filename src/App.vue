@@ -411,6 +411,22 @@ $cta-shadow-opacity: 0.4;
 	color: $radical-red !important;
 }
 
+.sq-carousel .carousel-control-prev-icon::before, .sq-carousel .carousel-control-next-icon::before {
+	content: '';
+	width: 28px;
+	height: 28px;
+	background-color: $my-color-dark;
+	padding: 4px;
+	border-radius: 50%;
+}
+
+.sq-carousel .carousel-indicators li {
+	width: 4px;
+	height: 4px;
+	background-color: $my-color-dark;
+	border-radius: 50%;
+}
+
 .sq-card {
 	border: none;
 	border-radius: 1.11rem;

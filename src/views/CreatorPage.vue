@@ -15,7 +15,7 @@
 		</b-row>
 		<b-row no-gutters>
 			<b-col id="sq-the-page-bio">
-				is creating {{ creator.pageBio }}
+				is creating {{ creator.creatingWhat }}
 			</b-col>
 		</b-row>
 		<b-row no-gutters align-h="center">
@@ -47,11 +47,12 @@
 			</b-col>
 		</b-row>
 		<b-row no-gutters align-h="center" class="mt-5 mb-2">
+			<b-col cols="1"/><!--for centering heading-->
 			<b-col cols="auto" class="sq-creator-section-heading">
 				<span v-if="squads.length>0">Select a membership squad</span>
 				<span v-else>Add a membership squad</span>
 			</b-col>
-			<b-col cols="auto" class="ml-1">
+			<b-col cols="1">
 				<b-icon-plus-circle-fill font-scale="1.5"/>
 			</b-col>
 		</b-row>
@@ -61,10 +62,11 @@
 			</b-col>
 		</b-row>
 		<b-row no-gutters align-h="center" class="mt-5 mb-2">
+			<b-col cols="1"/><!--for centering heading-->
 			<b-col cols="auto" class="sq-creator-section-heading">
 				About
 			</b-col>
-			<b-col cols="auto" class="ml-1">
+			<b-col cols="1">
 				<b-iconstack font-scale="1.5">
 					<b-icon icon="circle-fill" stacked/>
 					<b-icon icon="pencil-fill" variant="light" scale="0.45" stacked/>
@@ -73,7 +75,7 @@
 		</b-row>
 		<b-row no-gutters align-h="center">
 			<b-col class="mt-2 px-3" cols="auto">
-				<b-card class="sq-card-flat p-2">
+				<b-card class="sq-card-flat sq-card p-2">
 					<b-card-text class="sq-text text-center">
 						{{ creator.about }}
 					</b-card-text>
@@ -81,10 +83,40 @@
 			</b-col>
 		</b-row>
 		<b-row no-gutters align-h="center" class="mt-5 mb-2">
+			<b-col cols="1"/><!--for centering heading-->
+			<b-col cols="auto" class="sq-creator-section-heading">
+				<span>Goals</span>
+			</b-col>
+			<b-col cols="1">
+				<b-iconstack font-scale="1.5">
+					<b-icon icon="circle-fill" stacked/>
+					<b-icon icon="pencil-fill" variant="light" scale="0.45" stacked/>
+				</b-iconstack>
+			</b-col>
+		</b-row>
+		<b-row no-gutters align-h="center">
+			<b-col style="max-width: 20.75rem;" align-self="center">
+				<b-carousel ref="sqRefGoalCarousel" indicators :interval="0" class="sq-carousel">
+					<b-carousel-slide v-for="goal in goals" :key="goal.goalId">
+						<template #img>
+							<GoalCard :goal="goal" style="margin: 1rem;"/>
+						</template>
+					</b-carousel-slide>
+					<a href="#" role="button" class="carousel-control-prev" @click.prevent="goalPrev">
+						<b-icon-chevron-left variant="dark" font-scale="1.1"/>
+					</a>
+					<a href="#" role="button" class="carousel-control-next" @click.prevent="goalNext">
+						<b-icon-chevron-right variant="dark" font-scale="1.1"/>
+					</a>
+				</b-carousel>
+			</b-col>
+		</b-row>
+		<b-row no-gutters align-h="center" class="mt-5 mb-2">
+			<b-col cols="1"/><!--for centering heading-->
 			<b-col cols="auto" class="sq-creator-section-heading">
 				Posts
 			</b-col>
-			<b-col cols="auto" class="ml-1">
+			<b-col cols="1">
 				<b-icon-plus-circle-fill font-scale="1.5"/>
 			</b-col>
 		</b-row>
@@ -100,11 +132,13 @@
 
 <script>
 import SquadCard from '@/components/SquadCard.vue';
+import GoalCard from '@/components/GoalCard.vue';
 import PostComp from '@/components/PostComp.vue';
 
 export default {
 	data() {
 		return {
+			/*
 			creator: {
 				userId: 1,
 				pageName: 'Tushar Sawant',
@@ -178,11 +212,32 @@ export default {
 				numComments: 4,
 				numLikes: 30,
 			}],
+			*/
 		};
+	},
+	computed: {
+		creator() {
+			return this.$store.state.creator;
+		},
+		squads() {
+			return this.$store.state.squads;
+		},
+		goals() {
+			return this.$store.state.goals.filter((goal) => !goal.archived);
+		},
+	},
+	methods: {
+		goalPrev() {
+			this.$refs.sqRefGoalCarousel.prev();
+		},
+		goalNext() {
+			this.$refs.sqRefGoalCarousel.next();
+		},
 	},
 	components: {
 		SquadCard,
 		PostComp,
+		GoalCard,
 	},
 };
 </script>
