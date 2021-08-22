@@ -23,6 +23,7 @@ export default {
 	data() {
 		return {
 			show: false,
+			hideTimeout: null,
 		};
 	},
 	props: {
@@ -37,11 +38,14 @@ export default {
 		// eslint-disable-next-line
 		isProcessed: function () {
 			if (this.isProcessed) {
-				setTimeout(() => {
+				this.hideTimeout = setTimeout(() => {
 					this.show = false;
 				}, 2000);
 			} else {
 				this.show = true;
+				if (this.hideTimeout) {
+					clearTimeout(this.hideTimeout);
+				}
 			}
 		},
 		// eslint-disable-next-line
