@@ -24,8 +24,8 @@ export default {
 			return (this.$store.state.creator.userId > 0);
 		},
 		showBottomNav() {
-			const showPaths = ['/feed', '/explore', '/notifications', '/messages', '/creator'];
-			if (showPaths.includes(this.$route.path)) {
+			const showPaths = ['/feed/', '/explore/', '/notifications/', '/messages/', '/creator/'];
+			if (showPaths.includes(this.$route.path) || showPaths.includes(`${this.$route.path}/`)) {
 				return true;
 			}
 			return false;
@@ -423,6 +423,7 @@ $cta-shadow-opacity: 0.4;
 	border: none;
 	border-radius: 1.11rem;
 	background-color: $my-color-gray7;
+	box-shadow: none;
 }
 
 .sq-card-flat-lg {
