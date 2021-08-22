@@ -62,7 +62,7 @@ export default new Vuex.Store({
 		},
 		updateSquad(state, squad) {
 			const i = state.squads.findIndex((s) => s.squadId === squad.squadId);
-			if (i >= 0) state.squads[i] = { ...state.squad, ...squad };
+			if (i >= 0) Object.assign(state.squads[i], squad);
 		},
 		deleteSquad(state, squadId) {
 			const i = state.squads.findIndex((s) => s.squadId === squadId);

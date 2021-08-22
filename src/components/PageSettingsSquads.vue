@@ -15,7 +15,7 @@
 			</b-row>
 			<b-row no-gutters align-h="center">
 				<b-col v-for="(squad, i) in squads" :key="squad.squadId" class="mt-3 mx-2" cols="auto">
-					<SquadCard :squad="squad" :squadNo="i" :totalSquads="squads.length" edit @edit="editSquad(squad.squadId)" @delete="deleteSquad(squad.squadId)"/>
+					<SquadCard :squad="squad" :squadNo="i" :totalSquads="squads.length" edit @edit="editSquad(squad)" @delete="deleteSquad(squad)"/>
 				</b-col>
 			</b-row>
 			<div style="height: 1.5rem"/>
@@ -59,7 +59,7 @@
 		<CustomModal modalId="sq-the-modal-delete-squad" modalTitle="Confirm delete squad?">
 			<div>
 				<div class="sq-text mb-2">
-					All posts exclusive to this squad will become free. This action cannot be undone. Do you wish to continue?
+					All posts exclusive to this squad will become free. This action cannot be undone. Are you sure you want to delete this squad?
 				</div>
 				<ButtonSubmit modal :isProcessing="isDeleting" :isProcessed="isDeleted" buttonText="Confirm delete" buttonTextDone="Squad deleted" @click="confirmDeleteSquad"/>
 			</div>
@@ -74,10 +74,6 @@ import CustomModal from '@/components/CustomModal.vue';
 import FormInputGroup from '@/components/FormInputGroup.vue';
 import ButtonSubmit from '@/components/ButtonSubmit.vue';
 import ImageCropModal from '@/components/ImageCropModal.vue';
-
-function isAmountUnique(value) {
-	return this.$store.state.squads.findIndex((s) => s.amount === Number.parseFloat(value)) < 0;
-}
 
 export default {
 	data() {
@@ -115,17 +111,19 @@ export default {
 			};
 			this.isEditModal = false;
 			this.isSaved = false;
+			this.$v.squadForm.$reset();
 			this.$bvModal.show('sq-the-modal-edit-squad');
 		},
-		editSquad(squadId) {
-			this.squadForm = this.squads.find((s) => s.squadId === squadId);
+		editSquad(squad) {
+			this.squadForm = { ...squad };
 			this.isEditModal = true;
 			this.isSaved = false;
+			this.$v.squadForm.$reset();
 			this.$bvModal.show('sq-the-modal-edit-squad');
 		},
-		deleteSquad(squadId) {
+		deleteSquad(squad) {
 			this.isDeleted = false;
-			this.squadForm.squadId = squadId;
+			this.squadForm.squadId = squad.squadId;
 			this.$bvModal.show('sq-the-modal-delete-squad');
 		},
 		async confirmDeleteSquad() {
@@ -152,6 +150,10 @@ export default {
 			this.$refs.sqRefSquadImageFileInput.reset();
 		},
 		async onSubmit() {
+			this.$v.squadForm.$touch();
+			if (this.$v.squadForm.$anyError) {
+				return;
+			}
 			this.isSaving = true;
 			this.isSaved = false;
 			if (this.isEditModal) {
@@ -164,21 +166,26 @@ export default {
 			this.$bvModal.hide('sq-the-modal-edit-squad');
 		},
 	},
-	validations: {
-		squadForm: {
-			title: {
-				required,
-				maxLength: maxLength(50),
+	validations() {
+		function isAmountUnique(value) {
+			return this.$store.state.squads.findIndex((s) => (s.amount === Number.parseFloat(value) && s.squadId !== this.squadForm.squadId)) < 0;
+		}
+		return {
+			squadForm: {
+				title: {
+					required,
+					maxLength: maxLength(50),
+				},
+				description: {
+					maxLength: maxLength(2000),
+				},
+				amount: {
+					required,
+					minValue: minValue(30),
+					isAmountUnique,
+				},
 			},
-			description: {
-				maxLength: maxLength(2000),
-			},
-			amount: {
-				required,
-				minValue: minValue(30),
-				isAmountUnique,
-			},
-		},
+		};
 	},
 	components: {
 		SquadCard,
