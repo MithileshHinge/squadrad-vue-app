@@ -22,7 +22,7 @@
 			</b-row>
 			<b-row no-gutters align-h="center">
 				<b-col v-for="goal in goals" :key="goal.goalId" class="mt-3 mx-2" cols="auto">
-					<GoalCard :goal="goal" edit/>
+					<GoalCard :goal="goal" edit @edit="editGoal(goal)" @delete="deleteGoal(goal)" @archive="setArchivedGoal(goal.goalId, true)" @unarchive="setArchivedGoal(goal.goalId, false)"/>
 				</b-col>
 			</b-row>
 			<div style="height: 1.5rem"/>
@@ -44,7 +44,7 @@
 						default: 'Please enter a valid goal amount for your monthly income',
 					}"
 				/>
-				<FormInputGroup v-else modal label="Total squad members" v-model="goalForm.goalNumbers" :validationModel="$v.goalForm.goalNumbers" numeric
+				<FormInputGroup v-else modal label="Total squad members" v-model="goalForm.goalNumber" :validationModel="$v.goalForm.goalNumber" numeric
 					:invalidFeedbacks="{
 						default: 'Please enter a valid number of total squad members to reach',
 					}"
@@ -58,6 +58,14 @@
 					You cannot have both Earnings-based and Community-based goals at the same time. All existing goals will be deleted. This action cannot be undone. Do you wish to continue?
 				</div>
 				<ButtonSubmit modal :isProcessing="isChanging" :isProcessed="isChanged" buttonText="Confirm delete" buttonTextDone="Goal type changed" @click="confirmChangeGoalType"/>
+			</div>
+		</CustomModal>
+		<CustomModal modalId="sq-the-modal-delete-goal" modalTitle="Confirm delete goal?">
+			<div>
+				<div class="sq-text mb-2">
+					This action cannot be undone. You can choose to hide the goal temporarily from your page instead. Are you sure you want to delete this goal?
+				</div>
+				<ButtonSubmit modal :isProcessing="isDeleting" :isProcessed="isDeleted" buttonText="Confirm delete" buttonTextDone="Goal deleted" @click="confirmDeleteGoal"/>
 			</div>
 		</CustomModal>
 	</div>
@@ -104,6 +112,8 @@ export default {
 	methods: {
 		changeGoalType() {
 			if (this.goals.length > 0) {
+				this.isChanged = false;
+				this.isChanging = false;
 				this.$bvModal.show('sq-the-modal-change-goal-type');
 			} else {
 				this.confirmChangeGoalType();
@@ -117,8 +127,8 @@ export default {
 			this.isChanged = true;
 			this.$bvModal.hide('sq-the-modal-change-goal-type');
 		},
-		cancelChangeGoalType(trigger) {
-			if (trigger !== 'ok') {
+		cancelChangeGoalType(event) {
+			if (event.trigger !== 'event') {
 				this.isGoalsTypeEarningsChecked = this.$store.state.creator.goalsTypeEarnings;
 			}
 		},
@@ -134,9 +144,43 @@ export default {
 			};
 			this.isEditModal = false;
 			this.isSaved = false;
+			this.$v.goalForm.$reset();
 			this.$bvModal.show('sq-the-modal-edit-goal');
 		},
+		editGoal(goal) {
+			this.goalForm = { ...goal };
+			this.isEditModal = true;
+			this.isSaved = false;
+			this.$v.goalForm.$reset();
+			this.$bvModal.show('sq-the-modal-edit-goal');
+		},
+		deleteGoal(goal) {
+			this.isDeleted = false;
+			this.goalForm.goalId = goal.goalId;
+			this.$bvModal.show('sq-the-modal-delete-goal');
+		},
+		async confirmDeleteGoal() {
+			this.isDeleting = true;
+			this.isDeleted = false;
+			await this.$store.dispatch('deleteGoal', this.goalForm.goalId);
+			this.isDeleting = false;
+			this.isDeleted = true;
+			this.$bvModal.hide('sq-the-modal-delete-goal');
+		},
+		setArchivedGoal(goalId, archived) {
+			this.$store.dispatch('updateGoal', { goalId, archived }).then(() => {
+				this.$bvToast.toast(archived ? 'Goal is hidden from page' : 'Goal is shown on page', {
+					noCloseButton: true,
+					variant: 'success',
+					toaster: 'b-toaster-bottom-center',
+				});
+			});
+		},
 		async onSubmit() {
+			this.$v.goalForm.$touch();
+			if (this.$v.goalForm.$anyError) {
+				return;
+			}
 			this.isSaving = true;
 			this.isSaved = false;
 			if (this.isEditModal) {

@@ -1,3 +1,4 @@
+/* eslint-disable prefer-object-spread */
 import Vue from 'vue';
 import Vuex from 'vuex';
 import userService from '@/services/user.service';
@@ -75,7 +76,7 @@ export default new Vuex.Store({
 		},
 		updateGoal(state, goal) {
 			const i = state.goals.findIndex((g) => g.goalId === goal.goalId);
-			if (i >= 0) state.goals[i] = { ...state.goal, ...goal };
+			if (i >= 0) Object.assign(state.goals[i], goal);
 		},
 		deleteGoal(state, goalId) {
 			const i = state.goals.findIndex((g) => g.goalId === goalId);
@@ -227,11 +228,12 @@ export default new Vuex.Store({
 				console.error(err);
 			}
 		},
-		async changeGoalType({ commit }, goalsTypeEarnings) {
+		async changeGoalType({ commit, dispatch }, goalsTypeEarnings) {
 			try {
 				const res = await goalService.changeGoalType(goalsTypeEarnings);
 				if (res && res.status === 200) {
 					await commit('updateCreator', { goalsTypeEarnings });
+					await dispatch('fetchAllGoals');
 				} else {
 					console.log(res);
 				}
