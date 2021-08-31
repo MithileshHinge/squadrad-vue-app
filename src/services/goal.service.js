@@ -3,7 +3,7 @@ import handleError from './errorHandler.service';
 
 export default {
 	getAllGoals(userId) {
-		return api.get(`/private/creator/goals/${userId}`)
+		return api.get(`/public/creator/goals/${userId}`)
 			.catch((err) => handleError(err));
 	},
 	addNewGoal(goal) {

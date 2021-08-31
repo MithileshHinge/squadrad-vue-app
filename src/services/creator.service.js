@@ -6,6 +6,10 @@ export default {
 		return api.get('/private/creator')
 			.catch((err) => handleError(err));
 	},
+	getCreatorById(userId) {
+		return api.get(`/public/creator/${userId}`)
+			.catch((err) => handleError(err));
+	},
 	becomeCreator(pageName, plural, creatingWhat) {
 		return api.post('/private/creator', {
 			pageName,

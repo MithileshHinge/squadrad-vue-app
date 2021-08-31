@@ -53,13 +53,6 @@ const routes = [
 		path: '/creator',
 		name: 'CreatorPage',
 		component: CreatorPage,
-		beforeEnter(to, from, next) {
-			store.dispatch('fetchAllSquads').finally(() => {
-				store.dispatch('fetchAllGoals').finally(() => {
-					next();
-				});
-			});
-		},
 	},
 	{
 		path: '/creator/start',
@@ -94,6 +87,17 @@ const routes = [
 				},
 			},
 		],
+	},
+	{
+		path: '/creator/:userId',
+		name: 'CreatorPage',
+		component: CreatorPage,
+		beforeEnter(to, from, next) {
+			if (Number.parseInt(to.params.userId, 10) === store.state.creator.userId) {
+				return next('/creator');
+			}
+			return next();
+		},
 	},
 	{
 		path: '/auth/verify-email/check',

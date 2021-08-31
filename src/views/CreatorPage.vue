@@ -58,7 +58,7 @@
 		</b-row>
 		<b-row no-gutters align-h="center">
 			<b-col v-for="(squad, i) in squads" :key="squad.id" class="mt-3 mx-2" cols="auto">
-				<SquadCard :squad="squad" :squadNo="i" :totalSquads="squads.length"/>
+				<SquadCard :squad="squad" :squadNo="i" :totalSquads="squads.length" @join="joinSquad(squad.squadId)"/>
 			</b-col>
 		</b-row>
 		<b-row no-gutters align-h="center" class="mt-5 mb-2">
@@ -131,9 +131,16 @@
 </template>
 
 <script>
+/* eslint-disable no-param-reassign */
 import SquadCard from '@/components/SquadCard.vue';
 import GoalCard from '@/components/GoalCard.vue';
 import PostComp from '@/components/PostComp.vue';
+import creatorService from '../services/creator.service';
+import squadService from '../services/squad.service';
+import goalsService from '../services/goal.service';
+import manualSubsService from '../services/manualSubs.service';
+import paymentService from '../services/payment.service';
+import myKeys from '../myKeys';
 
 export default {
 	data() {
@@ -213,18 +220,65 @@ export default {
 				numLikes: 30,
 			}],
 			*/
+			creator: {},
+			squads: [],
+			goals: [],
 		};
 	},
-	computed: {
-		creator() {
-			return this.$store.state.creator;
-		},
-		squads() {
-			return this.$store.state.squads;
-		},
-		goals() {
-			return this.$store.state.goals.filter((goal) => !goal.archived);
-		},
+	beforeRouteEnter(to, from, next) {
+		console.log('debug1');
+		if (to.params.userId) {
+			const fetchData = [
+				creatorService.getCreatorById(to.params.userId),
+				squadService.getAllSquads(to.params.userId),
+				goalsService.getAllGoals(to.params.userId),
+			];
+
+			Promise.all(fetchData).then(([resCreator, resSquads, resGoals]) => {
+				if (resCreator && resSquads && resGoals && resCreator.status === 200 && resSquads.status === 200 && resGoals.status === 200) {
+					next((vm) => {
+						vm.creator = resCreator.data.creator;
+						vm.squads = resSquads.data;
+						vm.goals = resGoals.data;
+					});
+				} else {
+					console.log(resCreator);
+					console.log(resSquads);
+					console.log(resGoals);
+				}
+			}).catch((err) => {
+				next((vm) => {
+					vm.$bvToast.toast((err.response.msg, {
+						noCloseButton: true,
+						variant: 'danger',
+						toaster: 'b-toaster-bottom-center',
+					}));
+				});
+			});
+		} else {
+			next((vm) => {
+				vm.$store.dispatch('fetchAllSquads').finally(() => {
+					vm.$store.dispatch('fetchAllGoals').finally(() => {
+						vm.creator = vm.$store.state.creator;
+						vm.squads = vm.$store.state.squads;
+						vm.goals = vm.$store.state.goals.filter((goal) => !goal.archived);
+					});
+				});
+			});
+		}
+	},
+	mounted() {
+		if (document.getElementById('myRzpScript')) return;
+		const src = 'https://checkout.razorpay.com/v1/checkout.js';
+		const script = document.createElement('script');
+		script.setAttribute('src', src);
+		script.setAttribute('type', 'text/javascript');
+		script.setAttribute('id', 'myRzpScript');
+		document.head.appendChild(script);
+	},
+	beforeDestroy() {
+		const el = document.getElementById('myRzpScript');
+		if (el) el.remove();
 	},
 	methods: {
 		goalPrev() {
@@ -232,6 +286,77 @@ export default {
 		},
 		goalNext() {
 			this.$refs.sqRefGoalCarousel.next();
+		},
+		async joinSquad(squadId) {
+			if (this.$store.state.creator.userId === this.creator.userId) {
+				this.$bvToast.toast('You cannot join your own squad', {
+					noCloseButton: true,
+					variant: 'warning',
+					toaster: 'b-toaster-bottom-center',
+				});
+				return;
+			}
+			try {
+				const resOrder = await manualSubsService.createManualSub(this.creator.userId, squadId);
+				console.log(resOrder);
+				const { rzpOrder } = resOrder.data;
+				if (!rzpOrder) {
+					this.$bvToast.toast('Something went wrong, please try again later', {
+						noCloseButton: true,
+						variant: 'danger',
+						toaster: 'b-toaster-bottom-center',
+					});
+					return;
+				}
+
+				const options = {
+					key: myKeys.RZP_TEST_KEY_ID,
+					amount: rzpOrder.amount,
+					currency: 'INR',
+					name: 'Test name',
+					description: 'Test description bla ba dsv asd cas cdas dc adc a',
+					order_id: rzpOrder.id,
+					handler: (response) => {
+						if (response.razorpay_payment_id) {
+							this.$bvToast.toast('Payment successful', {
+								noCloseButton: true,
+								variant: 'success',
+								toaster: 'b-toaster-bottom-center',
+							});
+							paymentService.createPaymentRecord({
+								rzpTransactionId: response.razorpay_payment_id,
+								rzpOrderId: response.razorpay_order_id,
+								rzpSignature: response.razorpay_signature,
+							}).catch((err) => {
+								console.log(err);
+							});
+						}
+					},
+					prefill: {
+						name: this.$store.state.user.name,
+						email: this.$store.state.user.email,
+					},
+					notes: rzpOrder.notes,
+				};
+
+				// eslint-disable-next-line no-undef
+				const rzp = new Razorpay(options);
+				rzp.on('payment.failed', (res) => {
+					const err = res.error;
+					this.$bvToast.toast(`Error ${err.code}: ${err.description}\n${err.source}\n${err.step}\n${err.reason}`, {
+						noCloseButton: true,
+						variant: 'danger',
+						toaster: 'b-toaster-bottom-center',
+					});
+				});
+				rzp.open();
+			} catch (err) {
+				this.$bvToast.toast(err.response.data.msg, {
+					noCloseButton: true,
+					variant: 'danger',
+					toaster: 'b-toaster-bottom-center',
+				});
+			}
 		},
 	},
 	components: {

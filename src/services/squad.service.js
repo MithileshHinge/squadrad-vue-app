@@ -3,7 +3,7 @@ import handleError from './errorHandler.service';
 
 export default {
 	getAllSquads(userId) {
-		return api.get(`/private/creator/squads/${userId}`)
+		return api.get(`/public/creator/squads/${userId}`)
 			.catch((err) => handleError(err));
 	},
 	addNewSquad(squad) {
