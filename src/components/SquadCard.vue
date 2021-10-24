@@ -17,7 +17,7 @@
 		<b-button v-if="edit" class="sq-card-btn sq-btn sq-shadow" @click="$emit('edit')">
 			<b-row no-gutters align-h="center" align-v="center"><b-icon-pencil-fill font-scale="0.95" class="mr-2"/>Edit squad</b-row>
 		</b-button>
-		<b-button v-else :ref="'sqRefJoinBtn'+squad.squadId" class="sq-card-btn sq-btn-cta sq-btn my-1" :style="`background-image: linear-gradient(22deg, ${getJoinBtnGradientStops[squadNo]}, ${getJoinBtnGradientStops[squadNo + 1]}, ${getJoinBtnGradientStops[squadNo]});`" @click="$emit('join')">Join squad at <span class="sq-rupee"/>{{ squad.amount }}/month</b-button>
+		<b-button v-else :ref="'sqRefJoinBtn'+squad.squadId" class="sq-card-btn sq-btn-cta sq-btn my-1" :style="`background-image: linear-gradient(22deg, ${getJoinBtnGradientStops[squadNo]}, ${getJoinBtnGradientStops[squadNo + 1]}, ${getJoinBtnGradientStops[squadNo]});`" @click="$emit('join')">Join squad at <span class="sq-rupee"/>{{ squad.amount / 100 }}/month</b-button>
 	</b-card>
 </template>
 
