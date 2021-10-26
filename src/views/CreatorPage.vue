@@ -15,7 +15,7 @@
 		</b-row>
 		<b-row no-gutters>
 			<b-col id="sq-the-page-bio">
-				is creating {{ creator.creatingWhat }}
+				is creating {{ creator.bio }}
 			</b-col>
 		</b-row>
 		<b-row no-gutters align-h="center">
@@ -201,6 +201,7 @@ export default {
 					supportersLimit: null,
 				},
 			],
+			*/
 			posts: [{
 				id: 1,
 				creator: 'Tushar Sawant',
@@ -219,7 +220,6 @@ export default {
 				numComments: 4,
 				numLikes: 30,
 			}],
-			*/
 			creator: {},
 			squads: [],
 			goals: [],
@@ -237,7 +237,7 @@ export default {
 			Promise.all(fetchData).then(([resCreator, resSquads, resGoals]) => {
 				if (resCreator && resSquads && resGoals && resCreator.status === 200 && resSquads.status === 200 && resGoals.status === 200) {
 					next((vm) => {
-						vm.creator = resCreator.data.creator;
+						vm.creator = resCreator.data;
 						vm.squads = resSquads.data;
 						vm.goals = resGoals.data;
 					});

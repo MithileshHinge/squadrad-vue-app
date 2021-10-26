@@ -3,7 +3,7 @@ import handleError from './errorHandler.service';
 
 export default {
 	getCreatorSelf() {
-		return api.get('/private/creator')
+		return api.get('/creator')
 			.catch((err) => handleError(err));
 	},
 	getCreatorById(userId) {
@@ -18,7 +18,7 @@ export default {
 		}).catch((err) => handleError(err));
 	},
 	updateCreator(creator) {
-		return api.put('/private/creator', creator)
+		return api.patch('/creator', creator)
 			.catch((err) => handleError(err));
 	},
 };

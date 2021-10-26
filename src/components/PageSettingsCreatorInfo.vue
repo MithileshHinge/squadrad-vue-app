@@ -19,7 +19,7 @@
 							<span id="sq-the-form-is-creating-text">is creating</span>
 						</b-col>
 						<b-col cols="auto" class="pl-1" align-self="center">
-							<span id="sq-the-form-is-creating-hide"/><b-form-input id="sq-the-form-is-creating-1"  v-model="creatorInfoForm.creatingWhat" trim placeholder="Entertainment videos" size="lg" @input="adjustWidth"/>
+							<span id="sq-the-form-is-creating-hide"/><b-form-input id="sq-the-form-is-creating-1"  v-model="creatorInfoForm.bio" trim placeholder="Entertainment videos" size="lg" @input="adjustWidth"/>
 						</b-col>
 					</b-row>
 				</b-form-group-->
@@ -29,18 +29,18 @@
 						maxLength: 'Exceeded max character limit',
 					}"
 				/>
-				<FormInputGroup label="What are you creating?" inputId="sq-the-form-is-creating" v-model="creatorInfoForm.creatingWhat" :validationModel="$v.creatorInfoForm.creatingWhat" placeholder="e.g. Entertainment videos, comics, music, etc" size="lg" trim
+				<FormInputGroup label="What are you creating?" inputId="sq-the-form-is-creating" v-model="creatorInfoForm.bio" :validationModel="$v.creatorInfoForm.bio" placeholder="e.g. Entertainment videos, comics, music, etc" size="lg" trim
 					:invalidFeedbacks="{
 						required: 'Please tell us what you create',
 						maxLength: 'Exceeded max character limit',
 					}"
 				/>
 				<b-form-group class="text-left" label="Which sounds correct?" label-class="sq-form-label" label-align="left">
-					<b-form-radio name="plural" v-model="creatorInfoForm.plural" :value="false" class="sq-text">
-						{{creatorInfoForm.pageName}} is creating {{creatorInfoForm.creatingWhat}}
+					<b-form-radio name="isPlural" v-model="creatorInfoForm.isPlural" :value="false" class="sq-text">
+						{{creatorInfoForm.pageName}} is creating {{creatorInfoForm.bio}}
 					</b-form-radio>
-					<b-form-radio name="plural" v-model="creatorInfoForm.plural" :value="true" class="sq-text">
-						{{creatorInfoForm.pageName}} are creating {{creatorInfoForm.creatingWhat}}
+					<b-form-radio name="isPlural" v-model="creatorInfoForm.isPlural" :value="true" class="sq-text">
+						{{creatorInfoForm.pageName}} are creating {{creatorInfoForm.bio}}
 					</b-form-radio>
 				</b-form-group>
 			</b-card>
@@ -80,8 +80,8 @@ export default {
 		return {
 			creatorInfoForm: {
 				pageName: this.$store.state.creator.pageName,
-				creatingWhat: this.$store.state.creator.creatingWhat,
-				plural: this.$store.state.creator.plural,
+				bio: this.$store.state.creator.bio,
+				isPlural: this.$store.state.creator.isPlural,
 				supportersVisibility: this.$store.state.creator.supportersVisibility,
 				earningsVisibility: this.$store.state.creator.earningsVisibility,
 				otpVisibility: this.$store.state.creator.otpVisibility,
@@ -110,7 +110,7 @@ export default {
 		adjustWidth() {
 			const hide = document.getElementById('sq-the-form-is-creating-hide');
 			const input = document.getElementById('sq-the-form-is-creating-1');
-			hide.textContent = this.creatorInfoForm.creatingWhat;
+			hide.textContent = this.creatorInfoForm.bio;
 			input.style.width = `${hide.offsetWidth}px`;
 		},
 		*/
@@ -131,7 +131,7 @@ export default {
 					required,
 					maxLength: maxLength(50),
 				},
-				creatingWhat: {
+				bio: {
 					required,
 					maxLength: maxLength(50),
 				},

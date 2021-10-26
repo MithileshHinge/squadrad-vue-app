@@ -20,12 +20,11 @@ export default new Vuex.Store({
 			blocked: null,
 		},
 		creator: {
-			creatorId: 0,
 			userId: 0,
 			pageName: '',
-			plural: null,
-			creatingWhat: '',
-			profilePic: '',
+			isPlural: null,
+			bio: '',
+			profilePicSrc: '',
 			coverPic: '',
 			about: '',
 			introVideo: '',
@@ -112,7 +111,7 @@ export default new Vuex.Store({
 			try {
 				const resCreator = await creatorService.getCreatorSelf();
 				if (resCreator && resCreator.status === 200) {
-					await commit('updateCreator', resCreator.data.creator);
+					await commit('updateCreator', resCreator.data);
 				} else {
 					console.log(resCreator);
 				}
