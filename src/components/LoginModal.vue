@@ -22,7 +22,7 @@
 				</div>
 
 				<b-form @submit.prevent="onSubmit">
-					<FormInputGroup v-if="isModalSignUp" name="fullname" v-model="form.fullname" :validationModel="$v.form.fullname" modal placeholder="Full name" trim
+					<FormInputGroup v-if="isModalSignUp" name="fullName" v-model="form.fullName" :validationModel="$v.form.fullName" modal placeholder="Full name" trim
 						:invalidFeedbacks="{
 							required: 'Please enter your full name',
 							alphaSplit: 'Are you sure you entered your name correctly?',
@@ -92,7 +92,7 @@ export default {
 	data() {
 		return {
 			form: {
-				fullname: null,
+				fullName: null,
 				email: null,
 				loginPassword: null,
 				signupPassword: null,
@@ -104,7 +104,7 @@ export default {
 	validations() {
 		return {
 			form: {
-				fullname: {
+				fullName: {
 					required: requiredIf(() => this.isModalSignUp),
 					maxLength: maxLength(50),
 					alphaSplit: (value) => (value ? value.split(' ').every((word) => (word ? alpha(word) : false)) : true),
@@ -140,10 +140,10 @@ export default {
 			}
 			if (this.isModalSignUp) {
 				console.log('sign up submitted');
-				userService.registerUser(this.form.fullname, this.form.email, this.form.signupPassword, this.form.confirmPassword)
+				userService.registerUser(this.form.fullName, this.form.email, this.form.signupPassword)
 					.then((res) => {
 						this.formSubmitted = false;
-						if (res.status === 200) {
+						if (res.status === 201) {
 							this.$bvModal.hide('sq-the-login-modal');
 							this.$router.push('/auth/verify-email/sent');
 						}

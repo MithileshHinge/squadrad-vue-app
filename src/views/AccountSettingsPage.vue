@@ -12,7 +12,7 @@
 						</b-button>
 					</b-avatar>
 				</b-form-group>
-				<FormInputGroup label="Name" inputId="sq-the-form-name" v-model="userInfoForm.name" :validationModel="$v.userInfoForm.name" size="lg" trim autocomplete="off"
+				<FormInputGroup label="Name" inputId="sq-the-form-fullName" v-model="userInfoForm.fullName" :validationModel="$v.userInfoForm.fullName" size="lg" trim autocomplete="off"
 					:invalidFeedbacks="{
 						required: 'Please enter your full name',
 						alphaSplit: 'Are you sure you entered your name correctly?',
@@ -115,7 +115,7 @@ export default {
 	data() {
 		return {
 			userInfoForm: {
-				name: this.$store.state.user.name,
+				fullName: this.$store.state.user.fullName,
 				email: this.$store.state.user.email,
 			},
 			changePasswordForm: {
@@ -131,15 +131,15 @@ export default {
 			isPasswordChanged: false,
 			isAccountDeleting: false,
 			isAccountDeleted: false,
-			userProfilePic: this.$store.state.user.profilePic,
+			userProfilePic: this.$store.state.user.profilePicSrc,
 			cropperZoom: 1,
 			cropperZoomMinVal: 1,
 		};
 	},
 	watch: {
 		// eslint-disable-next-line
-		'userInfoForm.name': function () {
-			this.isSaved = (this.userInfoForm.name === this.$store.state.user.name);
+		'userInfoForm.fullName': function () {
+			this.isSaved = (this.userInfoForm.fullName === this.$store.state.user.fullName);
 		},
 		// eslint-disable-next-line
 		'changePasswordForm.newPassword': function () {
@@ -177,7 +177,7 @@ export default {
 			this.isSaving = true;
 			this.isSaved = false;
 			const user = {
-				name: this.userInfoForm.name,
+				fullName: this.userInfoForm.fullName,
 			};
 			this.$store.dispatch('updateUser', user).then(() => {
 				this.isSaved = true;
@@ -225,7 +225,7 @@ export default {
 	validations() {
 		return {
 			userInfoForm: {
-				name: {
+				fullName: {
 					required,
 					maxLength: maxLength(50),
 					alphaSplit: (value) => (value ? value.split(' ').every((word) => (word ? alpha(word) : false)) : true),

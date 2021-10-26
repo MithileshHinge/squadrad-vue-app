@@ -20,7 +20,7 @@ export default {
 				{
 					commentId: 1,
 					userId: 1,
-					username: 'Mithilesh Hinge',
+					userFullName: 'Mithilesh Hinge',
 					rootId: null,
 					isReply: false,
 					comment: 'Dhaapu',
@@ -31,7 +31,7 @@ export default {
 				{
 					commentId: 3,
 					userId: 1,
-					username: 'Mithilesh Hinge',
+					userFullName: 'Mithilesh Hinge',
 					rootId: 1,
 					isReply: true,
 					comment: 'Khudka comic bana',
@@ -42,7 +42,7 @@ export default {
 				{
 					commentId: 2,
 					userId: 1,
-					username: 'Mithilesh Hinge',
+					userFullName: 'Mithilesh Hinge',
 					rootId: null,
 					isReply: false,
 					comment: 'Boooooo',

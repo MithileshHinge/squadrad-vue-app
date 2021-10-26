@@ -13,8 +13,8 @@ export default new Vuex.Store({
 		user: {
 			userId: 0,
 			email: '',
-			name: '',
-			profilePic: '',
+			fullName: '',
+			profilePicSrc: '',
 			emailVerified: null,
 			deactivated: null,
 			blocked: null,
@@ -88,7 +88,7 @@ export default new Vuex.Store({
 			try {
 				const resUser = await userService.getUserSelf();
 				if (resUser && resUser.status === 200) {
-					await commit('updateUser', resUser.data.user);
+					await commit('updateUser', resUser.data);
 				} else {
 					console.log(resUser);
 				}

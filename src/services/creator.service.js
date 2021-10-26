@@ -10,11 +10,11 @@ export default {
 		return api.get(`/public/creator/${userId}`)
 			.catch((err) => handleError(err));
 	},
-	becomeCreator(pageName, plural, creatingWhat) {
-		return api.post('/private/creator', {
+	becomeCreator(pageName, isPlural, bio) {
+		return api.post('/creator', {
 			pageName,
-			plural,
-			creatingWhat,
+			isPlural,
+			bio,
 		}).catch((err) => handleError(err));
 	},
 	updateCreator(creator) {

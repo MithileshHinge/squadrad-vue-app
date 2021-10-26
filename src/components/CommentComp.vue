@@ -7,7 +7,7 @@
 			<b-container class="sq-comment-container sq-text">
 				<b-row no-gutters>
 					<b-col class="sq-font-regular">
-						{{ comment.username }}
+						{{ comment.userfullName }}
 					</b-col>
 					<b-col cols="auto" class="sq-subtext">
 						{{ comment.timestamp }}

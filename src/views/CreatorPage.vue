@@ -333,7 +333,7 @@ export default {
 						}
 					},
 					prefill: {
-						name: this.$store.state.user.name,
+						name: this.$store.state.user.fullName,
 						email: this.$store.state.user.email,
 					},
 					notes: rzpOrder.notes,

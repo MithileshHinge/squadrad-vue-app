@@ -2,20 +2,20 @@ import api from './api.service';
 import handleError from './errorHandler.service';
 
 export default {
-	registerUser(name, email, password, password2) {
-		return api.post('/public/user', {
-			name,
+	registerUser(fullName, email, password) {
+		return api.post('/user', {
+			fullName,
 			email,
 			password,
-			password2,
 		}).catch((err) => handleError(err));
 	},
 	verifyEmail(token) {
-		return api.get(`/public/auth/verify-email?token=${token}`)
-			.catch((err) => handleError(err));
+		return api.patch('/user/verify', {
+			token,
+		}).catch((err) => handleError(err));
 	},
 	loginWithEmail(email, password) {
-		return api.post('/public/login', { email, password })
+		return api.post('/user/login', { email, password })
 			.catch((err) => handleError(err));
 	},
 	loginWithGoogle() {
@@ -23,7 +23,7 @@ export default {
 			.catch((err) => handleError(err));
 	},
 	logout() {
-		return api.get('/private/logout')
+		return api.post('/user/logout')
 			.catch((err) => handleError(err));
 	},
 	validate() {
@@ -32,15 +32,15 @@ export default {
 			.catch((err) => handleError(err));
 	},
 	getUserSelf() {
-		return api.get('/private/user')
+		return api.get('/user')
 			.catch((err) => handleError(err));
 	},
 	updateUser(user) {
-		return api.put('/private/user', user)
+		return api.patch('/user', user)
 			.catch((err) => handleError(err));
 	},
 	changePassword(oldPassword, newPassword) {
-		return api.put('/private/user/password', { oldPassword, newPassword })
+		return api.patch('/user/password', { oldPassword, newPassword })
 			.catch((err) => handleError(err));
 	},
 	deleteUser(password) {
