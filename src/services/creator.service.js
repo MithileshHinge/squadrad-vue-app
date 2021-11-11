@@ -7,7 +7,7 @@ export default {
 			.catch((err) => handleError(err));
 	},
 	getCreatorById(userId) {
-		return api.get(`/public/creator/${userId}`)
+		return api.get(`/creator/${userId}`)
 			.catch((err) => handleError(err));
 	},
 	becomeCreator(pageName, isPlural, bio) {
