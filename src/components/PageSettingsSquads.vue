@@ -52,7 +52,7 @@
 						isAmountUnique: 'You already have a squad of the same amount',
 					}"
 				/>
-				<FormInputGroup type="number" number modal label="Limit squad members (optional)" v-model="squadForm.supportersLimit" placeholder="Max limit"/>
+				<FormInputGroup type="number" number modal label="Limit squad members (optional)" v-model="squadForm.membersLimit" placeholder="Max limit"/>
 				<ButtonSubmit modal :isProcessing="isSaving" :isProcessed="isSaved" :buttonText="isEditModal ? 'Save squad' : 'Add squad'" :buttonTextDone="isEditModal ? 'Squad saved' : 'Squad added'"/>
 			</b-form>
 		</CustomModal>
@@ -79,12 +79,12 @@ export default {
 	data() {
 		return {
 			squadForm: {
-				squadId: null,
+				squadId: undefined,
 				title: '',
 				image: '',
 				description: '',
-				amount: null,
-				supportersLimit: null,
+				amount: undefined,
+				membersLimit: undefined,
 			},
 			isEditModal: true,
 			isSaving: false,
@@ -102,12 +102,12 @@ export default {
 	methods: {
 		addSquad() {
 			this.squadForm = {
-				squadId: null,
+				squadId: undefined,
 				title: '',
 				image: '',
 				description: '',
-				amount: null,
-				supportersLimit: null,
+				amount: undefined,
+				membersLimit: undefined,
 			};
 			this.isEditModal = false;
 			this.isSaved = false;

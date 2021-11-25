@@ -7,11 +7,11 @@ export default {
 			.catch((err) => handleError(err));
 	},
 	addNewSquad(squad) {
-		return api.post('/private/creator/squad', { ...squad })
+		return api.post('/squad', { ...squad })
 			.catch((err) => handleError(err));
 	},
 	updateSquad(squad) {
-		return api.put(`/private/creator/squad/${squad.squadId}`, { ...squad })
+		return api.patch(`/squad/${squad.squadId}`, { ...squad })
 			.catch((err) => handleError(err));
 	},
 	deleteSquad(squadId) {

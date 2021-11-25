@@ -135,7 +135,7 @@ export default new Vuex.Store({
 			try {
 				const res = await squadService.addNewSquad(squad);
 				if (res && res.status === 200) {
-					await commit('addNewSquad', res.data.squad);
+					await commit('addNewSquad', res.data);
 				} else {
 					console.log(res);
 				}
