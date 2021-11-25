@@ -28,7 +28,9 @@ export default {
 				return this.value;
 			},
 			set(val) {
-				this.validationModel.$touch();
+				if (this.validationModel) {
+					this.validationModel.$touch();
+				}
 				this.$emit('input', val);
 			},
 		},
