@@ -3,15 +3,15 @@ import handleError from './errorHandler.service';
 
 export default {
 	getAllGoals(userId) {
-		return api.get(`/public/creator/goals/${userId}`)
+		return api.get(`/creator/${userId}/goals`)
 			.catch((err) => handleError(err));
 	},
 	addNewGoal(goal) {
-		return api.post('/private/creator/goal', { ...goal })
+		return api.post('/goal', goal)
 			.catch((err) => handleError(err));
 	},
 	updateGoal(goal) {
-		return api.put(`/private/creator/goal/${goal.goalId}`, { ...goal })
+		return api.patch(`/goal/${goal.goalId}`, goal)
 			.catch((err) => handleError(err));
 	},
 	deleteGoal(goalId) {

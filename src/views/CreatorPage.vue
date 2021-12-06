@@ -138,7 +138,6 @@ import PostComp from '@/components/PostComp.vue';
 import creatorService from '../services/creator.service';
 import squadService from '../services/squad.service';
 import goalsService from '../services/goal.service';
-import manualSubsService from '../services/manualSubs.service';
 import paymentService from '../services/payment.service';
 import myKeys from '../myKeys';
 
@@ -297,8 +296,7 @@ export default {
 				return;
 			}
 			try {
-				const resOrder = await manualSubsService.createManualSub(this.creator.userId, squadId);
-				console.log(resOrder);
+				const resOrder = await paymentService.getRzpOrder(squadId);
 				const { rzpOrder } = resOrder.data;
 				if (!rzpOrder) {
 					this.$bvToast.toast('Something went wrong, please try again later', {
@@ -323,12 +321,14 @@ export default {
 								variant: 'success',
 								toaster: 'b-toaster-bottom-center',
 							});
-							paymentService.createPaymentRecord({
+							paymentService.paymentSuccessful({
 								rzpTransactionId: response.razorpay_payment_id,
 								rzpOrderId: response.razorpay_order_id,
 								rzpSignature: response.razorpay_signature,
 							}).catch((err) => {
 								console.log(err);
+							}).then((res) => {
+								console.log(res);
 							});
 						}
 					},

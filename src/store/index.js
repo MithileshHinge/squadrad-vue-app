@@ -183,7 +183,7 @@ export default new Vuex.Store({
 			try {
 				const res = await goalService.addNewGoal(goal);
 				if (res && res.status === 200) {
-					await commit('addNewGoal', res.data.goal);
+					await commit('addNewGoal', res.data);
 				} else {
 					console.log(res);
 				}

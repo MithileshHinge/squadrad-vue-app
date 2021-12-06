@@ -39,12 +39,12 @@
 					<b-form-textarea class="sq-modal-form-textarea sq-form-textarea" v-model="goalForm.description" placeholder="Tell your fans about your plans after reaching the goal" rows="3" size="sm"/>
 					<b-form-invalid-feedback v-if="!$v.goalForm.description.maxLength" class="sq-form-invalid-feedback">Exceeded max character limit</b-form-invalid-feedback>
 				</b-form-group>
-				<FormInputGroup v-if="$store.state.creator.goalsTypeEarnings" modal label="Monthly income amount" v-model="goalForm.goalNumber" :validationModel="$v.goalForm.goalNumber" numeric
+				<FormInputGroup v-if="$store.state.creator.goalsTypeEarnings" type="number" number modal label="Monthly income amount" v-model="goalForm.goalNumber" :validationModel="$v.goalForm.goalNumber" numeric
 					:invalidFeedbacks="{
 						default: 'Please enter a valid goal amount for your monthly income',
 					}"
 				/>
-				<FormInputGroup v-else modal label="Total squad members" v-model="goalForm.goalNumber" :validationModel="$v.goalForm.goalNumber" numeric
+				<FormInputGroup v-else modal label="Total squad members" type="number" number v-model="goalForm.goalNumber" :validationModel="$v.goalForm.goalNumber" numeric
 					:invalidFeedbacks="{
 						default: 'Please enter a valid number of total squad members to reach',
 					}"
@@ -86,11 +86,10 @@ export default {
 	data() {
 		return {
 			goalForm: {
-				goalId: null,
-				userId: null,
+				goalId: undefined,
 				title: '',
 				description: '',
-				goalNumber: null,
+				goalNumber: undefined,
 			},
 			isGoalsTypeEarningsChecked: this.$store.state.creator.goalsTypeEarnings,
 			isEditModal: false,
@@ -134,13 +133,10 @@ export default {
 		},
 		addGoal() {
 			this.goalForm = {
-				goalId: null,
-				userId: null,
+				goalId: undefined,
 				title: '',
 				description: '',
-				goalNumber: null,
-				reached: null,
-				archived: null,
+				goalNumber: undefined,
 			};
 			this.isEditModal = false;
 			this.isSaved = false;
