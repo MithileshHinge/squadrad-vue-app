@@ -25,7 +25,7 @@
 		</b-row>
 		<b-row no-gutters @click="openPost">
 			<b-col>
-				<b-img :src="require('@/assets/'+post.path)" fluid-grow></b-img>
+				<!--b-img :src="require('@/assets/'+post.path)" fluid-grow></b-img-->
 			</b-col>
 		</b-row>
 		<b-row no-gutters class="p-2 mt-1" align-v="center">

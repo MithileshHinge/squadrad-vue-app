@@ -12,6 +12,7 @@ import BecomeCreatorPage from '../views/BecomeCreatorPage.vue';
 import PageSettingsPage from '../views/PageSettingsPage.vue';
 import VerifyEmailPage from '../views/VerifyEmailPage.vue';
 import VerifyEmailSentPage from '../views/VerifyEmailSentPage.vue';
+import CreatePostPage from '../views/CreatePostPage.vue';
 
 // Children components
 import LoginModal from '../components/LoginModal.vue';
@@ -113,6 +114,11 @@ const routes = [
 		path: '/user/settings',
 		name: 'AccountsSettingsPage',
 		component: AccountSettingsPage,
+	},
+	{
+		path: '/create-post',
+		name: 'CreatePostPage',
+		component: CreatePostPage,
 	},
 	{
 		path: '/about',

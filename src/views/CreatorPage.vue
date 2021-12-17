@@ -121,9 +121,9 @@
 			</b-col>
 		</b-row>
 		<b-row no-gutters align-h="center">
-			<b-col class="mt-2" cols="auto">
+			<b-col class="mt-2" cols="12">
 				<b-card class="sq-card-flat p-1">
-					<PostComp v-for="post in posts" :key="post.id" :post="post"></PostComp>
+					<PostComp v-for="post in posts" :key="post.postId" :post="post"></PostComp>
 				</b-card>
 			</b-col>
 		</b-row>
@@ -138,6 +138,7 @@ import PostComp from '@/components/PostComp.vue';
 import creatorService from '../services/creator.service';
 import squadService from '../services/squad.service';
 import goalsService from '../services/goal.service';
+import postsService from '../services/post.service';
 import paymentService from '../services/payment.service';
 import myKeys from '../myKeys';
 
@@ -231,19 +232,22 @@ export default {
 				creatorService.getCreatorById(to.params.userId),
 				squadService.getAllSquads(to.params.userId),
 				goalsService.getAllGoals(to.params.userId),
+				postsService.getAllPostsByCreator(to.params.userId),
 			];
 
-			Promise.all(fetchData).then(([resCreator, resSquads, resGoals]) => {
-				if (resCreator && resSquads && resGoals && resCreator.status === 200 && resSquads.status === 200 && resGoals.status === 200) {
+			Promise.all(fetchData).then(([resCreator, resSquads, resGoals, resPosts]) => {
+				if (resCreator && resSquads && resGoals && resPosts && resCreator.status === 200 && resSquads.status === 200 && resGoals.status === 200 && resPosts.status === 200) {
 					next((vm) => {
 						vm.creator = resCreator.data;
 						vm.squads = resSquads.data;
 						vm.goals = resGoals.data;
+						vm.posts = resPosts.data.map((post) => ({ ...post, pageName: vm.creator.pageName }));
 					});
 				} else {
 					console.log(resCreator);
 					console.log(resSquads);
 					console.log(resGoals);
+					console.log(resPosts);
 				}
 			}).catch((err) => {
 				next((vm) => {
@@ -258,9 +262,12 @@ export default {
 			next((vm) => {
 				vm.$store.dispatch('fetchAllSquads').finally(() => {
 					vm.$store.dispatch('fetchAllGoals').finally(() => {
-						vm.creator = vm.$store.state.creator;
-						vm.squads = vm.$store.state.squads;
-						vm.goals = vm.$store.state.goals.filter((goal) => !goal.archived);
+						postsService.getAllPostsByCreator(vm.$store.state.user.userId).then((resPosts) => {
+							vm.creator = vm.$store.state.creator;
+							vm.squads = vm.$store.state.squads;
+							vm.goals = vm.$store.state.goals.filter((goal) => !goal.archived);
+							vm.posts = resPosts.data.map((post) => ({ ...post, pageName: vm.creator.pageName }));
+						});
 					});
 				});
 			});
