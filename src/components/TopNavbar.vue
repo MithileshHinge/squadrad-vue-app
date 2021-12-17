@@ -7,7 +7,7 @@
 			<!--span class="sq-icon-bar sq-top-bar"></span>
 			<span class="sq-icon-bar sq-middle-bar"></span>
 			<span class="sq-icon-bar sq-bottom-bar"></span-->
-			<b-avatar v-if="isAuthenticated" id="sq-the-menubtn-avatar" src="@/assets/tushar.png" size="2rem"></b-avatar>
+			<b-avatar v-if="isAuthenticated" id="sq-the-menubtn-avatar" :src='$store.state.user.profilePicSrc' size="2rem"></b-avatar>
 			<span v-else class="sq-icon-bar"></span>
 		</b-navbar-toggle>
 		<b-navbar-nav v-if="isAuthenticated" class="d-none d-lg-flex">
