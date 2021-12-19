@@ -5,7 +5,7 @@
 		</div>
 		<b-row no-gutters>
 			<b-col align-self="center">
-				<b-avatar id="sq-the-profile-pic" src="@/assets/tushar.png" size="8.5rem"></b-avatar>
+				<b-avatar id="sq-the-profile-pic" :src="$store.state.creator.profilePicSrc" size="8.5rem"></b-avatar>
 			</b-col>
 		</b-row>
 		<b-row no-gutters>
