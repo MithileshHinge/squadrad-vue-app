@@ -4,10 +4,10 @@
 		<b-form id="sq-the-creator-info-form" class="overflow-auto" @submit.prevent="saveCreator">
 			<b-card class="sq-form-card">
 				<b-form-group>
-					<b-form-file style="display: none;"></b-form-file>
+					<b-form-file ref="sqRefCreatorProfilePicFileInput" id="sq-the-creator-profile-pic-file-input" accept="image/bmp, image/jpeg, image/png, image/tiff" style="display: none;" @change="selectProfilePic"/>
 					<b-avatar size="8.5rem">
-						<b-img src="@/assets/tushar.png" class="w-100 h-100"></b-img>
-						<b-button class="sq-btn-change-profile-pic">
+						<b-img :src="$store.state.creator.profilePicSrc" class="w-100 h-100"></b-img>
+						<b-button class="sq-btn-change-profile-pic" @click="onEditProfilePicBtnClick">
 							<b-icon-pencil-fill/>
 						</b-button>
 					</b-avatar>
@@ -64,6 +64,8 @@
 			<!-- div to clear fixed submit button from occluding last card-->
 			<div style="height: 3.5rem;"/>
 		</b-form>
+		<ImageCropModal modalId="sq-the-modal-cropper" @hide="resetFileInput" :imgDataURL="creatorProfilePic" :isUpdating="isProfilePicUpdating" @cropped="updateProfilePic">
+		</ImageCropModal>
 	</div>
 </template>
 
@@ -74,6 +76,8 @@ import {
 } from 'vuelidate/lib/validators';
 import FormInputGroup from '@/components/FormInputGroup.vue';
 import ButtonSubmit from '@/components/ButtonSubmit.vue';
+import ImageCropModal from '@/components/ImageCropModal.vue';
+import creatorService from '../services/creator.service';
 
 export default {
 	data() {
@@ -89,6 +93,8 @@ export default {
 			},
 			isSaved: true,
 			isSaving: false,
+			creatorProfilePic: this.$store.state.creator.profilePicSrc,
+			isProfilePicUpdating: false,
 		};
 	},
 	watch: {
@@ -106,14 +112,35 @@ export default {
 		},
 	},
 	methods: {
-		/*
-		adjustWidth() {
-			const hide = document.getElementById('sq-the-form-is-creating-hide');
-			const input = document.getElementById('sq-the-form-is-creating-1');
-			hide.textContent = this.creatorInfoForm.bio;
-			input.style.width = `${hide.offsetWidth}px`;
+		onEditProfilePicBtnClick() {
+			document.getElementById('sq-the-creator-profile-pic-file-input').click();
 		},
-		*/
+		selectProfilePic(event) {
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				this.$bvModal.show('sq-the-modal-cropper');
+				this.creatorProfilePic = e.target.result;
+			};
+
+			reader.readAsDataURL(event.target.files[0]);
+			return false;
+		},
+		updateProfilePic(blob) {
+			this.isProfilePicUpdating = true;
+			creatorService.updateCreatorProfilePic(blob).then((res) => {
+				if (res.status === 200) {
+					this.$bvModal.hide('sq-the-modal-cropper');
+					this.$store.dispatch('fetchCreator');
+				}
+			}).catch((err) => {
+				console.log(err);
+			}).finally(() => {
+				this.isProfilePicUpdating = false;
+			});
+		},
+		resetFileInput() {
+			this.$refs.sqRefCreatorProfilePicFileInput.reset();
+		},
 		saveCreator() {
 			this.isSaving = true;
 			this.$store.dispatch('updateCreator', this.creatorInfoForm).then(() => {
@@ -141,62 +168,7 @@ export default {
 	components: {
 		FormInputGroup,
 		ButtonSubmit,
+		ImageCropModal,
 	},
 };
 </script>
-
-<style lang="scss" scoped>
-/*
-#sq-the-form-creator-name-1 {
-	font-size: 1.375rem;
-	font-weight: 700;
-	letter-spacing: -0.01em;
-	color: $my-color-dark;
-	text-align: center;
-}
-
-#sq-the-form-is-creating-1,
-#sq-the-form-is-creating-text,
-#sq-the-form-is-creating-hide {
-	font-size: 1rem;
-	font-weight: 500;
-	color: $my-color-gray2;
-	padding: 0;
-	border: none;
-	min-width: 2rem;
-	height: 100%;
-}
-
-#sq-the-form-is-creating-1:focus,
-#sq-the-form-is-creating-text:focus,
-#sq-the-form-is-creating-hide:focus {
-	font-size: 1rem;
-	font-weight: 500;
-	color: $my-color-gray2;
-	padding: 0;
-	border: none;
-}
-
-#sq-the-form-is-creating-1 {
-	border-bottom: 1px solid $my-color-gray2;
-}
-
-#sq-the-form-is-creating-1:focus {
-	box-shadow: none;
-	border-bottom: 1px solid $french-rose;
-}
-
-#sq-the-form-is-creating-hide {
-	position: absolute;
-	top: -100vh;
-	height: 0;
-	overflow: hidden;
-	white-space: pre;
-}
-
-#sq-the-form-is-creating-hide:focus-visible {
-	outline: none;
-}
-*/
-
-</style>

@@ -21,4 +21,13 @@ export default {
 		return api.patch('/creator', creator)
 			.catch((err) => handleError(err));
 	},
+	updateCreatorProfilePic(blob) {
+		const formData = new FormData();
+		formData.append('profilePic', blob);
+		return api.put('/creator/profile-pic', formData, {
+			headers: {
+				'content-type': 'multipart/form-data',
+			},
+		});
+	},
 };

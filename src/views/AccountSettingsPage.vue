@@ -4,10 +4,10 @@
 		<b-form class="overflow-auto" @submit.prevent="saveUser">
 			<b-card class="sq-form-card">
 				<b-form-group>
-					<b-form-file ref="sqRefUserProfilePicFileInput" id="sq-the-profile-pic-file-input" accept="image/bmp, image/jpeg, image/png, image/tiff" style="display: none;" @change="editProfilePic"/>
+					<b-form-file ref="sqRefUserProfilePicFileInput" id="sq-the-profile-pic-file-input" accept="image/bmp, image/jpeg, image/png, image/tiff" style="display: none;" @change="selectProfilePic"/>
 					<b-avatar size="8.5rem">
 						<b-img :src="$store.state.user.profilePicSrc" class="w-100 h-100"></b-img>
-						<b-button class="sq-btn-change-profile-pic" @click="editProfilePicClicked">
+						<b-button class="sq-btn-change-profile-pic" @click="onEditProfilePicBtnClick">
 							<b-icon-pencil-fill/>
 						</b-button>
 					</b-avatar>
@@ -64,33 +64,7 @@
 				<ButtonSubmit :isProcessing="isAccountDeleting" :isProcessed="isAccountDeleted" modal buttonText="Delete account" buttonTextDone="Account deleted"/>
 			</b-form>
 		</CustomModal>
-		<!--CustomModal modalId="sq-the-modal-cropper" modalTitle="Crop picture" @shown="setUpVueCropper" @hide="resetFileInput">
-			<VueCropper :src="userProfilePic" ref="cropper" style="max-height: 266px;" :viewMode="1" :autoCropArea="1" dragMode="move" :aspectRatio="1" :guides="false" :center="false" :highlight="false" :background="false" :cropBoxMovable="false" :cropBoxResizable="false" :toggleDragModeOnDblclick="false" :minContainerWidth="266" :minContainerHeight="266" @zoom="setZoomSlider">
-			</VueCropper>
-			<b-row class="m-2">
-				<b-col cols="auto" class="px-0">
-					<b-icon-dash/>
-				</b-col>
-				<b-col>
-					<b-form-input ref="sqCropperZoomSlider" type="range" :min="cropperZoomMinVal" :max="cropperZoomMinVal*8" step="0.001" :value="cropperZoom" @input="onInputCropperSlider"/>
-				</b-col>
-				<b-col cols="auto" class="px-0">
-					<b-icon-plus/>
-				</b-col>
-			</b-row>
-			<b-row class="m-2">
-				<b-col cols="auto" class="pr-1 pl-0">
-					<b-icon-arrow-counterclockwise font-scale="0.75"/>
-				</b-col>
-				<b-col>
-					<b-form-input type="range" min="0" max="360" step="1" value="0" @input="$refs.cropper.rotateTo($event)"/>
-				</b-col>
-				<b-col cols="auto" class="pl-1 pr-0">
-					<b-icon-arrow-clockwise font-scale="0.75"/>
-				</b-col>
-			</b-row>
-		</CustomModal-->
-		<ImageCropModal modalId="sq-the-modal-cropper" @hide="resetFileInput" :imgDataURL="userProfilePic" @updated="profilePicUpdated">
+		<ImageCropModal modalId="sq-the-modal-cropper" @hide="resetFileInput" :imgDataURL="userProfilePic" :isUpdating="isProfilePicUpdating" @cropped="updateProfilePic">
 		</ImageCropModal>
 
 	</div>
@@ -132,8 +106,7 @@ export default {
 			isAccountDeleting: false,
 			isAccountDeleted: false,
 			userProfilePic: this.$store.state.user.profilePicSrc,
-			cropperZoom: 1,
-			cropperZoomMinVal: 1,
+			isProfilePicUpdating: false,
 		};
 	},
 	watch: {
@@ -147,10 +120,10 @@ export default {
 		},
 	},
 	methods: {
-		editProfilePicClicked() {
+		onEditProfilePicBtnClick() {
 			document.getElementById('sq-the-profile-pic-file-input').click();
 		},
-		editProfilePic(event) {
+		selectProfilePic(event) {
 			const reader = new FileReader();
 			reader.onload = (e) => {
 				this.$bvModal.show('sq-the-modal-cropper');
@@ -160,22 +133,21 @@ export default {
 			reader.readAsDataURL(event.target.files[0]);
 			return false;
 		},
-		cropPicture() {
-			const options = {
-				type: 'base64',
-				size: { width: 300, height: 300 },
-				format: 'jpeg',
-			};
-			this.$refs.sqRefCroppie.result(options, (output) => {
-				console.log(output);
+		updateProfilePic(blob) {
+			this.isProfilePicUpdating = true;
+			userService.updateProfilePic(blob).then((res) => {
+				if (res.status === 200) {
+					this.$bvModal.hide('sq-the-modal-cropper');
+					this.$store.dispatch('fetchUser');
+				}
+			}).catch((err) => {
+				console.log(err);
+			}).finally(() => {
+				this.isProfilePicUpdating = false;
 			});
 		},
 		resetFileInput() {
 			this.$refs.sqRefUserProfilePicFileInput.reset();
-		},
-		profilePicUpdated() {
-			this.$bvModal.hide('sq-the-modal-cropper');
-			this.$store.dispatch('fetchUser');
 		},
 		saveUser() {
 			this.isSaving = true;

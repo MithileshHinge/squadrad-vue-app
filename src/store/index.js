@@ -112,7 +112,8 @@ export default new Vuex.Store({
 			try {
 				const resCreator = await creatorService.getCreatorSelf();
 				if (resCreator && resCreator.status === 200) {
-					await commit('updateCreator', resCreator.data);
+					const { profilePicSrc, ...creatorData } = resCreator.data;
+					await commit('updateCreator', { ...creatorData, profilePicSrc: `http://localhost:8080/images/profilePics/creators/${profilePicSrc}` });
 				} else {
 					console.log(resCreator);
 				}
