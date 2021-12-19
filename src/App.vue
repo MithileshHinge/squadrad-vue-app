@@ -296,7 +296,7 @@ $cta-shadow-opacity: 0.4;
 	top: 60%;
 	bottom: 0;
 	border: 1px solid rgba($color: $my-color-light, $alpha: 0.25);
-	background-color: rgba($color: $my-color-light, $alpha: 0.25);
+	background-color: rgba($color: $my-color-gray2, $alpha: 0.25);
 	backdrop-filter: blur(5px);
 	color: $my-color-light;
 	box-shadow: none;

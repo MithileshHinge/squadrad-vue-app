@@ -6,7 +6,7 @@
 				<b-form-group>
 					<b-form-file ref="sqRefUserProfilePicFileInput" id="sq-the-profile-pic-file-input" accept="image/bmp, image/jpeg, image/png, image/tiff" style="display: none;" @change="editProfilePic"/>
 					<b-avatar size="8.5rem">
-						<b-img src="@/assets/tushar.png" class="w-100 h-100"></b-img>
+						<b-img :src="$store.state.user.profilePicSrc" class="w-100 h-100"></b-img>
 						<b-button class="sq-btn-change-profile-pic" @click="editProfilePicClicked">
 							<b-icon-pencil-fill/>
 						</b-button>
@@ -90,7 +90,7 @@
 				</b-col>
 			</b-row>
 		</CustomModal-->
-		<ImageCropModal modalId="sq-the-modal-cropper" @hide="resetFileInput" :imgDataURL="userProfilePic">
+		<ImageCropModal modalId="sq-the-modal-cropper" @hide="resetFileInput" :imgDataURL="userProfilePic" @updated="profilePicUpdated">
 		</ImageCropModal>
 
 	</div>
@@ -172,6 +172,10 @@ export default {
 		},
 		resetFileInput() {
 			this.$refs.sqRefUserProfilePicFileInput.reset();
+		},
+		profilePicUpdated() {
+			this.$bvModal.hide('sq-the-modal-cropper');
+			this.$store.dispatch('fetchUser');
 		},
 		saveUser() {
 			this.isSaving = true;

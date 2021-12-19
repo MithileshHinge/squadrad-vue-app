@@ -87,7 +87,8 @@ export default new Vuex.Store({
 			try {
 				const resUser = await userService.getUserSelf();
 				if (resUser && resUser.status === 200) {
-					await commit('updateUser', resUser.data);
+					const { profilePicSrc, ...userData } = resUser.data;
+					await commit('updateUser', { ...userData, profilePicSrc: `http://localhost:8080/images/profilePics/users/${profilePicSrc}` });
 				} else {
 					console.log(resUser);
 				}

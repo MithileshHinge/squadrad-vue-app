@@ -39,6 +39,15 @@ export default {
 		return api.patch('/user', user)
 			.catch((err) => handleError(err));
 	},
+	updateProfilePic(blob) {
+		const formData = new FormData();
+		formData.append('profilePic', blob);
+		return api.put('/user/profile-pic', formData, {
+			headers: {
+				'content-type': 'multipart/form-data',
+			},
+		});
+	},
 	changePassword(oldPassword, newPassword) {
 		return api.patch('/user/password', { oldPassword, newPassword })
 			.catch((err) => handleError(err));

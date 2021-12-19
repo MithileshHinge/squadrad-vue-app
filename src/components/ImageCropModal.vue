@@ -26,13 +26,16 @@
 				<b-icon-arrow-clockwise font-scale="0.75"/>
 			</b-col>
 		</b-row>
+		<ButtonSubmit modal :isProcessing="isUpdating" buttonText="Update profile picture" @click="updateProfilePic"/>
 	</CustomModal>
 </template>
 
 <script>
-import CustomModal from '@/components/CustomModal.vue';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
+import CustomModal from '@/components/CustomModal.vue';
+import userService from '../services/user.service';
+import ButtonSubmit from './ButtonSubmit.vue';
 
 export default {
 	props: {
@@ -42,6 +45,7 @@ export default {
 		return {
 			cropperZoom: 1,
 			cropperZoomMinVal: 1,
+			isUpdating: false,
 		};
 	},
 	methods: {
@@ -61,10 +65,25 @@ export default {
 			this.$refs.cropper.zoomTo(event);
 			this.cropperZoom = event;
 		},
+		updateProfilePic() {
+			this.isUpdating = true;
+			this.$refs.cropper.getCroppedCanvas({ maxHeight: 300, maxWidth: 300, imageSmoothingQuality: 'medium' }).toBlob((blob) => {
+				userService.updateProfilePic(blob).then((res) => {
+					if (res.status === 200) {
+						this.$emit('updated');
+					}
+				}).catch((err) => {
+					console.log(err);
+				}).finally(() => {
+					this.isUpdating = false;
+				});
+			}, 'image/jpeg');
+		},
 	},
 	components: {
 		CustomModal,
 		VueCropper,
+		ButtonSubmit,
 	},
 };
 </script>
