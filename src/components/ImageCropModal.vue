@@ -1,7 +1,7 @@
 <template>
 	<CustomModal modalTitle="Crop picture" @shown="setUpVueCropper" v-bind="$attrs" v-on="$listeners">
-		<div class="sq-cropper-circle">
-			<VueCropper :src="imgDataURL" ref="cropper" style="max-height: 266px;" :viewMode="1" :autoCropArea="1" dragMode="move" :aspectRatio="1" :guides="false" :center="false" :highlight="false" :background="false" :cropBoxMovable="false" :cropBoxResizable="false" :toggleDragModeOnDblclick="false" :minContainerWidth="266" :minContainerHeight="266" @zoom="setZoomSlider">
+		<div :class="`sq-cropper ${cropBoxRectangular ? '' : 'sq-cropper-circle'}`">
+			<VueCropper :src="imgDataURL" ref="cropper" style="max-height: 266px;" :viewMode="1" :autoCropArea="1" dragMode="move" :aspectRatio="aspectRatio === undefined ? 1 : aspectRatio" :guides="false" :center="false" :highlight="false" :background="false" :cropBoxMovable="false" :cropBoxResizable="cropBoxResizable" :toggleDragModeOnDblclick="false" :minContainerWidth="266" :minContainerHeight="266" @zoom="setZoomSlider">
 			</VueCropper>
 		</div>
 		<b-row class="m-2">
@@ -26,7 +26,7 @@
 				<b-icon-arrow-clockwise font-scale="0.75"/>
 			</b-col>
 		</b-row>
-		<ButtonSubmit modal :isProcessing="isUpdating" buttonText="Update profile picture" @click="cropPicture"/>
+		<ButtonSubmit modal :isProcessing="isUpdating" :buttonText="buttonText || 'Update profile picture'" @click="cropPicture"/>
 	</CustomModal>
 </template>
 
@@ -40,6 +40,10 @@ export default {
 	props: {
 		imgDataURL: String,
 		isUpdating: Boolean,
+		buttonText: String,
+		aspectRatio: Number,
+		cropBoxResizable: Boolean,
+		cropBoxRectangular: Boolean,
 	},
 	data() {
 		return {
@@ -83,7 +87,7 @@ export default {
 .sq-cropper-circle .cropper-crop-box, .sq-cropper-circle .cropper-view-box {
 	border-radius: 50%;
 }
-.sq-cropper-circle .cropper-view-box {
+.sq-cropper .cropper-view-box {
 	border: 2px solid #ffffff;
     outline: 0;
 }

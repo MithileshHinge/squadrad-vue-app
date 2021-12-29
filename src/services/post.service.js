@@ -9,8 +9,21 @@ export default {
 			});
 	},
 	createPost(post) {
-		return api.post('/post', post)
-			.catch((err) => handleError(err));
+		const formData = new FormData();
+		formData.append('description', post.description);
+		formData.append('squadId', post.squadId);
+		if (post.type === 'link') {
+			formData.append('type', post.type);
+			formData.append('link', post.link);
+		} else if (post.type === 'image') {
+			formData.append('type', post.type);
+			formData.append('postImage', post.postImage);
+		}
+		return api.post('/post', formData, {
+			headers: {
+				'content-type': 'multipart/form-data',
+			},
+		}).catch((err) => handleError(err));
 	},
 	getAllPostsByCreator(creatorUserId) {
 		return api.get(`/posts/${creatorUserId}`)
