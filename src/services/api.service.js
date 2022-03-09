@@ -1,7 +1,7 @@
 import axios from 'axios';
+import { BASE_DOMAIN } from '../config';
 
-const baseDomain = 'http://localhost:8080';
-const baseURL = `${baseDomain}/api`;
+const baseURL = `${BASE_DOMAIN}/api`;
 
 export default axios.create({
 	baseURL,

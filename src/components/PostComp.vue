@@ -6,7 +6,7 @@
 			</b-col>
 			<b-col align-self="center" class="pl-2">
 				<div class="sq-text">
-					{{ post.creator }}
+					{{ post.pageName }}
 				</div>
 				<div class="sq-subtext sq-text">
 					{{ post.time }}
@@ -23,9 +23,9 @@
 				</div>
 			</b-col>
 		</b-row>
-		<b-row no-gutters @click="openPost">
+		<b-row v-if="post.attachment && post.attachment.type === 'image'" no-gutters @click="openPost">
 			<b-col>
-				<!--b-img :src="require('@/assets/'+post.path)" fluid-grow></b-img-->
+				<b-img :src="`${BASE_DOMAIN}/api/${post.attachment.src}`" fluid-grow></b-img>
 			</b-col>
 		</b-row>
 		<b-row no-gutters class="p-2 mt-1" align-v="center">
@@ -44,12 +44,15 @@
 </template>
 
 <script>
+import { BASE_DOMAIN } from '../config';
+
 export default {
 	props: {
 		post: null,
 	},
 	data() {
 		return {
+			BASE_DOMAIN,
 			liked: false,
 		};
 	},

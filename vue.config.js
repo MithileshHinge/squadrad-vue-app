@@ -1,3 +1,5 @@
+import { SERVER_HOST } from './src/config';
+
 module.exports = {
 	css: {
 		loaderOptions: {
@@ -35,7 +37,7 @@ module.exports = {
 	devServer: {
 		proxy: {
 			'^/api/public': {
-				target: 'http://localhost:3000',
+				target: SERVER_HOST,
 				secure: false,
 				changeOrigin: true,
 				pathRewrite: {
@@ -44,7 +46,7 @@ module.exports = {
 				logLevel: 'debug',
 			},
 			'^/api/private': {
-				target: 'http://localhost:3000',
+				target: SERVER_HOST,
 				secure: false,
 				changeOrigin: true,
 				pathRewrite: {
@@ -53,7 +55,7 @@ module.exports = {
 				logLevel: 'debug',
 			},
 			'^/api': {
-				target: 'http://localhost:3000',
+				target: SERVER_HOST,
 				secure: false,
 				changeOrigin: true,
 				pathRewrite: {
@@ -62,7 +64,7 @@ module.exports = {
 				logLevel: 'debug',
 			},
 			'^/images': {
-				target: 'http://localhost:3000',
+				target: SERVER_HOST,
 				secure: false,
 				changeOrigin: true,
 				logLevel: 'debug',
