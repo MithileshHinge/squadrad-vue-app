@@ -1,2 +1,4 @@
-export const SERVER_HOST = 'http://localhost:3000';
-export const BASE_DOMAIN = 'http://localhost:8080';
+module.exports = {
+	SERVER_HOST: 'http://localhost:3000',
+	BASE_DOMAIN: 'http://localhost:8080',
+};

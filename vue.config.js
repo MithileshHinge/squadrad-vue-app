@@ -1,4 +1,4 @@
-import { SERVER_HOST } from './src/config';
+const { SERVER_HOST } = require('./src/config');
 
 module.exports = {
 	css: {
