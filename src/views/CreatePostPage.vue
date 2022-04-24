@@ -12,26 +12,28 @@
 						Exceeded max character limit
 					</b-form-invalid-feedback>
 				</b-form-row>
-				<b-form-row v-if="!postForm.postImage" class="float-left m-0 mt-3">
+				<b-form-row v-if="!postForm.postImage && !postForm.postVideo" class="float-left m-0 mt-3">
 					<b-col class="sq-attach-btn sq-attach-btn1 sq-shadow" @click="selectImage"><b-icon-image-fill class="sq-attach-icon"/></b-col>
-					<b-col class="sq-attach-btn sq-attach-btn2 sq-shadow"><b-icon-camera-video-fill class="sq-attach-icon"/></b-col>
+					<b-col class="sq-attach-btn sq-attach-btn2 sq-shadow" @click="selectVideo"><b-icon-camera-video-fill class="sq-attach-icon"/></b-col>
 					<b-col class="sq-attach-btn sq-attach-btn3 sq-shadow"><b-icon-link font-scale="1.4" rotate="-45" class="sq-attach-icon"/></b-col>
 				</b-form-row>
 				<b-form-row style="display: none;">
 					<b-form-file ref="sqRefPostImageFileInput" id="sq-the-post-image-file-input" accept="image/bmp, image/jpeg, image/png, image/tiff" @change="cropImage"/>
+					<b-form-file ref="sqRefPostVideoFileInput" id="sq-the-post-video-file-input" accept="video/mp4, video/quicktime, video/x-msvideo, video/x-ms-wmv" @change="attachVideo"/>
 				</b-form-row>
-				<b-form-row v-if="postForm.postImage" class="m-0 mt-3 position-relative">
-					<span class="sq-btn-remove-attachment sq-shadow" @click="removeImageAttachment">
+				<b-form-row v-if="postForm.postImage || postForm.postVideo" class="m-0 mt-3 position-relative">
+					<span class="sq-btn-remove-attachment sq-shadow" @click="removeAttachment">
 						<span class="sq-close-icon-bar"></span>
 					</span>
-					<b-img :src="attachedImageURL" fluid-grow/>
+					<b-img v-if="postForm.postImage" :src="attachmentURL" fluid-grow/>
+					<video v-if="postForm.postVideo" class="w-100 h-100" :src="attachmentURL" controls/>
 				</b-form-row>
 			</b-card>
 			<ButtonSubmit :isProcessing="isCreating" isRouted buttonText="Create post"/>
 			<!-- div to clear fixed submit button from occluding last card-->
 			<div style="height: 3.5rem;"/>
 		</b-form>
-		<ImageCropModal modalId="sq-the-modal-cropper" buttonText="Attach image" :aspectRatio="NaN" :cropBoxResizable="true" :cropBoxRectangular="true" @hide="resetFileInput" :imgDataURL="selectedPostImage" @cropped="attachImage">
+		<ImageCropModal modalId="sq-the-modal-cropper" buttonText="Attach image" :aspectRatio="NaN" :cropBoxResizable="true" :cropBoxRectangular="true" @hide="resetImageFileInput" :imgDataURL="selectedPostImage" @cropped="attachImage">
 		</ImageCropModal>
 	</div>
 </template>
@@ -65,6 +67,7 @@ export default {
 				description: '',
 				type: '',
 				postImage: undefined,
+				postVideo: undefined,
 			},
 			selectedPostImage: undefined,
 			isCreating: false,
@@ -78,10 +81,13 @@ export default {
 		};
 	},
 	computed: {
-		attachedImageURL() {
+		attachmentURL() {
+			const urlCreator = window.URL || window.webkitURL;
 			if (this.postForm.postImage) {
-				const urlCreator = window.URL || window.webkitURL;
 				return urlCreator.createObjectURL(this.postForm.postImage);
+			}
+			if (this.postForm.postVideo) {
+				return urlCreator.createObjectURL(this.postForm.postVideo);
 			}
 			return undefined;
 		},
@@ -104,11 +110,22 @@ export default {
 			this.postForm.postImage = blob;
 			this.postForm.type = 'image';
 		},
-		resetFileInput() {
+		resetImageFileInput() {
 			this.$refs.sqRefPostImageFileInput.reset();
 		},
-		removeImageAttachment() {
+		selectVideo() {
+			document.getElementById('sq-the-post-video-file-input').click();
+		},
+		attachVideo(event) {
+			[this.postForm.postVideo] = event.target.files;
+			this.postForm.type = 'video';
+		},
+		resetVideoFileInput() {
+			this.$refs.sqRefPostVideoFileInput.reset();
+		},
+		removeAttachment() {
 			this.postForm.postImage = undefined;
+			this.postForm.postVideo = undefined;
 			this.postForm.type = '';
 		},
 		createPost() {
@@ -186,5 +203,6 @@ export default {
 	padding: 0.5rem 0.41rem;
 	top: 0.5rem;
 	right: 0.5rem;
+	z-index: 100;
 }
 </style>

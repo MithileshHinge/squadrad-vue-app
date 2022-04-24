@@ -9,17 +9,20 @@ export default {
 			});
 	},
 	createPost(post) {
+		let postUrl = '/post';
 		const formData = new FormData();
 		formData.append('description', post.description);
 		formData.append('squadId', post.squadId);
 		if (post.type === 'link') {
-			formData.append('type', post.type);
 			formData.append('link', post.link);
 		} else if (post.type === 'image') {
-			formData.append('type', post.type);
 			formData.append('postImage', post.postImage);
+			postUrl = '/post/image';
+		} else if (post.type === 'video') {
+			formData.append('postVideo', post.postVideo);
+			postUrl = '/post/video';
 		}
-		return api.post('/post', formData, {
+		return api.post(postUrl, formData, {
 			headers: {
 				'content-type': 'multipart/form-data',
 			},

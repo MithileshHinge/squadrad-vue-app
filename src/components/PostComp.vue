@@ -28,6 +28,11 @@
 				<b-img :src="`${BASE_DOMAIN}/api/${post.attachment.src}`" fluid-grow></b-img>
 			</b-col>
 		</b-row>
+		<b-row v-if="post.attachment && post.attachment.type === 'video'" no-gutters @click="openPost">
+			<b-col>
+				<video class="w-100 h-100" :src="`${BASE_DOMAIN}/api/${post.attachment.src}`" controls></video>
+			</b-col>
+		</b-row>
 		<b-row no-gutters class="p-2 mt-1" align-v="center">
 			<b-col @click="openPost">
 				<b-link class="sq-text float-left sq-post-num-comments">{{ post.numComments }} Comments</b-link>
