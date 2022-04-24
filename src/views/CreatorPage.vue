@@ -5,7 +5,7 @@
 		</div>
 		<b-row no-gutters>
 			<b-col align-self="center">
-				<b-avatar id="sq-the-profile-pic" :src="$store.state.creator.profilePicSrc" size="8.5rem"></b-avatar>
+				<b-avatar id="sq-the-profile-pic" :src="$route.path === '/creator' ? $store.state.creator.profilePicSrc : `${BASE_DOMAIN}/images/profilePics/creators/${creator.profilePicSrc}`" size="8.5rem"></b-avatar>
 			</b-col>
 		</b-row>
 		<b-row no-gutters>
@@ -141,6 +141,7 @@ import goalsService from '../services/goal.service';
 import postsService from '../services/post.service';
 import paymentService from '../services/payment.service';
 import myKeys from '../myKeys';
+import { BASE_DOMAIN } from '../config';
 
 export default {
 	data() {
@@ -202,6 +203,7 @@ export default {
 				},
 			],
 			*/
+			BASE_DOMAIN,
 			posts: [],
 			creator: {},
 			squads: [],

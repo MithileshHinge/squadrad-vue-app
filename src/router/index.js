@@ -94,7 +94,7 @@ const routes = [
 		name: 'CreatorPage',
 		component: CreatorPage,
 		beforeEnter(to, from, next) {
-			if (Number.parseInt(to.params.userId, 10) === store.state.creator.userId) {
+			if (to.params.userId === store.state.creator.userId) {
 				return next('/creator');
 			}
 			return next();
