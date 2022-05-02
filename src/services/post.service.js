@@ -13,7 +13,7 @@ export default {
 		const formData = new FormData();
 		formData.append('description', post.description);
 		formData.append('squadId', post.squadId);
-		if (post.type === 'link') {
+		if (post.link && post.link.trim().length > 2) {
 			formData.append('link', post.link);
 		} else if (post.type === 'image') {
 			formData.append('postImage', post.postImage);

@@ -16,19 +16,26 @@
 				<b-icon-three-dots-vertical class="sq-post-menu-button"/>
 			</b-col>
 		</b-row>
-		<b-row no-gutters class="p-2" @click="openPost">
+		<b-row no-gutters class="p-2">
 			<b-col align-self="center">
 				<div class="sq-text">
 					{{ post.description }}
 				</div>
 			</b-col>
 		</b-row>
-		<b-row v-if="post.attachment && post.attachment.type === 'image'" no-gutters @click="openPost">
+		<b-row v-if="post.link" no-gutters class="p-2">
+			<b-col>
+				<a :href="urlNormalized" target="_blank" class="text-decoration-none">
+					<LinkAttachment :url="post.link"/>
+				</a>
+			</b-col>
+		</b-row>
+		<b-row v-else-if="post.attachment && post.attachment.type === 'image'" no-gutters @click="openPost">
 			<b-col>
 				<b-img :src="`${BASE_DOMAIN}/api/${post.attachment.src}`" fluid-grow></b-img>
 			</b-col>
 		</b-row>
-		<b-row v-if="post.attachment && post.attachment.type === 'video'" no-gutters @click="openPost">
+		<b-row v-else-if="post.attachment && post.attachment.type === 'video'" no-gutters @click="openPost">
 			<b-col>
 				<video class="w-100 h-100" :src="`${BASE_DOMAIN}/api/${post.attachment.src}`" controls></video>
 			</b-col>
@@ -50,6 +57,7 @@
 
 <script>
 import { BASE_DOMAIN } from '../config';
+import LinkAttachment from './LinkAttachment.vue';
 
 export default {
 	props: {
@@ -61,6 +69,16 @@ export default {
 			liked: false,
 		};
 	},
+	computed: {
+		urlNormalized() {
+			if (this.post.link) {
+				let urlNormalized = this.post.link;
+				if (!urlNormalized.startsWith('https://') || !urlNormalized.startsWith('http://')) urlNormalized = `https://${urlNormalized}`;
+				return urlNormalized;
+			}
+			return undefined;
+		},
+	},
 	methods: {
 		toggleLike() {
 			this.liked = !this.liked;
@@ -68,6 +86,9 @@ export default {
 		openPost() {
 			this.$router.push('/post');
 		},
+	},
+	components: {
+		LinkAttachment,
 	},
 };
 </script>
