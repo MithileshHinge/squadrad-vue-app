@@ -2,11 +2,11 @@
 	<b-container class="sq-post-container p-0 mb-3">
 		<b-row no-gutters class="p-2">
 			<b-col cols="auto" class="px-0">
-				<b-avatar src="@/assets/tushar.png"></b-avatar>
+				<b-avatar :src="profilePic"></b-avatar>
 			</b-col>
 			<b-col align-self="center" class="pl-2">
 				<div class="sq-text">
-					{{ post.pageName }}
+					{{ pageName }}
 				</div>
 				<div class="sq-subtext sq-text">
 					{{ post.time }}
@@ -62,6 +62,8 @@ import LinkAttachment from './LinkAttachment.vue';
 export default {
 	props: {
 		post: null,
+		profilePic: String,
+		pageName: String,
 	},
 	data() {
 		return {

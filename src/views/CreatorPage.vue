@@ -5,7 +5,7 @@
 		</div>
 		<b-row no-gutters>
 			<b-col align-self="center">
-				<b-avatar id="sq-the-profile-pic" :src="$route.path === '/creator' ? $store.state.creator.profilePicSrc : `${BASE_DOMAIN}/images/profilePics/creators/${creator.profilePicSrc}`" size="8.5rem"></b-avatar>
+				<b-avatar id="sq-the-profile-pic" :src="creatorProfilePicSrc" size="8.5rem"></b-avatar>
 			</b-col>
 		</b-row>
 		<b-row no-gutters>
@@ -123,7 +123,7 @@
 		<b-row no-gutters align-h="center">
 			<b-col class="mt-2" cols="12">
 				<b-card class="sq-card-flat p-1">
-					<PostComp v-for="post in posts" :key="post.postId" :post="post"></PostComp>
+					<PostComp v-for="post in posts" :key="post.postId" :post="post" :profilePic="creatorProfilePicSrc" :pageName="creator.pageName"></PostComp>
 				</b-card>
 			</b-col>
 		</b-row>
@@ -210,6 +210,11 @@ export default {
 			goals: [],
 		};
 	},
+	computed: {
+		creatorProfilePicSrc() {
+			return (this.$route.path === '/creator' ? this.$store.state.creator.profilePicSrc : `${BASE_DOMAIN}/images/profilePics/creators/${this.creator.profilePicSrc}`);
+		},
+	},
 	beforeRouteEnter(to, from, next) {
 		console.log('debug1');
 		if (to.params.userId) {
@@ -226,7 +231,7 @@ export default {
 						vm.creator = resCreator.data;
 						vm.squads = resSquads.data;
 						vm.goals = resGoals.data;
-						vm.posts = resPosts.data.map((post) => ({ ...post, pageName: vm.creator.pageName }));
+						vm.posts = resPosts.data;
 					});
 				} else {
 					console.log(resCreator);
