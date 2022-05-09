@@ -23,7 +23,7 @@ export default {
 	computed: {
 		hostname() {
 			let urlNormalized = this.url;
-			if (!urlNormalized.startsWith('https://') || !urlNormalized.startsWith('http://')) urlNormalized = `https://${urlNormalized}`;
+			if (!urlNormalized.startsWith('https://') && !urlNormalized.startsWith('http://')) urlNormalized = `https://${urlNormalized}`;
 			let { hostname } = new URL(urlNormalized);
 			if (hostname.startsWith('www.')) hostname = hostname.slice(4);
 			return hostname.toUpperCase();

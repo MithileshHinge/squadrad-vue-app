@@ -100,7 +100,7 @@ export default {
 		urlNormalized() {
 			if (this.post.link) {
 				let urlNormalized = this.post.link;
-				if (!urlNormalized.startsWith('https://') || !urlNormalized.startsWith('http://')) urlNormalized = `https://${urlNormalized}`;
+				if (!urlNormalized.startsWith('https://') && !urlNormalized.startsWith('http://')) urlNormalized = `https://${urlNormalized}`;
 				return urlNormalized;
 			}
 			return undefined;
