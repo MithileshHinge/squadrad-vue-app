@@ -57,7 +57,7 @@
 			</b-col>
 		</b-row>
 		<b-row no-gutters align-h="center">
-			<b-col v-for="(squad, i) in squads" :key="squad.id" class="mt-3 mx-2" cols="auto">
+			<b-col v-for="(squad, i) in squadsSorted" :key="squad.id" class="mt-3 mx-2" cols="auto">
 				<SquadCard :squad="squad" :squadNo="i" :totalSquads="squads.length" @join="joinSquad(squad.squadId)"/>
 			</b-col>
 		</b-row>
@@ -123,7 +123,7 @@
 		<b-row no-gutters align-h="center">
 			<b-col class="mt-2" cols="12">
 				<b-card class="sq-card-flat p-1">
-					<PostComp v-for="post in posts" :key="post.postId" :post="post" :profilePic="creatorProfilePicSrc" :pageName="creator.pageName"></PostComp>
+					<PostComp v-for="post in posts" :key="post.postId" :post="post" :squad="squads.find((squad) => squad.squadId === post.squadId)" :squadNo="squadsSorted.findIndex((squad) => squad.squadId === post.squadId)" :totalSquads="squads.length" :profilePic="creatorProfilePicSrc" :pageName="creator.pageName"></PostComp>
 				</b-card>
 			</b-col>
 		</b-row>
@@ -213,6 +213,9 @@ export default {
 	computed: {
 		creatorProfilePicSrc() {
 			return (this.$route.path === '/creator' ? this.$store.state.creator.profilePicSrc : `${BASE_DOMAIN}/images/profilePics/creators/${this.creator.profilePicSrc}`);
+		},
+		squadsSorted() {
+			return [...this.squads].sort((a, b) => a.amount - b.amount);
 		},
 	},
 	beforeRouteEnter(to, from, next) {

@@ -17,13 +17,12 @@
 		<b-button v-if="edit" class="sq-card-btn sq-btn sq-shadow" @click="$emit('edit')">
 			<b-row no-gutters align-h="center" align-v="center"><b-icon-pencil-fill font-scale="0.95" class="mr-2"/>Edit squad</b-row>
 		</b-button>
-		<b-button v-else :ref="'sqRefJoinBtn'+squad.squadId" class="sq-card-btn sq-btn-cta sq-btn my-1" :style="`background-image: linear-gradient(22deg, ${getJoinBtnGradientStops[squadNo]}, ${getJoinBtnGradientStops[squadNo + 1]}, ${getJoinBtnGradientStops[squadNo]});`" @click="$emit('join')">Join squad at <span class="sq-rupee"/>{{ squad.amount }}/month</b-button>
+		<JoinButton v-else :amount="squad.amount" :squadNo="squadNo" :totalSquads="totalSquads"/>
 	</b-card>
 </template>
 
 <script>
-import chroma from 'chroma-js';
-import scssColors from '@/scss/_export.scss';
+import JoinButton from './JoinButton.vue';
 
 export default {
 	props: {
@@ -32,15 +31,8 @@ export default {
 		totalSquads: Number,
 		edit: Boolean,
 	},
-	computed: {
-		getJoinBtnGradientStops() {
-			try {
-				return chroma.scale([scssColors.skyblueCrayola, scssColors.dodgerBlue, scssColors.amethyst, scssColors.frenchRose]).mode('lrgb').colors(this.totalSquads + 1);
-			} catch (error) {
-				console.error(error);
-			}
-			return null;
-		},
+	components: {
+		JoinButton,
 	},
 };
 </script>

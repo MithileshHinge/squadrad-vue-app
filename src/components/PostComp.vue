@@ -23,7 +23,26 @@
 				</div>
 			</b-col>
 		</b-row>
-		<b-row v-if="post.link" no-gutters class="p-2">
+		<b-row v-if="(post.link || post.attachment) && post.locked" no-gutters class="p-2">
+			<b-col>
+				<div class="sq-post-locked-attachment">
+					<b-row>
+						<b-col>
+							<b-row class="justify-content-center">
+								<div class="sq-post-locked-text w-100">This post is for squad members only</div>
+							</b-row>
+							<b-row class="justify-content-center">
+								<b-icon-lock-fill font-scale="2" class="sq-post-locked-text sq-post-locked-icon m-4"/>
+							</b-row>
+							<b-row class="justify-content-center">
+								<JoinButton :amount="squad.amount" :squadNo="squadNo" :totalSquads="totalSquads"/>
+							</b-row>
+						</b-col>
+					</b-row>
+				</div>
+			</b-col>
+		</b-row>
+		<b-row v-else-if="post.link" no-gutters class="p-2">
 			<b-col>
 				<a :href="urlNormalized" target="_blank" class="text-decoration-none">
 					<LinkAttachment :url="post.link"/>
@@ -45,7 +64,7 @@
 				<b-link class="sq-text float-left sq-post-num-comments">{{ post.numComments }} Comments</b-link>
 			</b-col>
 			<b-col cols="auto" class="px-1 sq-text">
-				{{ post.numLikes }}
+				{{ totalLikes === 0 ? '' : totalLikes }}
 			</b-col>
 			<b-col cols="auto" class="sq-post-action-icon">
 				<b-icon-heart-fill v-if="liked" @click="toggleLike"></b-icon-heart-fill>
@@ -58,10 +77,15 @@
 <script>
 import { BASE_DOMAIN } from '../config';
 import LinkAttachment from './LinkAttachment.vue';
+import postLikeService from '../services/postLike.service';
+import JoinButton from './JoinButton.vue';
 
 export default {
 	props: {
-		post: null,
+		post: Object,
+		squad: Object,
+		squadNo: Number,
+		totalSquads: Number,
 		profilePic: String,
 		pageName: String,
 	},
@@ -69,6 +93,7 @@ export default {
 		return {
 			BASE_DOMAIN,
 			liked: false,
+			totalLikes: 0,
 		};
 	},
 	computed: {
@@ -83,14 +108,59 @@ export default {
 	},
 	methods: {
 		toggleLike() {
-			this.liked = !this.liked;
+			postLikeService.toggleLike(this.post.postId)
+				.then((res) => {
+					if (res.status === 200) {
+						this.liked = !this.liked;
+						this.totalLikes = res.data.numLikes;
+					}
+				}).catch((err) => {
+					const res = err.response;
+					this.formSubmitted = false;
+					this.$bvToast.toast(res.data.msg, {
+						noCloseButton: true,
+						variant: 'danger',
+						toaster: 'b-toaster-bottom-center',
+					});
+				});
 		},
 		openPost() {
 			this.$router.push('/post');
 		},
 	},
+	beforeMount() {
+		postLikeService.getTotalLikes(this.post.postId)
+			.then((res) => {
+				if (res.status === 200) {
+					this.totalLikes = res.data.numLikes;
+				}
+			}).catch((err) => {
+				const res = err.response;
+				this.formSubmitted = false;
+				this.$bvToast.toast(res.data.msg, {
+					noCloseButton: true,
+					variant: 'danger',
+					toaster: 'b-toaster-bottom-center',
+				});
+			});
+		postLikeService.checkLiked(this.post.postId)
+			.then((res) => {
+				if (res.status === 200) {
+					this.liked = res.data.isPostLiked;
+				}
+			}).catch((err) => {
+				const res = err.response;
+				this.formSubmitted = false;
+				this.$bvToast.toast(res.data.msg, {
+					noCloseButton: true,
+					variant: 'danger',
+					toaster: 'b-toaster-bottom-center',
+				});
+			});
+	},
 	components: {
 		LinkAttachment,
+		JoinButton,
 	},
 };
 </script>
@@ -118,6 +188,21 @@ export default {
 	font-size: 1.25rem;
 	line-height: 1.25rem;
 	color: $my-color-gray1;
+}
+
+.sq-post-locked-attachment {
+	background-color: $my-color-gray1;
+	width: 100%;
+	height: 100%;
+	padding: 2rem;
+}
+
+.sq-post-locked-text {
+	color: $my-color-light;
+}
+
+.sq-post-locked-icon {
+	transform: scaleX(1.3);
 }
 
 </style>
