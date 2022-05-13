@@ -1,21 +1,41 @@
 <template>
-	<b-media class="fixed-bottom sq-comment-input-media" no-body>
-		<b-media-aside class="mx-2" vertical-align="center">
-			<b-avatar src="@/assets/tushar.png" size="2rem"></b-avatar>
-		</b-media-aside>
-		<b-media-body>
-			<b-form @submit.prevent="onSubmitComment" class="sq-comment-input-form sq-text">
-				<b-form-input v-model="commentInput" trim class="my-auto pl-2 sq-comment-input-form-input" placeholder="Leave a comment..." autocomplete="off"></b-form-input>
-				<b-button type="submit" class="sq-send">
-					<svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z"/></svg>
-				</b-button>
-			</b-form>
-		</b-media-body>
-	</b-media>
+	<div class="fixed-bottom sq-comment-input">
+		<div class="position-relative">
+			<b-row no-gutters :class="`w-100 px-3 py-2 bg-light sq-comment-input-replyingto ${isReplying ? '' : 'sq-comment-input-replyingto-hidden'}`">
+				<b-col>
+					<div class="w-100 text-left sq-text">
+						Replying to <strong>{{ replyingTo }}</strong>
+					</div>
+				</b-col>
+				<b-col cols="auto" align-self="center" @click="$emit('resetReplyTo')">
+					<span class="sq-close-icon-bar"></span>
+				</b-col>
+			</b-row>
+			<b-row no-gutters>
+				<b-media class="sq-comment-input-media w-100" no-body>
+					<b-media-aside class="mx-2" vertical-align="center">
+						<b-avatar src="@/assets/tushar.png" size="2rem"></b-avatar>
+					</b-media-aside>
+					<b-media-body>
+						<b-form @submit.prevent="onSubmitComment" class="sq-comment-input-form sq-text">
+							<b-form-input v-model="commentInput" trim class="my-auto pl-2 sq-comment-input-form-input" placeholder="Leave a comment..." autocomplete="off"></b-form-input>
+							<b-button type="submit" class="sq-send">
+								<svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z"/></svg>
+							</b-button>
+						</b-form>
+					</b-media-body>
+				</b-media>
+			</b-row>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
+	props: {
+		isReplying: Boolean,
+		replyingTo: String,
+	},
 	data() {
 		return {
 			commentInput: '',
@@ -23,8 +43,10 @@ export default {
 	},
 	methods: {
 		onSubmitComment() {
-			this.$emit('submit', this.commentInput);
-			this.commentInput = '';
+			if (this.commentInput.trim()) {
+				this.$emit('submit', this.commentInput.trim());
+				this.commentInput = '';
+			}
 		},
 	},
 };
@@ -32,8 +54,13 @@ export default {
 
 <style lang="scss" scoped>
 
+.sq-comment-input {
+	z-index: 100;
+}
+
 .sq-comment-input-media {
 	background-color: #ffffff;
+	z-index: 1;
 	box-shadow: 0 4px 20px 0 rgba($color: $my-color-dark, $alpha: 0.15);
 }
 
@@ -77,4 +104,13 @@ export default {
 	}
 }
 
+.sq-comment-input-replyingto {
+	top: -75%;
+	position: absolute;
+	transition: top 0.2s ease;
+}
+
+.sq-comment-input-replyingto-hidden {
+	top: 0;
+}
 </style>

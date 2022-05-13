@@ -39,7 +39,7 @@
 						<b-col cols="auto">
 							<b-icon-reply></b-icon-reply>
 						</b-col>
-						<b-col cols="auto" class="ml-1 mr-3">
+						<b-col cols="auto" class="ml-1 mr-3" @click="$emit('replyTo', comment.name)">
 							Reply
 						</b-col>
 					</b-row>
@@ -47,7 +47,7 @@
 			</b-media-body>
 		</b-media>
 		<div v-if="!isReply">
-			<CommentComp v-for="reply in comment.replies" :key="reply.commentId" :comment="reply" :isReply="true"/>
+			<CommentComp v-for="reply in comment.replies" :key="reply.commentId" :comment="reply" :isReply="true" @replyTo="$emit('replyTo', $event)"/>
 		</div>
 	</div>
 </template>
