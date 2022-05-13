@@ -2,13 +2,13 @@
 	<div>
 		<b-media :class="isReply && 'sq-comment-isreply'" class="mt-2 mr-2" no-body>
 			<b-media-aside class="mx-2">
-				<b-avatar src="@/assets/tushar.png" size="2rem"></b-avatar>
+				<b-avatar :src="comment.profilePicSrc" size="2rem"></b-avatar>
 			</b-media-aside>
 			<b-media-body>
 				<b-container class="sq-comment-container sq-text">
 					<b-row no-gutters>
 						<b-col class="sq-font-regular">
-							Mithilesh Hinge
+							{{ comment.name }}
 						</b-col>
 						<b-col cols="auto" class="sq-subtext">
 							{{ '2h' }}

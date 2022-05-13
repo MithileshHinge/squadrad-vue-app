@@ -35,6 +35,10 @@ export default {
 		return api.get('/user')
 			.catch((err) => handleError(err));
 	},
+	getUserById(userId) {
+		return api.get(`/user/${userId}`)
+			.catch((err) => handleError(err));
+	},
 	updateUser(user) {
 		return api.patch('/user', user)
 			.catch((err) => handleError(err));
