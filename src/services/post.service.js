@@ -32,4 +32,8 @@ export default {
 		return api.get(`/posts/${creatorUserId}`)
 			.catch((err) => handleError(err));
 	},
+	getPostById(postId) {
+		return api.get(`/post/${postId}`)
+			.catch((err) => handleError(err));
+	},
 };

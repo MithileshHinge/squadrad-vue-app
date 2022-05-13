@@ -46,7 +46,7 @@ const routes = [
 		component: HomePage,
 	},
 	{
-		path: '/post',
+		path: '/post/:postId',
 		name: 'PostPage',
 		component: PostPage,
 	},

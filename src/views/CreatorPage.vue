@@ -137,8 +137,8 @@ import GoalCard from '@/components/GoalCard.vue';
 import PostComp from '@/components/PostComp.vue';
 import creatorService from '../services/creator.service';
 import squadService from '../services/squad.service';
-import goalsService from '../services/goal.service';
-import postsService from '../services/post.service';
+import goalService from '../services/goal.service';
+import postService from '../services/post.service';
 import paymentService from '../services/payment.service';
 import myKeys from '../myKeys';
 import { BASE_DOMAIN } from '../config';
@@ -203,7 +203,6 @@ export default {
 				},
 			],
 			*/
-			BASE_DOMAIN,
 			posts: [],
 			creator: {},
 			squads: [],
@@ -224,8 +223,8 @@ export default {
 			const fetchData = [
 				creatorService.getCreatorById(to.params.userId),
 				squadService.getAllSquads(to.params.userId),
-				goalsService.getAllGoals(to.params.userId),
-				postsService.getAllPostsByCreator(to.params.userId),
+				goalService.getAllGoals(to.params.userId),
+				postService.getAllPostsByCreator(to.params.userId),
 			];
 
 			Promise.all(fetchData).then(([resCreator, resSquads, resGoals, resPosts]) => {
@@ -255,7 +254,7 @@ export default {
 			next((vm) => {
 				vm.$store.dispatch('fetchAllSquads').finally(() => {
 					vm.$store.dispatch('fetchAllGoals').finally(() => {
-						postsService.getAllPostsByCreator(vm.$store.state.user.userId).then((resPosts) => {
+						postService.getAllPostsByCreator(vm.$store.state.user.userId).then((resPosts) => {
 							vm.creator = vm.$store.state.creator;
 							vm.squads = vm.$store.state.squads;
 							vm.goals = vm.$store.state.goals.filter((goal) => !goal.archived);

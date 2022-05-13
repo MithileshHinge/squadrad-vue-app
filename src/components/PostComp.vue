@@ -125,7 +125,7 @@ export default {
 				});
 		},
 		openPost() {
-			this.$router.push('/post');
+			this.$router.push(`/post/${this.post.postId}`);
 		},
 	},
 	beforeMount() {
