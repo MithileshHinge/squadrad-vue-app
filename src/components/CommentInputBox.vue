@@ -4,7 +4,7 @@
 			<b-avatar src="@/assets/tushar.png" size="2rem"></b-avatar>
 		</b-media-aside>
 		<b-media-body>
-			<b-form @submit="onSubmitComment" class="sq-comment-input-form sq-text">
+			<b-form @submit.prevent="onSubmitComment" class="sq-comment-input-form sq-text">
 				<b-form-input v-model="commentInput" trim class="my-auto pl-2 sq-comment-input-form-input" placeholder="Leave a comment..." autocomplete="off"></b-form-input>
 				<b-button type="submit" class="sq-send">
 					<svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z"/></svg>
@@ -22,8 +22,8 @@ export default {
 		};
 	},
 	methods: {
-		onSubmitComment(event) {
-			event.preventDefault();
+		onSubmitComment() {
+			this.$emit('submit', this.commentInput);
 			this.commentInput = '';
 		},
 	},

@@ -4,7 +4,7 @@
 		<b-container>
 			<CommentComp v-for="comment in comments" :key="comment.commentId" :comment="comment" :isReply="false" class="mb-2"></CommentComp>
 		</b-container>
-		<CommentInputBox/>
+		<CommentInputBox @submit="submitComment"/>
 		<!-- div to clear fixed commentinputbox from occluding last comment-->
 		<div style="height: 3.5rem;"/>
 	</div>
@@ -16,32 +16,15 @@ import PostComp from '@/components/PostComp.vue';
 import CommentComp from '@/components/CommentComp.vue';
 import CommentInputBox from '@/components/CommentInputBox.vue';
 import postService from '../services/post.service';
+import creatorService from '../services/creator.service';
+import commentService from '../services/comment.service';
 import store from '../store';
 import { BASE_DOMAIN } from '../config';
 
 export default {
 	data() {
 		return {
-			comments: [
-				{
-					commentId: 1,
-					userId: 1,
-					text: 'Dhaapu',
-					replies: [
-						{
-							commentId: 3,
-							userId: 1,
-							text: 'Khudka comic bana',
-						},
-					],
-				},
-				{
-					commentId: 2,
-					userId: 1,
-					text: 'Boooooo',
-				},
-
-			],
+			comments: undefined,
 			post: undefined,
 			profilePic: undefined,
 			pageName: undefined,
@@ -54,18 +37,61 @@ export default {
 			return `${BASE_DOMAIN}/images/profilePics/creators/${this.profilePic}`;
 		},
 	},
+	methods: {
+		submitComment(text) {
+			commentService.addComment(this.post.postId, text).then((res) => {
+				if (res && res.status === 200) {
+					commentService.getCommentsOnPost(this.post.postId).then((resComments) => {
+						if (resComments && resComments.status === 200) {
+							this.comments = resComments.data;
+						}
+					}).catch((err) => {
+						console.log(err);
+						this.$bvToast.toast((err.response.msg, {
+							noCloseButton: true,
+							variant: 'danger',
+							toaster: 'b-toaster-bottom-center',
+						}));
+					});
+				}
+			}).catch((err) => {
+				console.log(err);
+				this.$bvToast.toast((err.response.msg, {
+					noCloseButton: true,
+					variant: 'danger',
+					toaster: 'b-toaster-bottom-center',
+				}));
+			});
+		},
+	},
 	beforeRouteEnter(to, from, next) {
-		postService.getPostById(to.params.postId).then((res) => {
-			if (res && res.status === 200) {
-				const post = res.data;
+		postService.getPostById(to.params.postId).then((resPost) => {
+			if (resPost && resPost.status === 200) {
+				const post = resPost.data;
 				if (!post.locked) {
-					if (post.userId === store.state.creator.userId) {
-						next((vm) => {
-							vm.post = res.data;
-							vm.profilePic = store.state.creator.profilePicSrc;
-							vm.pageName = store.state.creator.pageName;
-						});
-					}
+					commentService.getCommentsOnPost(post.postId).then((resComments) => {
+						if (resComments && resComments.status === 200) {
+							if (post.userId === store.state.creator.userId) {
+								next((vm) => {
+									vm.post = resPost.data;
+									vm.profilePic = store.state.creator.profilePicSrc;
+									vm.pageName = store.state.creator.pageName;
+									vm.comments = resComments.data;
+								});
+							} else {
+								creatorService.getCreatorById(post.userId).then((resCreator) => {
+									if (resCreator && resCreator.status === 200) {
+										next((vm) => {
+											vm.post = resPost.data;
+											vm.profilePic = resCreator.data.profilePicSrc;
+											vm.pageName = resCreator.data.pageName;
+											vm.comments = resComments.data;
+										});
+									}
+								});
+							}
+						}
+					});
 				} else {
 					console.log('debug1111');
 					next(new Error('Post is locked'));
