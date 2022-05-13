@@ -14,4 +14,8 @@ export default {
 		return api.get(`/comments/${postId}`)
 			.catch((err) => handleError(err));
 	},
+	countNumCommentsOnPost(postId) {
+		return api.get(`/comments/count/${postId}`)
+			.catch((err) => handleError(err));
+	},
 };

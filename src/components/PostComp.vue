@@ -61,7 +61,7 @@
 		</b-row>
 		<b-row no-gutters class="p-2 mt-1" align-v="center">
 			<b-col @click="openPost">
-				<b-link class="sq-text float-left sq-post-num-comments">{{ post.numComments }} Comments</b-link>
+				<b-link class="sq-text float-left sq-post-num-comments">{{ totalComments === 0 ? '' : totalComments }} Comments</b-link>
 			</b-col>
 			<b-col cols="auto" class="px-1 sq-text">
 				{{ totalLikes === 0 ? '' : totalLikes }}
@@ -79,6 +79,7 @@ import { BASE_DOMAIN } from '../config';
 import LinkAttachment from './LinkAttachment.vue';
 import postLikeService from '../services/postLike.service';
 import JoinButton from './JoinButton.vue';
+import commentService from '../services/comment.service';
 
 export default {
 	props: {
@@ -94,6 +95,7 @@ export default {
 			BASE_DOMAIN,
 			liked: false,
 			totalLikes: 0,
+			totalComments: 0,
 		};
 	},
 	computed: {
@@ -147,6 +149,20 @@ export default {
 			.then((res) => {
 				if (res.status === 200) {
 					this.liked = res.data.isPostLiked;
+				}
+			}).catch((err) => {
+				const res = err.response;
+				this.formSubmitted = false;
+				this.$bvToast.toast(res.data.msg, {
+					noCloseButton: true,
+					variant: 'danger',
+					toaster: 'b-toaster-bottom-center',
+				});
+			});
+		commentService.countNumCommentsOnPost(this.post.postId)
+			.then((res) => {
+				if (res && res.status === 200) {
+					this.totalComments = res.data;
 				}
 			}).catch((err) => {
 				const res = err.response;
