@@ -6,7 +6,7 @@
 				<b-form-group>
 					<b-form-file ref="sqRefCreatorProfilePicFileInput" id="sq-the-creator-profile-pic-file-input" accept="image/bmp, image/jpeg, image/png, image/tiff" style="display: none;" @change="selectProfilePic"/>
 					<b-avatar size="8.5rem">
-						<b-img :src="$store.state.creator.profilePicSrc" class="w-100 h-100"></b-img>
+						<b-img :src="getProfilePicSrc($store.state.creator.profilePicSrc, true)" class="w-100 h-100"></b-img>
 						<b-button class="sq-btn-change-profile-pic" @click="onEditProfilePicBtnClick">
 							<b-icon-pencil-fill/>
 						</b-button>
@@ -78,10 +78,12 @@ import FormInputGroup from '@/components/FormInputGroup.vue';
 import ButtonSubmit from '@/components/ButtonSubmit.vue';
 import ImageCropModal from '@/components/ImageCropModal.vue';
 import creatorService from '../services/creator.service';
+import getProfilePicSrc from '../common/getProfilePicSrc';
 
 export default {
 	data() {
 		return {
+			getProfilePicSrc,
 			creatorInfoForm: {
 				pageName: this.$store.state.creator.pageName,
 				bio: this.$store.state.creator.bio,
@@ -93,7 +95,7 @@ export default {
 			},
 			isSaved: true,
 			isSaving: false,
-			creatorProfilePic: this.$store.state.creator.profilePicSrc,
+			creatorProfilePic: getProfilePicSrc(this.$store.state.creator.profilePicSrc, true),
 			isProfilePicUpdating: false,
 		};
 	},

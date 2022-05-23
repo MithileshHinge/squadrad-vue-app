@@ -1,6 +1,6 @@
 <template>
 	<div v-if="post">
-		<PostComp :post="post" :profilePic="creatorProfilePicSrc" :creator="creator"></PostComp>
+		<PostComp :post="post" :profilePic="getProfilePicSrc(creator.profilePicSrc, true)" :creator="creator"></PostComp>
 		<b-container>
 			<CommentComp v-for="comment in comments" :key="comment.commentId" :comment="comment" :isReply="false" class="mb-2" @replyTo="setReplyTo($event, comment.commentId)"></CommentComp>
 		</b-container>
@@ -20,14 +20,8 @@ import creatorService from '../services/creator.service';
 import commentService from '../services/comment.service';
 import userService from '../services/user.service';
 import store from '../store';
-import { BASE_DOMAIN } from '../config';
 import { forEachAsync } from '../common/helpers';
-
-function getProfilePicSrc(profilePic, isCreator) {
-	if (isCreator && store.state.creator && profilePic === store.state.creator.profilePicSrc) return store.state.creator.profilePicSrc;
-	if (store.state.user && profilePic === store.state.user.profilePicSrc) return store.state.user.profilePicSrc;
-	return `${BASE_DOMAIN}/images/profilePics/${isCreator ? '/creators' : '/users'}/${profilePic}`;
-}
+import getProfilePicSrc from '../common/getProfilePicSrc';
 
 async function populateComments(postId, creator) {
 	const resComments = await commentService.getCommentsOnPost(postId);
@@ -58,6 +52,7 @@ async function populateComments(postId, creator) {
 export default {
 	data() {
 		return {
+			getProfilePicSrc,
 			comments: undefined,
 			post: undefined,
 			creator: undefined,
@@ -65,12 +60,6 @@ export default {
 			replyingToName: undefined,
 			replyingToCommentId: undefined,
 		};
-	},
-	computed: {
-		creatorProfilePicSrc() {
-			if (this.creator.userId === this.$store.state.creator.userId) return this.$store.state.creator.profilePicSrc;
-			return `${BASE_DOMAIN}/images/profilePics/creators/${this.creator.profilePicSrc}`;
-		},
 	},
 	methods: {
 		async submitComment(text) {

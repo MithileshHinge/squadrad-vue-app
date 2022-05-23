@@ -5,7 +5,6 @@ import userService from '@/services/user.service';
 import creatorService from '@/services/creator.service';
 import squadService from '@/services/squad.service';
 import goalService from '@/services/goal.service';
-import { BASE_DOMAIN } from '../config';
 
 Vue.use(Vuex);
 
@@ -88,8 +87,7 @@ export default new Vuex.Store({
 			try {
 				const resUser = await userService.getUserSelf();
 				if (resUser && resUser.status === 200) {
-					const { profilePicSrc, ...userData } = resUser.data;
-					await commit('updateUser', { ...userData, profilePicSrc: `${BASE_DOMAIN}/images/profilePics/users/${profilePicSrc}` });
+					await commit('updateUser', resUser.data);
 				} else {
 					console.log(resUser);
 				}
@@ -113,8 +111,7 @@ export default new Vuex.Store({
 			try {
 				const resCreator = await creatorService.getCreatorSelf();
 				if (resCreator && resCreator.status === 200) {
-					const { profilePicSrc, ...creatorData } = resCreator.data;
-					await commit('updateCreator', { ...creatorData, profilePicSrc: `${BASE_DOMAIN}/images/profilePics/creators/${profilePicSrc}` });
+					await commit('updateCreator', resCreator.data);
 				} else {
 					console.log(resCreator);
 				}

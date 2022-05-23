@@ -6,7 +6,7 @@
 				<b-form-group>
 					<b-form-file ref="sqRefUserProfilePicFileInput" id="sq-the-profile-pic-file-input" accept="image/bmp, image/jpeg, image/png, image/tiff" style="display: none;" @change="selectProfilePic"/>
 					<b-avatar size="8.5rem">
-						<b-img :src="$store.state.user.profilePicSrc" class="w-100 h-100"></b-img>
+						<b-img :src="getProfilePicSrc($store.state.user.profilePicSrc, false)" class="w-100 h-100"></b-img>
 						<b-button class="sq-btn-change-profile-pic" @click="onEditProfilePicBtnClick">
 							<b-icon-pencil-fill/>
 						</b-button>
@@ -84,10 +84,12 @@ import ButtonSubmit from '@/components/ButtonSubmit.vue';
 import CustomModal from '@/components/CustomModal.vue';
 import ImageCropModal from '@/components/ImageCropModal.vue';
 import userService from '@/services/user.service';
+import getProfilePicSrc from '../common/getProfilePicSrc';
 
 export default {
 	data() {
 		return {
+			getProfilePicSrc,
 			userInfoForm: {
 				fullName: this.$store.state.user.fullName,
 				email: this.$store.state.user.email,
@@ -105,7 +107,7 @@ export default {
 			isPasswordChanged: false,
 			isAccountDeleting: false,
 			isAccountDeleted: false,
-			userProfilePic: this.$store.state.user.profilePicSrc,
+			userProfilePic: getProfilePicSrc(this.$store.state.user.profilePicSrc),
 			isProfilePicUpdating: false,
 		};
 	},

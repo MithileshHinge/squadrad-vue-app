@@ -5,7 +5,7 @@
 		</div>
 		<b-row no-gutters>
 			<b-col align-self="center">
-				<b-avatar id="sq-the-profile-pic" :src="creatorProfilePicSrc" size="8.5rem"></b-avatar>
+				<b-avatar id="sq-the-profile-pic" :src="getProfilePicSrc(creator.profilePicSrc, true)" size="8.5rem"></b-avatar>
 			</b-col>
 		</b-row>
 		<b-row no-gutters>
@@ -123,7 +123,7 @@
 		<b-row no-gutters align-h="center">
 			<b-col class="mt-2" cols="12">
 				<b-card class="sq-card-flat p-1">
-					<PostComp v-for="post in posts" :key="post.postId" :post="post" :squad="squads.find((squad) => squad.squadId === post.squadId)" :squadNo="squadsSorted.findIndex((squad) => squad.squadId === post.squadId)" :totalSquads="squads.length" :creator="creator" :profilePic="creatorProfilePicSrc"></PostComp>
+					<PostComp v-for="post in posts" :key="post.postId" :post="post" :squad="squads.find((squad) => squad.squadId === post.squadId)" :squadNo="squadsSorted.findIndex((squad) => squad.squadId === post.squadId)" :totalSquads="squads.length" :creator="creator" :profilePic="getProfilePicSrc(creator.profilePicSrc, true)"></PostComp>
 				</b-card>
 			</b-col>
 		</b-row>
@@ -139,11 +139,12 @@ import creatorService from '../services/creator.service';
 import squadService from '../services/squad.service';
 import goalService from '../services/goal.service';
 import postService from '../services/post.service';
-import { BASE_DOMAIN } from '../config';
+import getProfilePicSrc from '../common/getProfilePicSrc';
 
 export default {
 	data() {
 		return {
+			getProfilePicSrc,
 			posts: [],
 			creator: {},
 			squads: [],
@@ -151,9 +152,6 @@ export default {
 		};
 	},
 	computed: {
-		creatorProfilePicSrc() {
-			return (this.$route.path === '/creator' ? this.$store.state.creator.profilePicSrc : `${BASE_DOMAIN}/images/profilePics/creators/${this.creator.profilePicSrc}`);
-		},
 		squadsSorted() {
 			return [...this.squads].sort((a, b) => a.amount - b.amount);
 		},

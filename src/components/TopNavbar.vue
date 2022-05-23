@@ -7,7 +7,7 @@
 			<!--span class="sq-icon-bar sq-top-bar"></span>
 			<span class="sq-icon-bar sq-middle-bar"></span>
 			<span class="sq-icon-bar sq-bottom-bar"></span-->
-			<b-avatar v-if="isAuthenticated" id="sq-the-menubtn-avatar" :src='$store.state.creator.profilePicSrc || $store.state.user.profilePicSrc' size="2rem"></b-avatar>
+			<b-avatar v-if="isAuthenticated" id="sq-the-menubtn-avatar" :src='getProfilePicSrc($store.state.creator.profilePicSrc || $store.state.user.profilePicSrc, isCreator)' size="2rem"></b-avatar>
 			<span v-else class="sq-icon-bar"></span>
 		</b-navbar-toggle>
 		<b-navbar-nav v-if="isAuthenticated" class="d-none d-lg-flex">
@@ -61,11 +61,17 @@
 
 <script>
 import userService from '@/services/user.service';
+import getProfilePicSrc from '../common/getProfilePicSrc';
 
 export default {
 	props: {
 		isAuthenticated: Boolean,
 		isCreator: Boolean,
+	},
+	data() {
+		return {
+			getProfilePicSrc,
+		};
 	},
 	methods: {
 		logout() {
