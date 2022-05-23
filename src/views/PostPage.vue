@@ -1,6 +1,6 @@
 <template>
 	<div v-if="post">
-		<PostComp :post="post" :profilePic="getProfilePicSrc(creator.profilePicSrc, true)" :creator="creator"></PostComp>
+		<PostComp :post="post" :creator="creator"></PostComp>
 		<b-container>
 			<CommentComp v-for="comment in comments" :key="comment.commentId" :comment="comment" :isReply="false" class="mb-2" @replyTo="setReplyTo($event, comment.commentId)"></CommentComp>
 		</b-container>
@@ -52,7 +52,6 @@ async function populateComments(postId, creator) {
 export default {
 	data() {
 		return {
-			getProfilePicSrc,
 			comments: undefined,
 			post: undefined,
 			creator: undefined,

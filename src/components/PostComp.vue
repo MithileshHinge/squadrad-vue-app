@@ -2,7 +2,7 @@
 	<b-container class="sq-post-container p-0 mb-3">
 		<b-row no-gutters class="p-2">
 			<b-col cols="auto" class="px-0">
-				<b-avatar :src="profilePic"></b-avatar>
+				<b-avatar :src="getProfilePicSrc(creator.profilePicSrc, true)"></b-avatar>
 			</b-col>
 			<b-col align-self="center" class="pl-2">
 				<div class="sq-text">
@@ -80,6 +80,7 @@ import LinkAttachment from './LinkAttachment.vue';
 import postLikeService from '../services/postLike.service';
 import JoinButton from './JoinButton.vue';
 import commentService from '../services/comment.service';
+import getProfilePicSrc from '../common/getProfilePicSrc';
 
 export default {
 	props: {
@@ -88,11 +89,11 @@ export default {
 		squad: Object,
 		squadNo: Number,
 		totalSquads: Number,
-		profilePic: String,
 	},
 	data() {
 		return {
 			BASE_DOMAIN,
+			getProfilePicSrc,
 			liked: false,
 			totalLikes: 0,
 			totalComments: 0,
