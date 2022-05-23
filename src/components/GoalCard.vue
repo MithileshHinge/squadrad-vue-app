@@ -22,6 +22,7 @@
 		<b-button v-if="edit" :class="'sq-card-btn sq-btn sq-shadow' + (goal.archived ? ' sq-muted' : '' )" @click="$emit('edit')">
 			<b-row no-gutters align-h="center" align-v="center"><b-icon-pencil-fill font-scale="0.95" class="mr-2"/>Edit goal</b-row>
 		</b-button>
+		<b-progress v-else :value="(progress*100)/goal.goalNumber"/>
 	</b-card>
 </template>
 
@@ -30,6 +31,7 @@ export default {
 	props: {
 		goal: Object,
 		edit: Boolean,
+		progress: Number,
 	},
 };
 </script>

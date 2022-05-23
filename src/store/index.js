@@ -45,6 +45,8 @@ export default new Vuex.Store({
 		},
 		squads: [],
 		goals: [],
+		monthlyIncome: 0,
+		totalMembers: 0,
 	},
 	mutations: {
 		updateUser(state, user) {
@@ -80,6 +82,12 @@ export default new Vuex.Store({
 		deleteGoal(state, goalId) {
 			const i = state.goals.findIndex((g) => g.goalId === goalId);
 			if (i >= 0) state.goals.splice(i, 1);
+		},
+		updateMonthlyIncome(state, monthlyIncome) {
+			state.monthlyIncome = monthlyIncome;
+		},
+		updateTotalMembers(state, totalMembers) {
+			state.totalMembers = totalMembers;
 		},
 	},
 	actions: {
@@ -195,7 +203,9 @@ export default new Vuex.Store({
 			try {
 				const resGoals = await goalService.getAllGoals(state.user.userId);
 				if (resGoals && resGoals.status === 200) {
-					await commit('updateAllGoals', resGoals.data);
+					await commit('updateAllGoals', resGoals.data.goals);
+					await commit('updateMonthlyIncome', resGoals.data.monthlyIncome);
+					await commit('updateTotalMembers', resGoals.data.totalMembers);
 				} else {
 					console.log(resGoals);
 				}

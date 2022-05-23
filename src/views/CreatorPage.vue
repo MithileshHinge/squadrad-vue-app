@@ -26,7 +26,7 @@
 				<svg width="1.25rem" height="0.875rem" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.99927 14C9.9976 14 9.99576 14 9.99393 14C9.39045 13.996 4.05537 13.9489 2.54383 13.5529C1.48746 13.2778 0.653572 12.4709 0.368843 11.4475C-0.0266648 10.0092 -0.00148784 7.24004 0.00125875 7.01892C-0.00133525 6.79883 -0.0268174 4.00676 0.367622 2.55662C0.36808 2.55529 0.368385 2.55381 0.368843 2.55248C0.650368 1.54074 1.50303 0.708883 2.54124 0.433075C2.54383 0.432336 2.54658 0.431745 2.54917 0.431006C4.04362 0.0505501 9.38923 0.0039908 9.99393 0H10.0048C10.6098 0.0039908 15.9591 0.0511413 17.4567 0.447708C18.5103 0.722038 19.3436 1.52788 19.6291 2.54997C20.0394 4.00114 20.0014 6.79928 19.9973 7.03547C20.0002 7.26812 20.0241 10.0125 19.6309 11.458C19.6306 11.4595 19.6302 11.4608 19.6299 11.4622C19.345 12.4856 18.5112 13.2924 17.4536 13.5678C17.4523 13.5683 17.4508 13.5686 17.4494 13.569C15.9551 13.9493 10.6093 13.9959 10.0048 14C10.0029 14 10.0011 14 9.99927 14ZM1.87794 2.94476C1.53065 4.22477 1.56345 6.98123 1.56376 7.00902V7.02897C1.55338 7.79343 1.58985 10.0073 1.87809 11.0558C2.01786 11.5579 2.42908 11.9557 2.95063 12.0915C4.06589 12.3837 8.41114 12.4757 9.99927 12.4865C11.5915 12.4757 15.9432 12.3862 17.0502 12.1057C17.5701 11.9694 17.9799 11.573 18.1206 11.0703C18.4092 10.0064 18.4453 7.80333 18.4348 7.04375C18.4348 7.03577 18.4348 7.02779 18.4349 7.01981C18.4493 6.24618 18.4211 4.00646 18.122 2.94949C18.1217 2.94846 18.1214 2.94742 18.1212 2.94639C17.9808 2.44207 17.5695 2.04432 17.0479 1.90849C15.9435 1.61598 11.5912 1.52434 9.99927 1.51355C8.40809 1.52434 4.06071 1.61361 2.95032 1.89385C2.4387 2.03131 2.01817 2.44325 1.87794 2.94476ZM18.8755 11.2653H18.8759H18.8755ZM8.00785 10.0648V3.93507L13.4766 7L8.00785 10.0648Z" fill="currentColor"/></svg>
 			</b-col>
 		</b-row>
-		<b-row no-gutters align-h="center">
+		<!--b-row no-gutters align-h="center">
 			<b-col v-if="creator.supportersVisibility" cols="auto" class="mt-2 mx-3">
 				<div class="sq-creator-public-stat">
 					{{ creator.supporters }}
@@ -45,7 +45,7 @@
 				</div>
 				<div class="sq-text sq-muted">One time</div>
 			</b-col>
-		</b-row>
+		</b-row-->
 		<b-row no-gutters align-h="center" class="mt-5 mb-2">
 			<b-col cols="1"/><!--for centering heading-->
 			<b-col cols="auto" class="sq-creator-section-heading">
@@ -97,9 +97,9 @@
 		<b-row no-gutters align-h="center">
 			<b-col style="max-width: 20.75rem;" align-self="center">
 				<b-carousel ref="sqRefGoalCarousel" indicators :interval="0" class="sq-carousel">
-					<b-carousel-slide v-for="goal in goals" :key="goal.goalId">
+					<b-carousel-slide v-for="goal in goalsSorted" :key="goal.goalId">
 						<template #img>
-							<GoalCard :goal="goal" style="margin: 1rem;"/>
+							<GoalCard :goal="goal" :progress="creator.goalsTypeEarnings ? monthlyIncome : totalMembers" style="margin: 1rem;"/>
 						</template>
 					</b-carousel-slide>
 					<a href="#" role="button" class="carousel-control-prev" @click.prevent="goalPrev">
@@ -151,11 +151,16 @@ export default {
 			squads: [],
 			goals: [],
 			manualSub: {},
+			totalMembers: 0,
+			monthlyIncome: 0,
 		};
 	},
 	computed: {
 		squadsSorted() {
 			return [...this.squads].sort((a, b) => a.amount - b.amount);
+		},
+		goalsSorted() {
+			return [...this.goals].sort((a, b) => a.goalNumber - b.goalNumber);
 		},
 	},
 	beforeRouteEnter(to, from, next) {
@@ -174,7 +179,12 @@ export default {
 					next((vm) => {
 						vm.creator = resCreator.data;
 						vm.squads = resSquads.data;
-						vm.goals = resGoals.data;
+						vm.goals = resGoals.data.goals;
+						if (resCreator.data.goalsTypeEarnings) {
+							vm.monthlyIncome = resGoals.data.monthlyIncome;
+						} else {
+							vm.totalMembers = resGoals.data.totalMembers;
+						}
 						vm.posts = resPosts.data;
 						vm.manualSub = resManualSub.data;
 					});
@@ -203,6 +213,8 @@ export default {
 								vm.creator = vm.$store.state.creator;
 								vm.squads = vm.$store.state.squads;
 								vm.goals = vm.$store.state.goals.filter((goal) => !goal.archived);
+								vm.monthlyIncome = vm.$store.state.monthlyIncome;
+								vm.totalMembers = vm.$store.state.totalMembers;
 								vm.posts = resPosts.data.map((post) => ({ ...post, pageName: vm.creator.pageName }));
 								vm.manualSub = resManualSub.data;
 							});
