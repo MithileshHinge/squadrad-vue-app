@@ -290,6 +290,29 @@ $cta-shadow-opacity: 0.4;
 	}
 }
 
+.sq-btn-disabled {
+	background: none;
+	background-color: $my-color-gray5  !important;
+	color: $my-color-gray1 !important;
+	box-shadow: none !important;
+	&:focus {
+		background-color: $my-color-gray5 !important;
+		color: $my-color-gray1 !important;
+	}
+	&:hover {
+		background-color: $my-color-gray5 !important;
+		color: $my-color-gray1 !important;
+	}
+}
+
+@media (hover: hover) {
+	.sq-btn:hover, .sq-btn:focus {
+		background-color: $my-color-gray5;
+		color: $my-color-gray1;
+		box-shadow: none;
+	}
+}
+
 .sq-btn-change-profile-pic, .sq-btn-change-profile-pic:focus, .sq-btn-change-profile-pic:hover, .sq-btn-change-profile-pic:not(:disabled):not(.disabled):active:focus, .sq-btn-change-profile-pic:not(:disabled):not(.disabled):active {
 	position: absolute;
 	width: 100%;

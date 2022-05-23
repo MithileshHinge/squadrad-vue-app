@@ -1,5 +1,11 @@
 <template>
-	<b-button class="sq-card-btn sq-btn-cta sq-btn my-1" :style="`background-image: linear-gradient(22deg, ${getJoinBtnGradientStops[squadNo]}, ${getJoinBtnGradientStops[squadNo + 1]}, ${getJoinBtnGradientStops[squadNo]});`" @click="joinSquad">Join squad at <span class="sq-rupee"/>{{ squad.amount }}/month</b-button>
+	<span>
+		<b-button disabled v-if="manualSub && manualSub.subscriptionStatus === manualSubStatuses.ACTIVE && manualSub.creatorUserId === creator.userId && manualSub.amount >= squad.amount" class="sq-card-btn sq-btn sq-btn-disabled my-1">
+			<span v-if="manualSub.amount === squad.amount">Joined <span class="sq-rupee"/>{{ squad.amount }}/month squad</span>
+			<span v-if="manualSub.amount > squad.amount">Included with higher squad</span>
+		</b-button>
+		<b-button v-else class="sq-card-btn sq-btn-cta sq-btn my-1" :style="`background-image: linear-gradient(22deg, ${getJoinBtnGradientStops[squadNo]}, ${getJoinBtnGradientStops[squadNo + 1]}, ${getJoinBtnGradientStops[squadNo]});`" @click="joinSquad">Join squad at <span class="sq-rupee"/>{{ squad.amount }}/month</b-button>
+	</span>
 </template>
 
 <script>
@@ -7,6 +13,7 @@ import chroma from 'chroma-js';
 import scssColors from '@/scss/_export.scss';
 import paymentService from '../services/payment.service';
 import myKeys from '../myKeys';
+import manualSubStatuses from '../common/manualSubStatuses';
 
 export default {
 	props: {
@@ -14,6 +21,12 @@ export default {
 		totalSquads: Number,
 		squad: Object,
 		creator: Object,
+		manualSub: Object,
+	},
+	data() {
+		return {
+			manualSubStatuses,
+		};
 	},
 	computed: {
 		getJoinBtnGradientStops() {

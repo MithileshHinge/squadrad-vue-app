@@ -58,7 +58,7 @@
 		</b-row>
 		<b-row no-gutters align-h="center">
 			<b-col v-for="(squad, i) in squadsSorted" :key="squad.id" class="mt-3 mx-2" cols="auto">
-				<SquadCard :squad="squad" :creator="creator" :squadNo="i" :totalSquads="squads.length"/>
+				<SquadCard :squad="squad" :creator="creator" :manualSub="manualSub" :squadNo="i" :totalSquads="squads.length"/>
 			</b-col>
 		</b-row>
 		<b-row no-gutters align-h="center" class="mt-5 mb-2">
@@ -139,6 +139,7 @@ import creatorService from '../services/creator.service';
 import squadService from '../services/squad.service';
 import goalService from '../services/goal.service';
 import postService from '../services/post.service';
+import manualSubService from '../services/manualSubs.service';
 import getProfilePicSrc from '../common/getProfilePicSrc';
 
 export default {
@@ -149,6 +150,7 @@ export default {
 			creator: {},
 			squads: [],
 			goals: [],
+			manualSub: {},
 		};
 	},
 	computed: {
@@ -164,21 +166,24 @@ export default {
 				squadService.getAllSquads(to.params.userId),
 				goalService.getAllGoals(to.params.userId),
 				postService.getAllPostsByCreator(to.params.userId),
+				manualSubService.getManualSubByCreatorId(to.params.userId),
 			];
 
-			Promise.all(fetchData).then(([resCreator, resSquads, resGoals, resPosts]) => {
-				if (resCreator && resSquads && resGoals && resPosts && resCreator.status === 200 && resSquads.status === 200 && resGoals.status === 200 && resPosts.status === 200) {
+			Promise.all(fetchData).then(([resCreator, resSquads, resGoals, resPosts, resManualSub]) => {
+				if (resCreator && resSquads && resGoals && resPosts && resManualSub && resCreator.status === 200 && resSquads.status === 200 && resGoals.status === 200 && resPosts.status === 200 && resManualSub.status === 200) {
 					next((vm) => {
 						vm.creator = resCreator.data;
 						vm.squads = resSquads.data;
 						vm.goals = resGoals.data;
 						vm.posts = resPosts.data;
+						vm.manualSub = resManualSub.data;
 					});
 				} else {
 					console.log(resCreator);
 					console.log(resSquads);
 					console.log(resGoals);
 					console.log(resPosts);
+					console.log(resManualSub);
 				}
 			}).catch((err) => {
 				next((vm) => {
@@ -193,11 +198,14 @@ export default {
 			next((vm) => {
 				vm.$store.dispatch('fetchAllSquads').finally(() => {
 					vm.$store.dispatch('fetchAllGoals').finally(() => {
-						postService.getAllPostsByCreator(vm.$store.state.user.userId).then((resPosts) => {
-							vm.creator = vm.$store.state.creator;
-							vm.squads = vm.$store.state.squads;
-							vm.goals = vm.$store.state.goals.filter((goal) => !goal.archived);
-							vm.posts = resPosts.data.map((post) => ({ ...post, pageName: vm.creator.pageName }));
+						postService.getAllPostsByCreator(vm.$store.state.creator.userId).then((resPosts) => {
+							manualSubService.getManualSubByCreatorId(vm.$store.state.creator.userId).then((resManualSub) => {
+								vm.creator = vm.$store.state.creator;
+								vm.squads = vm.$store.state.squads;
+								vm.goals = vm.$store.state.goals.filter((goal) => !goal.archived);
+								vm.posts = resPosts.data.map((post) => ({ ...post, pageName: vm.creator.pageName }));
+								vm.manualSub = resManualSub.data;
+							});
 						});
 					});
 				});
