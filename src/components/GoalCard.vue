@@ -1,6 +1,11 @@
 <template>
 	<b-card class="sq-card p-2">
 		<b-row v-if="edit" no-gutters class="mb-2 mx-n3 mt-n3">
+			<b-col cols="auto" align-self="start" class="p-0">
+				<span v-if="$store.state.creator.goalsTypeEarnings" class="sq-rupee"/>
+				<b-icon-person v-else/>
+				{{ goal.goalNumber }}
+			</b-col>
 			<b-col/>
 			<b-col cols="auto" align-self="end" class="p-0">
 				<b-icon-eye-slash-fill v-if="goal.archived" font-scale="0.9" class="mr-2" @click="$emit('unarchive')"/>
