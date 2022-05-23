@@ -6,10 +6,11 @@
 				<b-card class="sq-card-flat sq-card mb-4">
 					<b-form-group class="text-left">
 						<label class="sq-form-label m-0" v-helptext="'<strong>Earnings based</strong><br>Set goals for your monthly income<br><strong>Community based</strong><br>Set goals for your total number of squad members'">Goal type</label>
-						<b-form-radio name="goalType" :value="true" v-model="isGoalsTypeEarningsChecked" @change="changeGoalType">Earnings based</b-form-radio>
-						<b-form-radio name="goalType" :value="false" v-model="isGoalsTypeEarningsChecked" @change="changeGoalType">Community based</b-form-radio>
+						<b-form-radio name="goalType" :value="true" v-model="isGoalsTypeEarningsChecked" @change="confirmChangeGoalType">Earnings based</b-form-radio>
+						<b-form-radio name="goalType" :value="false" v-model="isGoalsTypeEarningsChecked" @change="confirmChangeGoalType">Community based</b-form-radio>
 					</b-form-group>
-					<div class="sq-text">All goals must be of the same type. Changing the goal type will require deleting all exisiting goals.</div>
+					<!--div class="sq-text">All goals must be of the same type. Changing the goal type will require deleting all exisiting goals.</div-->
+					<div class="sq-text">Goal type is applied to all goals. Changing the goal type will update all your goals to reflect the change</div>
 				</b-card>
 			</b-row>
 			<b-row no-gutters align-h="center">
@@ -52,14 +53,14 @@
 				<ButtonSubmit modal :isProcessing="isSaving" :isProcessed="isSaved" :buttonText="isEditModal ? 'Save goal' : 'Add goal'" :buttonTextDone="isEditModal ? 'Goal updated' : 'Goal added'"/>
 			</b-form>
 		</CustomModal>
-		<CustomModal modalId="sq-the-modal-change-goal-type" modalTitle="Confirm changing goal type?" title-class="sq-card-heading" @hide="cancelChangeGoalType">
+		<!--CustomModal modalId="sq-the-modal-change-goal-type" modalTitle="Confirm changing goal type?" title-class="sq-card-heading" @hide="cancelChangeGoalType">
 			<div>
 				<div class="sq-text mb-2">
 					You cannot have both Earnings-based and Community-based goals at the same time. All existing goals will be deleted. This action cannot be undone. Do you wish to continue?
 				</div>
 				<ButtonSubmit modal :isProcessing="isChanging" :isProcessed="isChanged" buttonText="Confirm delete" buttonTextDone="Goal type changed" @click="confirmChangeGoalType"/>
 			</div>
-		</CustomModal>
+		</CustomModal-->
 		<CustomModal modalId="sq-the-modal-delete-goal" modalTitle="Confirm delete goal?">
 			<div>
 				<div class="sq-text mb-2">
@@ -109,7 +110,7 @@ export default {
 		},
 	},
 	methods: {
-		changeGoalType() {
+		/* changeGoalType() {
 			if (this.goals.length > 0) {
 				this.isChanged = false;
 				this.isChanging = false;
@@ -117,20 +118,20 @@ export default {
 			} else {
 				this.confirmChangeGoalType();
 			}
-		},
-		confirmChangeGoalType() {
+		}, */
+		async confirmChangeGoalType() {
 			this.isChanging = true;
 			this.isChanged = false;
-			this.$store.dispatch('changeGoalType', this.isGoalsTypeEarningsChecked);
+			await this.$store.dispatch('updateCreator', { goalsTypeEarnings: this.isGoalsTypeEarningsChecked });
 			this.isChanging = false;
 			this.isChanged = true;
 			this.$bvModal.hide('sq-the-modal-change-goal-type');
 		},
-		cancelChangeGoalType(event) {
+		/* cancelChangeGoalType(event) {
 			if (event.trigger !== 'event') {
 				this.isGoalsTypeEarningsChecked = this.$store.state.creator.goalsTypeEarnings;
 			}
-		},
+		}, */
 		addGoal() {
 			this.goalForm = {
 				goalId: undefined,

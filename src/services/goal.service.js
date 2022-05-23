@@ -18,8 +18,4 @@ export default {
 		return api.delete(`/private/creator/goal/${goalId}`)
 			.catch((err) => handleError(err));
 	},
-	changeGoalType(goalsTypeEarnings) {
-		return api.post('/private/creator/goal/change-type', { goalsTypeEarnings })
-			.catch((err) => handleError(err));
-	},
 };

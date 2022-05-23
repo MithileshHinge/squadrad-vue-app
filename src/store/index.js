@@ -227,18 +227,5 @@ export default new Vuex.Store({
 				console.error(err);
 			}
 		},
-		async changeGoalType({ commit, dispatch }, goalsTypeEarnings) {
-			try {
-				const res = await goalService.changeGoalType(goalsTypeEarnings);
-				if (res && res.status === 200) {
-					await commit('updateCreator', { goalsTypeEarnings });
-					await dispatch('fetchAllGoals');
-				} else {
-					console.log(res);
-				}
-			} catch (err) {
-				console.error(err);
-			}
-		},
 	},
 });
