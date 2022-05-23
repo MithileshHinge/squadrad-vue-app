@@ -4,6 +4,7 @@ import store from '../store';
 
 // Pages
 import HomePage from '../views/HomePage.vue';
+import ExplorePage from '../views/ExplorePage.vue';
 import LandingPage from '../views/LandingPage.vue';
 import PostPage from '../views/PostPage.vue';
 import AccountSettingsPage from '../views/AccountSettingsPage.vue';
@@ -44,6 +45,11 @@ const routes = [
 		path: '/feed',
 		name: 'Feed',
 		component: HomePage,
+	},
+	{
+		path: '/explore',
+		name: 'Explore',
+		component: ExplorePage,
 	},
 	{
 		path: '/post/:postId',
