@@ -1,6 +1,6 @@
 <template>
 	<div v-if="post">
-		<PostComp :post="post" :profilePic="creatorProfilePicSrc" :pageName="creator.pageName"></PostComp>
+		<PostComp :post="post" :profilePic="creatorProfilePicSrc" :creator="creator"></PostComp>
 		<b-container>
 			<CommentComp v-for="comment in comments" :key="comment.commentId" :comment="comment" :isReply="false" class="mb-2" @replyTo="setReplyTo($event, comment.commentId)"></CommentComp>
 		</b-container>

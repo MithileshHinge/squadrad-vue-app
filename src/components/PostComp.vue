@@ -6,7 +6,7 @@
 			</b-col>
 			<b-col align-self="center" class="pl-2">
 				<div class="sq-text">
-					{{ pageName }}
+					{{ creator.pageName }}
 				</div>
 				<div class="sq-subtext sq-text">
 					{{ post.time }}
@@ -35,7 +35,7 @@
 								<b-icon-lock-fill font-scale="2" class="sq-post-locked-text sq-post-locked-icon m-4"/>
 							</b-row>
 							<b-row class="justify-content-center">
-								<JoinButton :amount="squad.amount" :squadNo="squadNo" :totalSquads="totalSquads"/>
+								<JoinButton :squad="squad" :creator="creator" :squadNo="squadNo" :totalSquads="totalSquads"/>
 							</b-row>
 						</b-col>
 					</b-row>
@@ -84,11 +84,11 @@ import commentService from '../services/comment.service';
 export default {
 	props: {
 		post: Object,
+		creator: Object,
 		squad: Object,
 		squadNo: Number,
 		totalSquads: Number,
 		profilePic: String,
-		pageName: String,
 	},
 	data() {
 		return {

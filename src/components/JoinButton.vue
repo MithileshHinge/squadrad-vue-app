@@ -1,16 +1,19 @@
 <template>
-	<b-button class="sq-card-btn sq-btn-cta sq-btn my-1" :style="`background-image: linear-gradient(22deg, ${getJoinBtnGradientStops[squadNo]}, ${getJoinBtnGradientStops[squadNo + 1]}, ${getJoinBtnGradientStops[squadNo]});`" @click="$emit('join')">Join squad at <span class="sq-rupee"/>{{ amount }}/month</b-button>
+	<b-button class="sq-card-btn sq-btn-cta sq-btn my-1" :style="`background-image: linear-gradient(22deg, ${getJoinBtnGradientStops[squadNo]}, ${getJoinBtnGradientStops[squadNo + 1]}, ${getJoinBtnGradientStops[squadNo]});`" @click="joinSquad">Join squad at <span class="sq-rupee"/>{{ squad.amount }}/month</b-button>
 </template>
 
 <script>
 import chroma from 'chroma-js';
 import scssColors from '@/scss/_export.scss';
+import paymentService from '../services/payment.service';
+import myKeys from '../myKeys';
 
 export default {
 	props: {
 		squadNo: Number,
 		totalSquads: Number,
-		amount: Number,
+		squad: Object,
+		creator: Object,
 	},
 	computed: {
 		getJoinBtnGradientStops() {
@@ -20,6 +23,81 @@ export default {
 				console.error(error);
 			}
 			return null;
+		},
+	},
+	methods: {
+		async joinSquad() {
+			const { squadId } = this.squad;
+			if (this.$store.state.creator.userId === this.creator.userId) {
+				this.$bvToast.toast('You cannot join your own squad', {
+					noCloseButton: true,
+					variant: 'warning',
+					toaster: 'b-toaster-bottom-center',
+				});
+				return;
+			}
+			try {
+				const resOrder = await paymentService.getRzpOrder(squadId);
+				const { rzpOrder } = resOrder.data;
+				if (!rzpOrder) {
+					this.$bvToast.toast('Something went wrong, please try again later', {
+						noCloseButton: true,
+						variant: 'danger',
+						toaster: 'b-toaster-bottom-center',
+					});
+					return;
+				}
+
+				const options = {
+					key: myKeys.RZP_TEST_KEY_ID,
+					amount: rzpOrder.amount,
+					currency: 'INR',
+					name: 'Test name',
+					description: 'Test description bla ba dsv asd cas cdas dc adc a',
+					order_id: rzpOrder.id,
+					handler: (response) => {
+						if (response.razorpay_payment_id) {
+							this.$bvToast.toast('Payment successful', {
+								noCloseButton: true,
+								variant: 'success',
+								toaster: 'b-toaster-bottom-center',
+							});
+							paymentService.paymentSuccessful({
+								rzpTransactionId: response.razorpay_payment_id,
+								rzpOrderId: response.razorpay_order_id,
+								rzpSignature: response.razorpay_signature,
+							}).catch((err) => {
+								console.log(err);
+							}).then((res) => {
+								console.log(res);
+							});
+						}
+					},
+					prefill: {
+						name: this.$store.state.user.fullName,
+						email: this.$store.state.user.email,
+					},
+					notes: rzpOrder.notes,
+				};
+
+				// eslint-disable-next-line no-undef
+				const rzp = new Razorpay(options);
+				rzp.on('payment.failed', (res) => {
+					const err = res.error;
+					this.$bvToast.toast(`Error ${err.code}: ${err.description}\n${err.source}\n${err.step}\n${err.reason}`, {
+						noCloseButton: true,
+						variant: 'danger',
+						toaster: 'b-toaster-bottom-center',
+					});
+				});
+				rzp.open();
+			} catch (err) {
+				this.$bvToast.toast(err.response.data.msg, {
+					noCloseButton: true,
+					variant: 'danger',
+					toaster: 'b-toaster-bottom-center',
+				});
+			}
 		},
 	},
 };

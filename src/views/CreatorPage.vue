@@ -58,7 +58,7 @@
 		</b-row>
 		<b-row no-gutters align-h="center">
 			<b-col v-for="(squad, i) in squadsSorted" :key="squad.id" class="mt-3 mx-2" cols="auto">
-				<SquadCard :squad="squad" :squadNo="i" :totalSquads="squads.length" @join="joinSquad(squad.squadId)"/>
+				<SquadCard :squad="squad" :creator="creator" :squadNo="i" :totalSquads="squads.length"/>
 			</b-col>
 		</b-row>
 		<b-row no-gutters align-h="center" class="mt-5 mb-2">
@@ -123,7 +123,7 @@
 		<b-row no-gutters align-h="center">
 			<b-col class="mt-2" cols="12">
 				<b-card class="sq-card-flat p-1">
-					<PostComp v-for="post in posts" :key="post.postId" :post="post" :squad="squads.find((squad) => squad.squadId === post.squadId)" :squadNo="squadsSorted.findIndex((squad) => squad.squadId === post.squadId)" :totalSquads="squads.length" :profilePic="creatorProfilePicSrc" :pageName="creator.pageName"></PostComp>
+					<PostComp v-for="post in posts" :key="post.postId" :post="post" :squad="squads.find((squad) => squad.squadId === post.squadId)" :squadNo="squadsSorted.findIndex((squad) => squad.squadId === post.squadId)" :totalSquads="squads.length" :creator="creator" :profilePic="creatorProfilePicSrc"></PostComp>
 				</b-card>
 			</b-col>
 		</b-row>
@@ -139,70 +139,11 @@ import creatorService from '../services/creator.service';
 import squadService from '../services/squad.service';
 import goalService from '../services/goal.service';
 import postService from '../services/post.service';
-import paymentService from '../services/payment.service';
-import myKeys from '../myKeys';
 import { BASE_DOMAIN } from '../config';
 
 export default {
 	data() {
 		return {
-			/*
-			creator: {
-				userId: 1,
-				pageName: 'Tushar Sawant',
-				pageBio: 'Youtuber',
-				profilePic: 'tushar.png',
-				coverPic: null,
-				about: 'Random Thought Bullets is a YouTube channel that makes some Random Youth videos.',
-				introVideo: null,
-				slug: 'rtb',
-				supportersVisibility: true,
-				supporters: 12,
-				earningsVisibility: true,
-				earnings: 4600,
-				otpVisibility: true,
-				otp: 8000,
-				youtubeLink: 'randomyoutubelink',
-				instagramLink: '2shar_sawant',
-				facebookLink: null,
-			},
-			squads: [
-				{
-					id: 1,
-					userId: 1,
-					title: 'RTBees',
-					image: 'tushar.png',
-					description: 'Early access to all videos',
-					amount: 50,
-					supportersLimit: null,
-				},
-				{
-					id: 2,
-					userId: 1,
-					title: 'RTBees Pro',
-					description: 'All the benefits from previous squad and your name would be mentioned in my video description',
-					amount: 100,
-					supportersLimit: null,
-				},
-				{
-					id: 3,
-					userId: 1,
-					title: 'RTBees Pro Max',
-					description: 'All the benefits from previous squad and your name would be mentioned in my video description',
-					amount: 250,
-					supportersLimit: null,
-				},
-				{
-					id: 4,
-					userId: 1,
-					title: 'RTQueenBee',
-					image: 'tushar.png',
-					description: 'All the benefits from the previous squads. Get 10 one on one training sessions with RTB Team',
-					amount: 15000,
-					supportersLimit: null,
-				},
-			],
-			*/
 			posts: [],
 			creator: {},
 			squads: [],
@@ -284,78 +225,6 @@ export default {
 		},
 		goalNext() {
 			this.$refs.sqRefGoalCarousel.next();
-		},
-		async joinSquad(squadId) {
-			if (this.$store.state.creator.userId === this.creator.userId) {
-				this.$bvToast.toast('You cannot join your own squad', {
-					noCloseButton: true,
-					variant: 'warning',
-					toaster: 'b-toaster-bottom-center',
-				});
-				return;
-			}
-			try {
-				const resOrder = await paymentService.getRzpOrder(squadId);
-				const { rzpOrder } = resOrder.data;
-				if (!rzpOrder) {
-					this.$bvToast.toast('Something went wrong, please try again later', {
-						noCloseButton: true,
-						variant: 'danger',
-						toaster: 'b-toaster-bottom-center',
-					});
-					return;
-				}
-
-				const options = {
-					key: myKeys.RZP_TEST_KEY_ID,
-					amount: rzpOrder.amount,
-					currency: 'INR',
-					name: 'Test name',
-					description: 'Test description bla ba dsv asd cas cdas dc adc a',
-					order_id: rzpOrder.id,
-					handler: (response) => {
-						if (response.razorpay_payment_id) {
-							this.$bvToast.toast('Payment successful', {
-								noCloseButton: true,
-								variant: 'success',
-								toaster: 'b-toaster-bottom-center',
-							});
-							paymentService.paymentSuccessful({
-								rzpTransactionId: response.razorpay_payment_id,
-								rzpOrderId: response.razorpay_order_id,
-								rzpSignature: response.razorpay_signature,
-							}).catch((err) => {
-								console.log(err);
-							}).then((res) => {
-								console.log(res);
-							});
-						}
-					},
-					prefill: {
-						name: this.$store.state.user.fullName,
-						email: this.$store.state.user.email,
-					},
-					notes: rzpOrder.notes,
-				};
-
-				// eslint-disable-next-line no-undef
-				const rzp = new Razorpay(options);
-				rzp.on('payment.failed', (res) => {
-					const err = res.error;
-					this.$bvToast.toast(`Error ${err.code}: ${err.description}\n${err.source}\n${err.step}\n${err.reason}`, {
-						noCloseButton: true,
-						variant: 'danger',
-						toaster: 'b-toaster-bottom-center',
-					});
-				});
-				rzp.open();
-			} catch (err) {
-				this.$bvToast.toast(err.response.data.msg, {
-					noCloseButton: true,
-					variant: 'danger',
-					toaster: 'b-toaster-bottom-center',
-				});
-			}
 		},
 	},
 	components: {
