@@ -10,7 +10,7 @@
 
 <script>
 import chroma from 'chroma-js';
-import scssColors from '@/scss/_export.scss';
+import scssColors from '@/scss/_export.module.scss';
 import paymentService from '../services/payment.service';
 import myKeys from '../myKeys';
 import manualSubStatuses from '../common/manualSubStatuses';

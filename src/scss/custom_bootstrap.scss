@@ -22,5 +22,11 @@ $theme-colors: (
 
 $enable-responsive-font-sizes: true;
 
+@import "~@fontsource/poppins/300.css";
+@import "~@fontsource/poppins/400.css";
+@import "~@fontsource/poppins/500.css";
+@import "~@fontsource/poppins/600.css";
+@import "~@fontsource/poppins/700.css";
+@import "~@fontsource/lato/400.css";
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'bootstrap-vue/src/index.scss';

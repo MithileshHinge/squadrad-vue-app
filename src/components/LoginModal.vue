@@ -253,7 +253,7 @@ export default {
 #sq-the-login-modal .sq-or-hidebox {
 	position: absolute;
 	height: 2px;
-	top: calc(50%+0.75rem);
+	top: calc(50% + 0.75rem);
 	left: calc(50% - 1.166rem);
 	padding-left: 1.166rem;
 	padding-right: 1.166rem;
