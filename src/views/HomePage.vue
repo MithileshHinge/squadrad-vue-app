@@ -36,7 +36,7 @@ import squadService from '../services/squad.service';
 export default {
 	data() {
 		return {
-			posts: undefined,
+			posts: null,
 		};
 	},
 	computed: {
@@ -73,6 +73,7 @@ export default {
 							}
 						}
 					});
+					this.posts = feed;
 				}
 			}).catch((err) => {
 				this.$bvToast.toast((err.response.msg, {
@@ -81,7 +82,6 @@ export default {
 					toaster: 'b-toaster-bottom-center',
 				}));
 			});
-			this.posts = feed;
 		},
 	},
 	mounted() {
