@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<b-tabs v-if="posts.length > 0" id="sq-the-all-paid-post-tabs" align="left" nav-wrapper-class="sq-shadow">
+		<b-tabs v-if="posts && posts.length > 0" id="sq-the-all-paid-post-tabs" align="left" nav-wrapper-class="sq-shadow">
 			<b-tab title="All posts" title-item-class="sq-nav-item">
 				<div class="sq-background-gray">
 					<div class="pt-3">
@@ -16,10 +16,10 @@
 				</div>
 			</b-tab>
 		</b-tabs>
-		<div v-else-if="posts === []">
+		<div v-else-if="posts && posts.length === 0">
 			<b-img id="sq-the-feed-empty-img" src="@/assets/feed-empty-state.jpg"></b-img>
 			<div class="sq-empty-state-text sq-text text-center">Support creators to see their posts in your feed</div>
-			<b-button id="sq-the-find-creators-btn" class="sq-btn sq-btn-cta">Find creators you may know</b-button>
+			<b-button id="sq-the-find-creators-btn" class="sq-btn sq-btn-cta" to="/explore">Find creators you may know</b-button>
 		</div>
 	</div>
 </template>
@@ -84,7 +84,7 @@ export default {
 			this.posts = feed;
 		},
 	},
-	created() {
+	mounted() {
 		this.populateFeed();
 	},
 	watch: {
