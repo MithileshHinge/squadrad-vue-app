@@ -1,6 +1,6 @@
 <template>
-	<b-container>
-		<SearchBar @input="searchText"/>
+	<b-container class="pt-4">
+		<SearchBar @input="searchText" searchPlaceholder="Search creators"/>
 	</b-container>
 </template>
 

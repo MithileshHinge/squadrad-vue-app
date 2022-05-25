@@ -1,11 +1,11 @@
 <template>
-	<div class="pt-3">
-		<b-row id="sq-the-search-bar" no-gutters :class="`px-4 py-1 ${isFocused ? 'focused' : ''}`">
+	<div>
+		<b-row id="sq-the-search-bar" no-gutters :class="`px-3 py-1 ${isFocused ? 'focused' : ''}`">
 			<b-col cols="auto" align-self="center" class="pr-2">
-				<b-icon-search class="sq-text sq-subtext" font-scale="1.2"/>
+				<b-icon-search class="sq-text sq-subtext" font-scale="1.05"/>
 			</b-col>
 			<b-col>
-				<b-form-input id="sq-the-search-input" autofocus v-model="searchText" placeholder="Search creators" autocomplete="off" @input="$emit('input', searchText)" @focus="isFocused = true" @blur="isFocused = false"/>
+				<b-form-input size="sm" id="sq-the-search-input" autofocus v-model="searchText" :placeholder="searchPlaceholder" autocomplete="off" @input="$emit('input', searchText)" @focus="isFocused = true" @blur="isFocused = false"/>
 			</b-col>
 		</b-row>
 	</div>
@@ -13,6 +13,12 @@
 
 <script>
 export default {
+	props: {
+		searchPlaceholder: {
+			type: String,
+			default: 'Search',
+		},
+	},
 	data() {
 		return {
 			isFocused: true,
