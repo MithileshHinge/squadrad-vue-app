@@ -1,8 +1,15 @@
 <template>
 	<div id="app">
 		<TopNavbar :isAuthenticated="isAuthenticated" :isCreator="isCreator"></TopNavbar>
-		<router-view id="sq-the-app-body" :isAuthenticated="isAuthenticated"></router-view>
-		<div v-if="isAuthenticated && showBottomNav" style="height: 3rem; z-index: -1000;"><!-- empty div same size as bottomnavbar, without this router-view is hidden behind bottomnavbar --></div>
+		<b-col cols="auto" class="p-0" style="z-index: -1000;">
+			<div style="width: 100%; height: 3.375rem" />
+		</b-col>
+		<b-col class="p-0">
+			<router-view id="sq-the-app-body" :isAuthenticated="isAuthenticated"></router-view>
+		</b-col>
+		<b-col cols="auto" style="z-index: 100; z-index: -1000;">
+			<div v-if="isAuthenticated && showBottomNav" style="height: 3rem;"><!-- empty div same size as bottomnavbar, without this router-view is hidden behind bottomnavbar --></div>
+		</b-col>
 		<BottomNavbar v-if="isAuthenticated && showBottomNav" :isCreator="isCreator"></BottomNavbar>
 	</div>
 </template>
@@ -39,6 +46,7 @@ export default {
 html {
 	font-size: 18px;
 	min-height: 100%;
+	height: 100%;
 }
 
 /*
@@ -68,7 +76,8 @@ html {
 */
 
 body {
-	min-height: calc(100% - 3.375rem);
+	min-height: 100%;
+	height: 100%;
 	font-family: Poppins, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -80,11 +89,14 @@ body {
 #app {
 	position: relative;
 	min-height: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
 #sq-the-app-body {
 	min-height: 100%;
-	margin-top: 3.375rem;
+	// margin-top: 3.375rem;
 }
 
 /* --------------- Form --------------- */

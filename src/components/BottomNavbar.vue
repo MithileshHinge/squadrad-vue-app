@@ -45,6 +45,7 @@ export default {
 
 <style lang="scss" scoped>
 #sq-the-bottom-navbar {
+	z-index: 1000;
 	height: 3rem;
 	background-color: #ffffff;
 	filter: drop-shadow(0px 4px 20px rgb(28 31 51 / 15%));
