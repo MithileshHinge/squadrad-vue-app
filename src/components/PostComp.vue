@@ -1,21 +1,6 @@
 <template>
 	<b-container class="sq-post-container p-0 mb-3">
-		<b-row no-gutters class="p-2">
-			<b-col cols="auto" class="px-0">
-				<b-avatar :src="getProfilePicSrc(creator.profilePicSrc, true)"></b-avatar>
-			</b-col>
-			<b-col align-self="center" class="pl-2">
-				<div class="sq-text">
-					{{ creator.pageName }}
-				</div>
-				<div class="sq-subtext sq-text">
-					{{ post.time }}
-				</div>
-			</b-col>
-			<b-col align-self="center">
-				<b-icon-three-dots-vertical class="sq-post-menu-button"/>
-			</b-col>
-		</b-row>
+		<UsernameMediaComp :name="creator.pageName" :profilePicSrc="getProfilePicSrc(creator.profilePicSrc, true)" subtext="2h" showMenuButton/>
 		<b-row no-gutters class="p-2">
 			<b-col align-self="center">
 				<div class="sq-text">
@@ -81,6 +66,7 @@ import postLikeService from '../services/postLike.service';
 import JoinButton from './JoinButton.vue';
 import commentService from '../services/comment.service';
 import getProfilePicSrc from '../common/getProfilePicSrc';
+import UsernameMediaComp from './UsernameMediaComp.vue';
 
 export default {
 	props: {
@@ -178,6 +164,7 @@ export default {
 	components: {
 		LinkAttachment,
 		JoinButton,
+		UsernameMediaComp,
 	},
 };
 </script>
