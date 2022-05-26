@@ -5,7 +5,7 @@
 				<b-icon-search class="sq-text sq-subtext" font-scale="1.05"/>
 			</b-col>
 			<b-col>
-				<b-form-input size="sm" id="sq-the-search-input" autofocus v-model="searchText" :placeholder="searchPlaceholder" autocomplete="off" @input="$emit('input', searchText)" @focus="isFocused = true" @blur="isFocused = false"/>
+				<b-form-input size="sm" id="sq-the-search-input" autofocus :value="value" @input="$emit('input', $event)" :placeholder="searchPlaceholder" autocomplete="off" @focus="isFocused = true" @blur="isFocused = false"/>
 			</b-col>
 		</b-row>
 	</div>
@@ -18,11 +18,11 @@ export default {
 			type: String,
 			default: 'Search',
 		},
+		value: String,
 	},
 	data() {
 		return {
 			isFocused: true,
-			searchText: '',
 		};
 	},
 };

@@ -14,6 +14,7 @@ import PageSettingsPage from '../views/PageSettingsPage.vue';
 import VerifyEmailPage from '../views/VerifyEmailPage.vue';
 import VerifyEmailSentPage from '../views/VerifyEmailSentPage.vue';
 import CreatePostPage from '../views/CreatePostPage.vue';
+import MessagesPage from '../views/MessagesPage.vue';
 
 // Children components
 import LoginModal from '../components/LoginModal.vue';
@@ -50,6 +51,11 @@ const routes = [
 		path: '/explore',
 		name: 'Explore',
 		component: ExplorePage,
+	},
+	{
+		path: '/messages',
+		name: 'Messages',
+		component: MessagesPage,
 	},
 	{
 		path: '/post/:postId',
