@@ -15,6 +15,7 @@ import VerifyEmailPage from '../views/VerifyEmailPage.vue';
 import VerifyEmailSentPage from '../views/VerifyEmailSentPage.vue';
 import CreatePostPage from '../views/CreatePostPage.vue';
 import MessagesPage from '../views/MessagesPage.vue';
+import MySquadsPage from '../views/MySquadsPage.vue';
 
 // Children components
 import LoginModal from '../components/LoginModal.vue';
@@ -121,6 +122,11 @@ const routes = [
 		path: '/auth/verify-email/sent',
 		name: 'VerifyEmailSentPage',
 		component: VerifyEmailSentPage,
+	},
+	{
+		path: '/user/squads',
+		name: 'MySquadsPage',
+		component: MySquadsPage,
 	},
 	{
 		path: '/user/settings',

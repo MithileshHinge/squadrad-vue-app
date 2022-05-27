@@ -318,7 +318,7 @@ $cta-shadow-opacity: 0.4;
 }
 
 @media (hover: hover) {
-	.sq-btn:hover, .sq-btn:focus {
+	.sq-btn-disabled:hover, .sq-btn-disabled:focus {
 		background-color: $my-color-gray5;
 		color: $my-color-gray1;
 		box-shadow: none;
