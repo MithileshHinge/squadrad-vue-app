@@ -2,7 +2,7 @@
 	<b-nav id="sq-the-bottom-navbar" tabs justified class="fixed-bottom">
 		<b-nav-item to="/feed" class="sq-nav-item" exact exact-active-class="active"><b-icon :icon="navIcons[0]"></b-icon></b-nav-item>
 		<b-nav-item to="/explore" id="sq-the-bottomnav-explore" class="sq-nav-item" exact exact-active-class="active"><span v-html="navIcons[1]"></span></b-nav-item>
-		<b-nav-item v-if="isCreator" to="/create-post" id="sq-bottomnav-create-post" class="sq-nav-item" exact exact-active-class="active"><b-iconstack><b-icon icon="circle-fill" stacked/><b-icon icon="plus" variant="light" scale="0.75" stacked/></b-iconstack></b-nav-item>
+		<b-nav-item v-if="isCreator" to="/create-post" id="sq-the-bottomnav-create-post" :class="`${$route.path === '/messages' ? 'sq-bottomnav-create-post-small' : ''} sq-nav-item`" exact exact-active-class="active"><b-iconstack><b-icon icon="circle-fill" stacked/><b-icon icon="plus" variant="light" scale="0.75" stacked/></b-iconstack></b-nav-item>
 		<b-nav-item to="/notifications" class="sq-nav-item" exact exact-active-class="active"><b-icon :icon="navIcons[2]"></b-icon></b-nav-item>
 		<b-nav-item to="/messages" class="sq-nav-item" exact exact-active-class="active"><b-icon :icon="navIcons[3]"></b-icon></b-nav-item>
 	</b-nav>
@@ -61,16 +61,22 @@ export default {
 	margin: auto;
 }
 
-#sq-bottomnav-create-post {
+#sq-the-bottomnav-create-post {
 	position: relative;
 }
 
-#sq-bottomnav-create-post .nav-link {
+#sq-the-bottomnav-create-post .nav-link {
 	color: $my-color-dark;
-	font-size: 200%;
 	position: absolute;
 	left: 50%;
-	transform: translate(-50%, -85%);
+	transform: translate(-50%, -110%) scale(200%);
+	transition: all ease-in-out 100ms;
+}
+
+#sq-the-bottomnav-create-post.sq-bottomnav-create-post-small .nav-link {
+	font-size: 100%;
+	transform: translate(-50%, -50%);
+	left: 50%;
 }
 
 </style>

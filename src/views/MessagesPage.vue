@@ -187,6 +187,7 @@ export default {
 						senderId: message.senderUserId,
 						date: new Date(message.timestamp).toLocaleDateString('default', { day: 'numeric', month: 'long' }),
 						timestamp: new Date(message.timestamp).toLocaleTimeString('default', { hour: '2-digit', minute: '2-digit' }),
+						seen: true,
 					}));
 				}
 				this.messagesLoaded = true;
