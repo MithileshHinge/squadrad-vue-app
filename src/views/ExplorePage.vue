@@ -47,7 +47,7 @@ export default {
 			try {
 				const res = await creatorService.getAllCreators();
 				if (res && res.status === 200) {
-					this.creators = [{ ...res.data[0] }, { ...res.data[0], userId: '2' }, { ...res.data[0], userId: '3' }];
+					this.creators = res.data;
 				}
 			} catch (err) {
 				console.log(err);
