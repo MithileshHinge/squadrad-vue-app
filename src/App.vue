@@ -494,9 +494,19 @@ $cta-shadow-opacity: 0.4;
 	width: 13.75rem;
 }
 
+.sq-empty-state-img-full {
+	height: 35vh;
+	margin-top: 9vh;
+	margin-bottom: 3rem;
+}
+
 .sq-empty-state-text {
 	width: 100%;
 	text-align: center;
+}
+
+.sq-btn-empty-state {
+	margin-top: 1.25rem;
 }
 
 .bi-heart-fill {

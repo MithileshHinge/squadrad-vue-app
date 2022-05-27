@@ -17,7 +17,7 @@
 			</b-tab>
 		</b-tabs>
 		<div v-else-if="posts && posts.length === 0">
-			<b-img id="sq-the-feed-empty-img" src="@/assets/feed-empty-state.jpg"></b-img>
+			<b-img class="sq-empty-state-img-full" src="@/assets/feed-empty-state.jpg"></b-img>
 			<div class="sq-empty-state-text sq-text text-center">Support creators to see their posts in your feed</div>
 			<b-button id="sq-the-find-creators-btn" class="sq-btn sq-btn-cta" to="/explore">Find creators you may know</b-button>
 		</div>
@@ -95,15 +95,9 @@ export default {
 </script>
 
 <style lang="scss">
-#sq-the-feed-empty-img {
-	height: 35vh;
-	margin-top: 9vh;
-	margin-bottom: 3rem;
-}
 
 #sq-the-find-creators-btn {
 	background-image: linear-gradient(22deg, $mulberry-crayola, $french-rose, $mulberry-crayola);
-	margin-top: 1.25rem;
 	//box-shadow: 2px 6px 20px 0 rgba($color: $mulberry-crayola, $alpha: 0.5);
 }
 

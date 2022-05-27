@@ -34,7 +34,7 @@
 				<b-nav-item class="sq-menu-item" to="/user/squads">My Squads</b-nav-item>
 				<b-nav-item class="sq-menu-item" v-if="!isCreator" to="/creator/start">Start a membership page</b-nav-item>
 				<b-nav-item class="sq-menu-item" to="/user/settings">Account settings</b-nav-item>
-				<b-nav-item class="sq-menu-item">Billing</b-nav-item>
+				<!--b-nav-item class="sq-menu-item" to="/user/billing">Billing</b-nav-item-->
 				<b-nav-item class="sq-menu-item">Help and FAQ</b-nav-item>
 				<b-nav-item class="sq-menu-item">Contact us</b-nav-item>
 				<b-nav-item class="sq-menu-item" @click="logout">Log out</b-nav-item>
