@@ -23,6 +23,7 @@ import PageSettingsCreatorInfo from '../components/PageSettingsCreatorInfo.vue';
 import PageSettingsSquads from '../components/PageSettingsSquads.vue';
 import PageSettingsGoals from '../components/PageSettingsGoals.vue';
 import PageSettingsPayments from '../components/PageSettingsPayments.vue';
+import PageSettingsCreatorStats from '../components/PageSettingsCreatorStats.vue';
 
 Vue.use(VueRouter);
 
@@ -104,6 +105,10 @@ const routes = [
 			{
 				path: 'payments',
 				component: PageSettingsPayments,
+			},
+			{
+				path: 'stats',
+				component: PageSettingsCreatorStats,
 			},
 		],
 	},
