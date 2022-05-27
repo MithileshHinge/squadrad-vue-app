@@ -19,7 +19,7 @@
 		<div v-else-if="posts && posts.length === 0">
 			<b-img class="sq-empty-state-img-full" src="@/assets/feed-empty-state.jpg"></b-img>
 			<div class="sq-empty-state-text sq-text text-center">Support creators to see their posts in your feed</div>
-			<b-button id="sq-the-find-creators-btn" class="sq-btn sq-btn-cta" to="/explore">Find creators you may know</b-button>
+			<b-button id="sq-the-find-creators-btn" class="sq-btn sq-btn-cta sq-btn-empty-state" to="/explore">Find creators you may know</b-button>
 		</div>
 	</div>
 </template>
