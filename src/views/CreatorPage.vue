@@ -1,5 +1,6 @@
 <template>
 	<b-container class="p-0" fluid>
+		<b-alert v-model="showReviewSubmittedAlert" style="z-index: 500;" class="position-absolute fixed-top m-0" variant="warning" dismissible>Your page has been submitted for review</b-alert>
 		<div id="sq-the-cover-pic">
 			<svg viewBox="0 0 360 140" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><g opacity="0.3"><mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="-594" y="-1408" width="1548" height="1548"><circle cx="180" cy="-634" r="774" fill="#C4C4C4"/></mask><g mask="url(#mask0)"><rect width="360" height="140" fill="url(#paint0_radial)"/></g></g><g opacity="0.35"><mask id="mask1" mask-type="alpha" maskUnits="userSpaceOnUse" x="-349" y="-918" width="1058" height="1058"><circle cx="180" cy="-389" r="529" fill="#C4C4C4"/></mask><g mask="url(#mask1)"><rect width="360" height="140" fill="url(#paint1_radial)"/></g></g><mask id="mask2" mask-type="alpha" maskUnits="userSpaceOnUse" x="-220" y="-660" width="800" height="800"><circle cx="180" cy="-260" r="400" fill="#C4C4C4"/></mask><g mask="url(#mask2)"><rect width="360" height="140" fill="url(#paint2_radial)"/></g><defs><radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(180 140) rotate(-90) scale(140 442.129)"><stop stop-color="#FF3D77"/><stop offset="1" stop-color="#BB57A4"/></radialGradient><radialGradient id="paint1_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(180 140) rotate(-90) scale(140 442.129)"><stop stop-color="#FF3D77"/><stop offset="1" stop-color="#BB57A4"/></radialGradient><radialGradient id="paint2_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(180 140) rotate(-90) scale(140 442.129)"><stop stop-color="#FF3D77"/><stop offset="1" stop-color="#BB57A4"/></radialGradient></defs></svg>
 		</div>
@@ -141,11 +142,13 @@ import goalService from '../services/goal.service';
 import postService from '../services/post.service';
 import manualSubService from '../services/manualSubs.service';
 import getProfilePicSrc from '../common/getProfilePicSrc';
+import reviewPageStatuses from '../common/reviewPageStatuses';
 
 export default {
 	data() {
 		return {
 			getProfilePicSrc,
+			reviewPageStatuses,
 			posts: [],
 			creator: {},
 			squads: [],
@@ -161,6 +164,9 @@ export default {
 		},
 		goalsSorted() {
 			return [...this.goals].sort((a, b) => a.goalNumber - b.goalNumber);
+		},
+		showReviewSubmittedAlert() {
+			return (this.creator.review && this.creator.review.status === this.reviewPageStatuses.SUBMITTED);
 		},
 	},
 	beforeRouteEnter(to, from, next) {

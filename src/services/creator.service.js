@@ -34,4 +34,8 @@ export default {
 		return api.get('/creators')
 			.catch((err) => handleError(err));
 	},
+	submitForReview() {
+		return api.patch('/creator/review/submit')
+			.catch((err) => handleError(err));
+	},
 };
