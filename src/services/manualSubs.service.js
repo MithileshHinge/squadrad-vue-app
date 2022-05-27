@@ -18,4 +18,8 @@ export default {
 		return api.get(`/public/payments/subscription/manual/${creatorUserId}/total`)
 			.catch((err) => handleError(err));
 	},
+	getAllManualSubbedCreatorsInfo() {
+		return api.get('/manualSubs/active/creators')
+			.catch((err) => handleError(err));
+	},
 };

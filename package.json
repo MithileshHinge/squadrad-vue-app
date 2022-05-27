@@ -18,6 +18,7 @@
     "chroma-js": "^2.4.2",
     "core-js": "^3.22.6",
     "cropperjs": "^1.5.12",
+    "moment": "^2.29.3",
     "mutationobserver-shim": "^0.3.7",
     "popper.js": "^1.16.1",
     "underscore": "^1.13.3",

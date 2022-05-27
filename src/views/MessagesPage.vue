@@ -36,7 +36,7 @@
 					</b-list-group>
 					<b-list-group v-else-if="allSubbedCreatorsSearchFiltered && allSubbedCreatorsSearchFiltered.length > 0">
 						<b-list-group-item v-for="creator in allSubbedCreatorsSearchFiltered" :key="creator.userId" class="p-0">
-							<UsernameMediaComp :name="creator.pageName" :profilePicSrc="getProfilePicSrc(creator.profilePicSrc, false)" :showMenuButton="false" @click="addRoom(creator)"/>
+							<UsernameMediaComp :name="creator.pageName" :profilePicSrc="getProfilePicSrc(creator.profilePicSrc, true)" :showMenuButton="false" @click="addRoom(creator)"/>
 						</b-list-group-item>
 					</b-list-group>
 					<div v-else class="p-4 sq-text sq-muted">
@@ -51,17 +51,19 @@
 <script>
 import ChatWindow from 'vue-advanced-chat';
 import 'vue-advanced-chat/dist/vue-advanced-chat.css';
+import moment from '../plugins/moment';
 import getProfilePicSrc from '../common/getProfilePicSrc';
 import scssColors from '../scss/_export.module.scss';
 import CustomModal from '../components/CustomModal.vue';
 import SearchBar from '../components/SearchBar.vue';
 import UsernameMediaComp from '../components/UsernameMediaComp.vue';
 import messageService from '../services/message.service';
+import manualSubService from '../services/manualSubs.service';
 
 export default {
 	data() {
 		return {
-			isCreatorInbox: false,
+			isCreatorInbox: !!this.$store.state.creator.userId,
 			rooms: [],
 			messages: [],
 			loadingRooms: true,
@@ -114,29 +116,27 @@ export default {
 			this.loadingRooms = true;
 			this.roomsLoaded = false;
 			try {
-				const res = await messageService.getSupporterInbox();
+				const res = await messageService.fetchMessageRooms({ isFromCreatorInbox: this.isCreatorInbox });
 				if (res && res.status === 200) {
 					this.rooms = res.data.map((room) => ({
-						roomId: room.creatorUserId,
-						roomName: room.pageName,
-						avatar: room.profilePicSrc,
+						roomId: room.userId,
+						roomName: room.name,
+						avatar: getProfilePicSrc(room.profilePicSrc, !this.isCreatorInbox),
 						lastMessage: {
 							content: room.lastMessage.text,
 							senderId: room.lastMessage.senderUserId,
-							username: room.lastMessage.senderUsername,
-							timestamp: room.lastMessage.timestamp,
-							new: room.lastMessage.new,
+							timestamp: moment().to(room.lastMessage.timestamp),
 						},
 						users: [
 							{
-								_id: room.creatorUserId,
-								username: room.pageName,
-								avatar: room.profilePicSrc,
+								_id: room.userId,
+								username: room.name,
+								avatar: getProfilePicSrc(room.profilePicSrc, !this.isCreatorInbox),
 							},
 							{
 								_id: this.$store.state.user.userId,
-								username: this.$store.state.user.fullName,
-								avatar: getProfilePicSrc(this.$store.state.user.profilePicSrc),
+								username: this.isCreatorInbox ? this.$store.state.creator.pageName : this.$store.state.user.fullName,
+								avatar: getProfilePicSrc(this.$store.state.user.profilePicSrc, this.isCreatorInbox),
 							},
 						],
 					}));
@@ -151,14 +151,14 @@ export default {
 			if (!options.reset) return;
 			this.messagesLoaded = false;
 			try {
-				const res = await messageService.fetchAllMessagesWithUser(room.roomId);
+				const res = await messageService.fetchAllMessagesWithUser({ userId: room.roomId, isFromCreatorInbox: this.isCreatorInbox });
 				if (res && res.status === 200) {
 					this.messages = res.data.map((message) => ({
 						_id: message.messageId,
 						content: message.text,
 						senderId: message.senderUserId,
-						date: message.date,
-						timestamp: message.time,
+						date: new Date(message.timestamp).toLocaleDateString('default', { day: 'numeric', month: 'long' }),
+						timestamp: new Date(message.timestamp).toLocaleTimeString('default', { hour: '2-digit', minute: '2-digit' }),
 					}));
 				}
 				this.messagesLoaded = true;
@@ -175,8 +175,8 @@ export default {
 						_id: res.data.messageId,
 						content: res.data.text,
 						senderId: res.data.senderUserId,
-						date: res.data.date,
-						timestamp: res.data.time,
+						date: new Date(res.data.timestamp).toLocaleDateString('default', { date: 'numeric', month: 'long' }),
+						timestamp: new Date(res.data.timestamp).toLocaleTimeString('default', { hour: '2-digit', minute: '2-digit' }),
 					});
 					this.messages = messages;
 				}
@@ -186,14 +186,14 @@ export default {
 		},
 		async addRoomClicked() {
 			this.$bvModal.show('sq-the-add-room-modal');
-			await new Promise((r) => { setTimeout(r, 100); });
-			this.allSubbedCreators = [{
-				pageName: 'Mhinges',
-				profilePicSrc: this.$store.state.user.profilePicSrc,
-			}, {
-				pageName: 'CGP Grey',
-				profilePicSrc: this.$store.state.user.profilePicSrc,
-			}];
+			try {
+				const res = await manualSubService.getAllManualSubbedCreatorsInfo();
+				if (res && res.status === 200) {
+					this.allSubbedCreators = res.data;
+				}
+			} catch (err) {
+				console.log(err);
+			}
 		},
 		addRoom(creator) {
 			this.$bvModal.hide('sq-the-add-room-modal');
