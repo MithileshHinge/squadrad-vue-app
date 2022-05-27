@@ -22,6 +22,7 @@ import LoginModal from '../components/LoginModal.vue';
 import PageSettingsCreatorInfo from '../components/PageSettingsCreatorInfo.vue';
 import PageSettingsSquads from '../components/PageSettingsSquads.vue';
 import PageSettingsGoals from '../components/PageSettingsGoals.vue';
+import PageSettingsPayments from '../components/PageSettingsPayments.vue';
 
 Vue.use(VueRouter);
 
@@ -99,6 +100,10 @@ const routes = [
 						next();
 					});
 				},
+			},
+			{
+				path: 'payments',
+				component: PageSettingsPayments,
 			},
 		],
 	},

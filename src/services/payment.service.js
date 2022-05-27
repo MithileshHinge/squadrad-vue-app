@@ -13,4 +13,8 @@ export default {
 		return api.post('/payment/success', { rzpTransactionId, rzpOrderId, rzpSignature })
 			.catch((err) => handleError(err));
 	},
+	getAllPaymentsToCreator() {
+		return api.get('/payments')
+			.catch((err) => handleError(err));
+	},
 };
