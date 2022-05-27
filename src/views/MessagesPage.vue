@@ -1,46 +1,61 @@
 <template>
-	<div class="d-flex">
-		<ChatWindow
-			class="sq-chat-window sq-text"
-			height="auto"
-			:current-user-id="$store.state.user.userId"
-			:rooms="rooms"
-			:loading-rooms="loadingRooms"
-			:rooms-loaded="roomsLoaded"
-			:room-id="roomId"
-			:load-first-room="false"
-			:rooms-list-opened="roomsListOpened"
-			:messages="messages"
-			:messages-loaded="messagesLoaded"
-			:message-actions="[]"
-			:message-selection-actions="[]"
-			:show-files="false"
-			:show-audio="false"
-			:show-reaction-emojis="false"
-			:user-tags-enabled="true"
-			:emojis-suggestion-enabled="true"
-			:media-preview-enabled="false"
-			:styles="chatStyles"
-			@fetch-messages="fetchMessages"
-			@send-message="sendMessage"
-			@add-room="addRoomClicked"
-		/>
-		<CustomModal modalId="sq-the-add-room-modal" modalTitle="Chat with creators">
+	<div class="d-flex flex-column">
+		<b-tabs v-if="$store.state.creator.userId" id="sq-the-messages-inbox-tabs" align="left" nav-wrapper-class="sq-shadow" justified>
+			<b-tab active @click="isCreatorInbox = true">
+				<template #title>
+					<UsernameMediaComp :name="$store.state.creator.pageName" :profilePicSrc="getProfilePicSrc($store.state.creator.profilePicSrc, true)" subtext="Creator" :showMenuButton="false"/>
+				</template>
+			</b-tab>
+			<b-tab @click="isCreatorInbox = false">
+				<template #title>
+					<UsernameMediaComp :name="$store.state.user.fullName" :profilePicSrc="getProfilePicSrc($store.state.user.profilePicSrc, false)" subtext="Member" :showMenuButton="false"/>
+				</template>
+			</b-tab>
+		</b-tabs>
+		<div class="d-flex flex-grow-1">
+			<ChatWindow
+				class="sq-chat-window sq-text"
+				height="auto"
+				:current-user-id="$store.state.user.userId"
+				:rooms="rooms"
+				:loading-rooms="loadingRooms"
+				:rooms-loaded="roomsLoaded"
+				:room-id="roomId"
+				:load-first-room="false"
+				:rooms-list-opened="roomsListOpened"
+				:messages="messages"
+				:messages-loaded="messagesLoaded"
+				:message-actions="[]"
+				:message-selection-actions="[]"
+				:show-files="false"
+				:show-audio="false"
+				:show-reaction-emojis="false"
+				:user-tags-enabled="true"
+				:emojis-suggestion-enabled="true"
+				:media-preview-enabled="false"
+				:styles="chatStyles"
+				:text-messages="defaultTexts"
+				@fetch-messages="fetchMessages"
+				@send-message="sendMessage"
+				@add-room="addRoomClicked"
+			/>
+		</div>
+		<CustomModal modalId="sq-the-add-room-modal" :modalTitle="isCreatorInbox ? 'Chat with members' : 'Chat with creators'">
 			<div>
-				<SearchBar v-model="addCreatorSearchInput"/>
-				<div id="sq-the-chat-search-all-subbed-creators-list" class="mt-3">
-					<b-list-group v-if="!allSubbedCreatorsSearchFiltered">
+				<SearchBar v-model="addRoomSearchInput"/>
+				<div id="sq-the-chat-add-room-search-list" class="mt-3">
+					<b-list-group v-if="!addRoomSearchUsersFiltered">
 						<b-list-group-item v-for="index in 5" :key="index" class="p-0">
 							<UsernameMediaComp loading/>
 						</b-list-group-item>
 					</b-list-group>
-					<b-list-group v-else-if="allSubbedCreatorsSearchFiltered && allSubbedCreatorsSearchFiltered.length > 0">
-						<b-list-group-item v-for="creator in allSubbedCreatorsSearchFiltered" :key="creator.userId" class="p-0">
-							<UsernameMediaComp :name="creator.pageName" :profilePicSrc="getProfilePicSrc(creator.profilePicSrc, true)" :showMenuButton="false" @click="addRoom(creator)"/>
+					<b-list-group v-else-if="addRoomSearchUsersFiltered && addRoomSearchUsersFiltered.length > 0">
+						<b-list-group-item v-for="user in addRoomSearchUsersFiltered" :key="user.userId" class="p-0">
+							<UsernameMediaComp :name="isCreatorInbox ? user.fullName : user.pageName" :profilePicSrc="getProfilePicSrc(user.profilePicSrc, !isCreatorInbox)" :showMenuButton="false" @click="addRoom(user)"/>
 						</b-list-group-item>
 					</b-list-group>
 					<div v-else class="p-4 sq-text sq-muted">
-						You have not joined any squads
+						{{ isCreatorInbox ? 'You don\'t have any squad members' : 'You have not joined any squads' }}
 					</div>
 				</div>
 			</div>
@@ -101,14 +116,27 @@ export default {
 					emoji: scssColors.myColorDark,
 				},
 			},
-			allSubbedCreators: null,
-			addCreatorSearchInput: '',
+			defaultTexts: {
+				ROOMS_EMPTY: 'No messages',
+			},
+			addRoomUsersList: null,
+			addRoomSearchInput: '',
 			getProfilePicSrc,
 		};
 	},
 	computed: {
-		allSubbedCreatorsSearchFiltered() {
-			return this.allSubbedCreators === null ? null : this.allSubbedCreators.filter((c) => c.pageName.includes(this.addCreatorSearchInput));
+		addRoomSearchUsersFiltered() {
+			if (this.addRoomUsersList === null) return null;
+			return this.addRoomUsersList.filter((u) => (this.isCreatorInbox ? u.fullName.includes(this.addRoomSearchInput) : u.pageName.includes(this.addRoomSearchInput)));
+		},
+	},
+	watch: {
+		isCreatorInbox() {
+			this.rooms = [];
+			this.messages = [];
+			this.roomId = null;
+			this.roomsListOpened = true;
+			this.fetchRooms();
 		},
 	},
 	methods: {
@@ -187,36 +215,47 @@ export default {
 		async addRoomClicked() {
 			this.$bvModal.show('sq-the-add-room-modal');
 			try {
-				const res = await manualSubService.getAllManualSubbedCreatorsInfo();
-				if (res && res.status === 200) {
-					this.allSubbedCreators = res.data;
+				if (this.isCreatorInbox) {
+					const res = await manualSubService.getAllManualSubbedUsersInfo();
+					if (res && res.status === 200) {
+						this.addRoomUsersList = res.data;
+					}
+				} else {
+					const res = await manualSubService.getAllManualSubbedCreatorsInfo();
+					if (res && res.status === 200) {
+						this.addRoomUsersList = res.data;
+					}
 				}
 			} catch (err) {
 				console.log(err);
 			}
 		},
-		addRoom(creator) {
+		addRoom(user) {
 			this.$bvModal.hide('sq-the-add-room-modal');
+			if (this.rooms.find((room) => room.roomId === user.userId)) {
+				this.roomId = user.userId;
+				return;
+			}
 			const rooms = [...this.rooms];
 			rooms.push({
-				roomId: creator.userId,
-				roomName: creator.pageName,
-				avatar: getProfilePicSrc(creator.profilePicSrc, true),
+				roomId: user.userId,
+				roomName: this.isCreatorInbox ? user.fullName : user.pageName,
+				avatar: getProfilePicSrc(user.profilePicSrc, !this.isCreatorInbox),
 				users: [
 					{
-						_id: creator.userId,
-						username: creator.pageName,
-						avatar: getProfilePicSrc(creator.profilePicSrc, true),
+						_id: user.userId,
+						username: this.isCreatorInbox ? user.fullName : user.pageName,
+						avatar: getProfilePicSrc(user.profilePicSrc, !this.isCreatorInbox),
 					},
 					{
 						_id: this.$store.state.user.userId,
-						username: this.$store.state.user.fullName,
-						avatar: getProfilePicSrc(this.$store.state.user.profilePicSrc, false),
+						username: this.isCreatorInbox ? this.$store.state.creator.pageName : this.$store.state.user.fullName,
+						avatar: getProfilePicSrc(this.isCreatorInbox ? this.$store.state.creator.profilePicSrc : this.$store.state.user.profilePicSrc, this.isCreatorInbox),
 					},
 				],
 			});
 			this.rooms = rooms;
-			this.roomId = creator.userId;
+			this.roomId = user.userId;
 		},
 	},
 	mounted() {
@@ -277,17 +316,17 @@ export default {
 	box-shadow: none;
 }
 
-#sq-the-chat-search-all-subbed-creators-list {
+#sq-the-chat-add-room-search-list {
 	border-radius: 0.25rem;
 	border: 1px solid $my-color-gray5;
 	height: 17rem;
 	overflow: scroll;
 }
-#sq-the-chat-search-all-subbed-creators-list .list-group > .list-group-item{
+#sq-the-chat-add-room-search-list .list-group > .list-group-item{
 	border: none;
 	border-bottom: 1px solid $my-color-gray5;
 }
-#sq-the-chat-search-all-subbed-creators-list .list-group > .list-group-item:last-child{
+#sq-the-chat-add-room-search-list .list-group > .list-group-item:last-child{
 	border-bottom: none;
 }
 </style>

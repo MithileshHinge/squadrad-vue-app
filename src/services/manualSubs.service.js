@@ -22,4 +22,8 @@ export default {
 		return api.get('/manualSubs/active/creators')
 			.catch((err) => handleError(err));
 	},
+	getAllManualSubbedUsersInfo() {
+		return api.get('/manualSubs/active/users')
+			.catch((err) => handleError(err));
+	},
 };
