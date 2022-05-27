@@ -30,4 +30,8 @@ export default {
 			},
 		});
 	},
+	getAllCreators() {
+		return api.get('/creators')
+			.catch((err) => handleError(err));
+	},
 };
