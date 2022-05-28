@@ -1,5 +1,5 @@
 <template>
-	<b-navbar id="sq-the-navbar" class="pl-lg-3" toggleable="lg" fixed="top">
+	<b-navbar id="sq-the-navbar" type="dark" class="pl-lg-3" toggleable="lg" fixed="top">
 		<b-navbar-brand id="sq-the-navbrand">
 			<b-img id="sq-the-navlogo" src="@/assets/squadrad-fav.png" fluid left></b-img>
 		</b-navbar-brand>
@@ -10,7 +10,29 @@
 			<b-avatar v-if="isAuthenticated" id="sq-the-menubtn-avatar" :src='getProfilePicSrc($store.state.creator.profilePicSrc || $store.state.user.profilePicSrc, isCreator)' size="2rem"></b-avatar>
 			<span v-else class="sq-icon-bar"></span>
 		</b-navbar-toggle>
-		<b-navbar-nav v-if="isAuthenticated" class="d-none d-lg-flex">
+		<b-navbar-nav v-if="isAuthenticated" class="d-none d-lg-flex ml-auto align-items-center">
+			<b-nav-item style="width: 15rem" class="position-relative">
+				<SearchBar v-model="searchText" searchPlaceholder="Search creators" :renderFocused="false" size="sm" @focus="navSearchBarFocus" @blur="isNavSearchBarFocused = false"/>
+				<div v-if="isNavSearchBarFocused && searchText.length > 1" id="sq-the-nav-search-results">
+					<UserList size="sm" :showSubtext="true" :users="creatorsSearchFiltered"/>
+				</div>
+			</b-nav-item>
+			<b-nav-item class="px-1"><b-icon-bell-fill/></b-nav-item>
+			<b-nav-item class="px-1"><b-icon-chat-fill/></b-nav-item>
+			<b-dropdown right no-caret toggle-class="shadow-none bg-transparent border-0" menu-class="my-n1">
+				<template #button-content>
+					<b-avatar v-if="isAuthenticated" :src='getProfilePicSrc($store.state.creator.profilePicSrc || $store.state.user.profilePicSrc, isCreator)' size="2rem"></b-avatar>
+				</template>
+				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" v-if="isCreator" to="/creator/settings">Page settings</b-dropdown-item>
+				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" to="/feed">Post from my Creators</b-dropdown-item>
+				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" to="/user/squads">My Squads</b-dropdown-item>
+				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" v-if="!isCreator" to="/creator/start">Start a membership page</b-dropdown-item>
+				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" to="/user/settings">Account settings</b-dropdown-item>
+				<!--b-nav-item class="sq-menu-item" to="/user/billing">Billing</b-nav-item-->
+				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text">Help and FAQ</b-dropdown-item>
+				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text">Contact us</b-dropdown-item>
+				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" @click="logout">Log out</b-dropdown-item>
+			</b-dropdown>
 		</b-navbar-nav>
 		<b-navbar-nav v-else class="d-none d-lg-flex w-100 align-items-center">
 			<b-nav-item class="sq-navbar-nav-item">Explore creators</b-nav-item>
@@ -62,6 +84,9 @@
 <script>
 import userService from '@/services/user.service';
 import getProfilePicSrc from '../common/getProfilePicSrc';
+import SearchBar from './SearchBar.vue';
+import UserList from './UserList.vue';
+import creatorService from '../services/creator.service';
 
 export default {
 	props: {
@@ -71,9 +96,37 @@ export default {
 	data() {
 		return {
 			getProfilePicSrc,
+			isNavSearchBarFocused: false,
+			searchText: '',
+			creators: undefined,
 		};
 	},
+	computed: {
+		creatorsSearchFiltered() {
+			if (this.creators === undefined) return undefined;
+			if (this.searchText.length < 2) return [];
+			return this.creators.filter((creator) => creator.pageName.toLowerCase().includes(this.searchText.toLowerCase())).map((creator) => ({
+				userId: creator.userId,
+				name: creator.pageName,
+				profilePicSrc: creator.profilePicSrc,
+				subtext: `is creating ${creator.bio}`,
+			}));
+		},
+	},
 	methods: {
+		async navSearchBarFocus() {
+			this.isNavSearchBarFocused = true;
+			if (!this.creators) {
+				try {
+					const res = await creatorService.getAllCreators();
+					if (res && res.status === 200) {
+						this.creators = res.data;
+					}
+				} catch (err) {
+					console.log(err);
+				}
+			}
+		},
 		logout() {
 			userService.logout().then((res) => {
 				if (res && res.status === 200) {
@@ -82,6 +135,10 @@ export default {
 				}
 			});
 		},
+	},
+	components: {
+		SearchBar,
+		UserList,
 	},
 };
 </script>
@@ -181,6 +238,16 @@ export default {
 		&::after {
 			opacity: 0;
 		}
+	}
+
+	#sq-the-nav-search-results {
+		position: absolute;
+		margin-top: 0.2rem;
+		width: 90%;
+		left: 50%;
+		transform: translateX(-50%);
+		max-height: 17rem;
+		overflow: scroll;
 	}
 
 </style>

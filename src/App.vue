@@ -434,7 +434,7 @@ $cta-shadow-opacity: 0.4;
 	font-size: 1.25rem;
 	padding: 1.875rem 0 0 1.25rem;
 	font-weight: 300;
-	color: $my-color-dark;
+	color: $my-color-gray1 !important;
 	text-align: left;
 }
 

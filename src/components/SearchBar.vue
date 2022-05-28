@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<b-row id="sq-the-search-bar" no-gutters :class="`px-3 py-1 ${isFocused ? 'focused' : ''}`">
-			<b-col cols="auto" align-self="center" class="pr-2">
-				<b-icon-search class="sq-text sq-subtext" font-scale="1.05"/>
+		<b-row no-gutters :class="`sq-search-bar px-3 ${isFocused ? 'focused' : ''} ${size === 'sm' ? 'sq-search-bar-sm' : ''}`">
+			<b-col cols="auto" align-self="center" class="pr-2 sq-search-bar-icon d-flex">
+				<b-icon-search class="sq-muted align-top"/>
 			</b-col>
 			<b-col>
-				<b-form-input size="sm" id="sq-the-search-input" autofocus :value="value" @input="$emit('input', $event)" :placeholder="searchPlaceholder" autocomplete="off" @focus="isFocused = true" @blur="isFocused = false"/>
+				<b-form-input size="sm" class="sq-search-input" :autofocus="renderFocused" :value="value" @input="$emit('input', $event)" :placeholder="searchPlaceholder" autocomplete="off" @focus="focused" @blur="blurred"/>
 			</b-col>
 		</b-row>
 	</div>
@@ -19,17 +19,35 @@ export default {
 			default: 'Search',
 		},
 		value: String,
+		renderFocused: Boolean,
+		size: {
+			type: String,
+			validator(val) {
+				return ['sm', 'md'].includes(val);
+			},
+			default: 'md',
+		},
 	},
 	data() {
 		return {
-			isFocused: true,
+			isFocused: this.renderFocused,
 		};
+	},
+	methods: {
+		focused(event) {
+			this.isFocused = true;
+			this.$emit('focus', event);
+		},
+		blurred(event) {
+			this.isFocused = false;
+			this.$emit('blur', event);
+		},
 	},
 };
 </script>
 
 <style lang="scss" scoped>
-#sq-the-search-bar {
+.sq-search-bar {
 	font-weight: 300;
 	font-size: 1rem;
 	line-height: 1.25rem;
@@ -37,18 +55,27 @@ export default {
 	color: $my-color-gray1;
 	border: none;
 	border-radius: 50px;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	transition: 0.5s;
 }
 
-#sq-the-search-bar.focused {
+.sq-search-bar.focused {
 	background-color: $my-color-light;
 	box-shadow: 0 0 0 0.0625rem $french-rose;
 	color: $my-color-gray1;
 }
 
-#sq-the-search-input {
+.sq-search-bar.sq-search-bar-sm {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.sq-search-bar-icon .b-icon {
+	font-size: 100%;
+}
+
+.sq-search-input {
 	padding: 0;
 	background: transparent;
 	border: none;

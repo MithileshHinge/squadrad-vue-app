@@ -1,23 +1,8 @@
 <template>
 	<b-container class="pt-4">
-		<SearchBar v-model="searchText" searchPlaceholder="Search creators"/>
+		<SearchBar v-model="searchText" searchPlaceholder="Search creators" :renderFocused="true"/>
 		<div class="mt-3">
-			<b-list-group v-if="!creatorsSearchFiltered">
-				<b-list-group-item v-for="index in 10" :key="index" class="p-0">
-					<UsernameMediaComp loading/>
-				</b-list-group-item>
-			</b-list-group>
-			<b-list-group v-else-if="creatorsSearchFiltered && creatorsSearchFiltered.length > 0">
-				<b-list-group-item v-for="creator in creatorsSearchFiltered" :key="creator.userId" class="p-0">
-					<UsernameMediaComp
-						:name="creator.pageName"
-						:profilePicSrc="getProfilePicSrc(creator.profilePicSrc, true)"
-						:subtext="`is creating ${creator.bio}`"
-						:showMenuButton="false"
-						@click="$router.push(`/creator/${creator.userId}`)"
-						/>
-				</b-list-group-item>
-			</b-list-group>
+			<UserList size="md" :showSubtext="true" :users="creatorsSearchFiltered" @click="$router.push(`/creator/${$event.userId}`)"/>
 		</div>
 	</b-container>
 </template>
@@ -25,21 +10,24 @@
 <script>
 import creatorService from '../services/creator.service';
 import SearchBar from '../components/SearchBar.vue';
-import UsernameMediaComp from '../components/UsernameMediaComp.vue';
-import getProfilePicSrc from '../common/getProfilePicSrc';
+import UserList from '../components/UserList.vue';
 
 export default {
 	data() {
 		return {
 			searchText: '',
 			creators: [],
-			getProfilePicSrc,
 		};
 	},
 	computed: {
 		creatorsSearchFiltered() {
 			if (this.searchText.length < 2) return [];
-			return this.creators.filter((creator) => creator.pageName.includes(this.searchText));
+			return this.creators.filter((creator) => creator.pageName.toLowerCase().includes(this.searchText.toLowerCase())).map((creator) => ({
+				userId: creator.userId,
+				name: creator.pageName,
+				profilePicSrc: creator.profilePicSrc,
+				subtext: `is creating ${creator.bio}`,
+			}));
 		},
 	},
 	methods: {
@@ -59,7 +47,7 @@ export default {
 	},
 	components: {
 		SearchBar,
-		UsernameMediaComp,
+		UserList,
 	},
 };
 </script>
