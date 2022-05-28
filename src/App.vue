@@ -11,17 +11,20 @@
 			<div v-if="isAuthenticated && showBottomNav" style="height: 3rem;"><!-- empty div same size as bottomnavbar, without this router-view is hidden behind bottomnavbar --></div>
 		</b-col>
 		<BottomNavbar v-if="isAuthenticated && showBottomNav" :isCreator="isCreator"></BottomNavbar>
+		<FloatingCreatePostButton v-if="isAuthenticated && showBottomNav && isCreator" />
 	</div>
 </template>
 
 <script>
 import TopNavbar from '@/components/TopNavbar.vue';
 import BottomNavbar from '@/components/BottomNavbar.vue';
+import FloatingCreatePostButton from './components/FloatingCreatePostButton.vue';
 
 export default {
 	components: {
 		TopNavbar,
 		BottomNavbar,
+		FloatingCreatePostButton,
 	},
 	computed: {
 		isAuthenticated() {

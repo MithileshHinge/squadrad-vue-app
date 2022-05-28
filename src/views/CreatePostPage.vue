@@ -206,6 +206,7 @@ export default {
 	//box-shadow: 0px 5px 20px rgba($color: $my-color-dark, $alpha: 0.15);
 	border-radius: 50%;
 	margin: 0.625rem 0.3125rem 0.625rem 0.3125rem;
+	cursor: pointer;
 }
 
 .sq-attach-btn > svg {

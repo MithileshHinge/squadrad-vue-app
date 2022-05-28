@@ -1,11 +1,13 @@
 <template>
-	<b-nav id="sq-the-bottom-navbar" tabs justified class="fixed-bottom">
-		<b-nav-item to="/feed" class="sq-nav-item" exact exact-active-class="active"><b-icon :icon="navIcons[0]"></b-icon></b-nav-item>
-		<b-nav-item to="/explore" id="sq-the-bottomnav-explore" class="sq-nav-item" exact exact-active-class="active"><span v-html="navIcons[1]"></span></b-nav-item>
-		<b-nav-item v-if="isCreator" to="/create-post" id="sq-the-bottomnav-create-post" :class="`${$route.path === '/messages' ? 'sq-bottomnav-create-post-small' : ''} sq-nav-item`" exact exact-active-class="active"><b-iconstack><b-icon icon="circle-fill" stacked/><b-icon icon="plus" variant="light" scale="0.75" stacked/></b-iconstack></b-nav-item>
-		<b-nav-item to="/notifications" class="sq-nav-item" exact exact-active-class="active"><b-icon :icon="navIcons[2]"></b-icon></b-nav-item>
-		<b-nav-item to="/messages" class="sq-nav-item" exact exact-active-class="active"><b-icon :icon="navIcons[3]"></b-icon></b-nav-item>
-	</b-nav>
+	<div class="d-block d-lg-none">
+		<b-nav id="sq-the-bottom-navbar" tabs justified class="fixed-bottom">
+			<b-nav-item to="/feed" class="sq-nav-item" exact exact-active-class="active"><b-icon :icon="navIcons[0]"></b-icon></b-nav-item>
+			<b-nav-item to="/explore" id="sq-the-bottomnav-explore" class="sq-nav-item" exact exact-active-class="active"><span v-html="navIcons[1]"></span></b-nav-item>
+			<b-nav-item v-if="isCreator" to="/create-post" id="sq-the-bottomnav-create-post" :class="`${$route.path === '/messages' ? 'sq-bottomnav-create-post-small' : ''} sq-nav-item`" exact exact-active-class="active"><b-iconstack><b-icon icon="circle-fill" stacked/><b-icon icon="plus" variant="light" scale="0.75" stacked/></b-iconstack></b-nav-item>
+			<b-nav-item to="/notifications" class="sq-nav-item" exact exact-active-class="active"><b-icon :icon="navIcons[2]"></b-icon></b-nav-item>
+			<b-nav-item to="/messages" class="sq-nav-item" exact exact-active-class="active"><b-icon :icon="navIcons[3]"></b-icon></b-nav-item>
+		</b-nav>
+	</div>
 </template>
 
 <script>
