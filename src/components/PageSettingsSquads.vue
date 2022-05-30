@@ -14,8 +14,10 @@
 				</b-button-->
 			</b-row>
 			<b-row no-gutters align-h="center">
-				<b-col v-for="(squad, i) in squads" :key="squad.squadId" class="mt-3 mx-2" cols="auto">
+				<b-col cols="12">
+				<div v-for="(squad, i) in squads" :key="squad.squadId" class="mt-3 mx-2">
 					<SquadCard :squad="squad" :squadNo="i" :totalSquads="squads.length" edit @edit="editSquad(squad)" @delete="deleteSquad(squad)"/>
+				</div>
 				</b-col>
 			</b-row>
 			<div style="height: 1.5rem"/>
@@ -52,7 +54,7 @@
 						isAmountUnique: 'You already have a squad of the same amount',
 					}"
 				/>
-				<FormInputGroup type="number" number modal label="Limit squad members (optional)" v-model="squadForm.membersLimit" placeholder="Max limit"/>
+				<FormInputGroup type="number" number modal label="Limit squad members (optional)" v-model="membersLimit" placeholder="Max limit"/>
 				<ButtonSubmit modal :isProcessing="isSaving" :isProcessed="isSaved" :buttonText="isEditModal ? 'Save squad' : 'Add squad'" :buttonTextDone="isEditModal ? 'Squad saved' : 'Squad added'"/>
 			</b-form>
 		</CustomModal>
@@ -96,7 +98,16 @@ export default {
 	computed: {
 		squads() {
 			const { squads } = this.$store.state;
-			return squads.sort((a, b) => a.amount > b.amount);
+			squads.sort((a, b) => a.amount - b.amount);
+			return squads;
+		},
+		membersLimit: {
+			get() {
+				return !this.squadForm.membersLimit ? null : this.squadForm.membersLimit;
+			},
+			set(val) {
+				this.squadForm.membersLimit = !val ? 0 : val;
+			},
 		},
 	},
 	methods: {
