@@ -441,16 +441,12 @@ $cta-shadow-opacity: 0.4;
 	font-size: 1.25rem;
 	padding: 1.875rem 0 0 1.25rem;
 	font-weight: 300;
-	color: $my-color-gray1 !important;
+	color: $my-color-gray1;
 	text-align: left;
 }
 
 .sq-menu-icon {
 	margin-right: 0.5em;
-}
-
-.sq-link, .sq-link:hover {
-	color: $radical-red !important;
 }
 
 .sq-carousel .carousel-control-prev-icon::before, .sq-carousel .carousel-control-next-icon::before {
@@ -565,6 +561,10 @@ $cta-shadow-opacity: 0.4;
 .sq-subtext {
 	font-size: 0.75rem;
 	color: $my-color-gray2;
+}
+
+.sq-link, .sq-link:hover {
+	color: $radical-red !important;
 }
 
 .sq-muted {

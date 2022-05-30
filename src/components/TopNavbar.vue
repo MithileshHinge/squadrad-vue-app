@@ -24,7 +24,7 @@
 				<template #button-content>
 					<b-avatar v-if="isAuthenticated" :src='getProfilePicSrc($store.state.creator.profilePicSrc || $store.state.user.profilePicSrc, isCreator)' size="2rem"></b-avatar>
 				</template>
-				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" v-if="isCreator" to="/creator/settings">Page settings</b-dropdown-item>
+				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" v-if="isCreator" to="/creator/settings/info">Page settings</b-dropdown-item>
 				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" to="/feed">Post from my Creators</b-dropdown-item>
 				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" to="/user/squads">My Squads</b-dropdown-item>
 				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" v-if="!isCreator" to="/creator/start">Start a membership page</b-dropdown-item>
@@ -150,6 +150,10 @@ export default {
 		height: 3.375rem;
 		background: $my-color-dark;
 		padding: 0.125rem 0.5rem 0.125rem 0.75rem;
+	}
+
+	#sq-the-navbar .sq-menu-item .nav-link {
+		color: $my-color-gray1;
 	}
 
 	#sq-the-navlogo {

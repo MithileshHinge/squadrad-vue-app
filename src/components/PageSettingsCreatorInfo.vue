@@ -60,7 +60,14 @@
 					<b-form-textarea id="sq-the-form-about-section" class="sq-form-textarea text-center" v-model="creatorInfoForm.about" placeholder="Tell your fans about this page" rows="3" size="lg"/>
 				</b-form-group>
 			</b-card>
-			<ButtonSubmit :isProcessing="isSaving" :isProcessed="isSaved"/>
+			<ButtonSubmit class="d-lg-none" :isProcessing="isSaving" :isProcessed="isSaved"/>
+			<b-row no-gutters class="d-none d-lg-flex fixed-bottom">
+				<b-col cols="6"/>
+				<b-col cols="3" class="d-flex">
+					<ButtonSubmit class="position-relative" :isProcessing="isSaving" :isProcessed="isSaved"/>
+				</b-col>
+				<b-col cols="3"/>
+			</b-row>
 			<!-- div to clear fixed submit button from occluding last card-->
 			<div style="height: 3.5rem;"/>
 		</b-form>
