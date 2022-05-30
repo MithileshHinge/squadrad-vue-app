@@ -11,7 +11,7 @@
 			<div v-if="isAuthenticated && showBottomNav" style="height: 3rem;"><!-- empty div same size as bottomnavbar, without this router-view is hidden behind bottomnavbar --></div>
 		</b-col>
 		<BottomNavbar v-if="isAuthenticated && showBottomNav" :isCreator="isCreator"></BottomNavbar>
-		<FloatingCreatePostButton v-if="isAuthenticated && showBottomNav && isCreator" />
+		<!--FloatingCreatePostButton v-if="isAuthenticated && showBottomNav && isCreator" /-->
 	</div>
 </template>
 

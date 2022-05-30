@@ -17,8 +17,9 @@
 					<UserList size="sm" :showSubtext="true" :users="creatorsSearchFiltered"/>
 				</div>
 			</b-nav-item>
+			<b-nav-item class="px-1" link-classes="p-0" to="/create-post"><b-icon-plus font-scale="2.5"/></b-nav-item>
 			<b-nav-item class="px-1"><b-icon-bell-fill/></b-nav-item>
-			<b-nav-item class="px-1"><b-icon-chat-fill/></b-nav-item>
+			<b-nav-item class="px-1" to="/messages"><b-icon-chat-fill/></b-nav-item>
 			<b-dropdown right no-caret toggle-class="shadow-none bg-transparent border-0" menu-class="my-n1">
 				<template #button-content>
 					<b-avatar v-if="isAuthenticated" :src='getProfilePicSrc($store.state.creator.profilePicSrc || $store.state.user.profilePicSrc, isCreator)' size="2rem"></b-avatar>

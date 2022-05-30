@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="col-lg-6 m-auto">
 		<div class="sq-page-title">Create post</div>
 		<b-form class="overflow-auto" @submit.prevent="createPost">
 			<b-form-group id="sq-the-post-form-squad-select-group" label="Squad access" v-helptext="'Only members of selected squad or higher squads will have access to this post'">
@@ -7,7 +7,7 @@
 			</b-form-group>
 			<b-card class="sq-form-card">
 				<b-form-row class="m-0">
-					<b-form-textarea id="sq-the-form-post-description" class="sq-form-textarea" v-model="$v.postForm.description.$model" :state="validateState($v.postForm.description)" placeholder="Write a description" size="lg" rows="3" trim/>
+					<b-form-textarea id="sq-the-form-post-description" class="sq-form-textarea" v-model="$v.postForm.description.$model" :state="validateState($v.postForm.description)" placeholder="Write a description" size="lg" rows="8" trim/>
 					<b-form-invalid-feedback class="sq-form-invalid-feedback">
 						Exceeded max character limit
 					</b-form-invalid-feedback>
