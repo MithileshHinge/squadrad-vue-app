@@ -1,5 +1,5 @@
 <template>
-  <button id="sq-the-floating-create-post-btn" class="sq-btn" @click="$router.push('/create-post')">
+  <button id="sq-the-floating-create-post-btn" class="sq-btn" v-b-tooltip.hover title="Create post" @click="$router.push('/create-post')">
     <b-icon icon="plus" variant="light" scale="0.75"/>
   </button>
 </template>
