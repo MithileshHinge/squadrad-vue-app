@@ -14,7 +14,7 @@
 				</b-card>
 			</b-row>
 			<b-row no-gutters align-h="center">
-				<b-card class="sq-card" @click="addGoal">
+				<b-card class="sq-card cursor-pointer" @click="addGoal">
 					<b-row no-gutters align-h="center">
 						<b-icon-plus font-scale="2" class="sq-muted"/>
 					</b-row>

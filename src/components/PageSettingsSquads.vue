@@ -3,7 +3,7 @@
 		<div class="sq-page-title">Squads</div>
 		<b-container class="p-0" fluid>
 			<b-row no-gutters align-h="center">
-				<b-card class="sq-card" @click="addSquad">
+				<b-card class="sq-card cursor-pointer" @click="addSquad">
 					<b-row no-gutters align-h="center">
 						<b-icon-plus font-scale="2" class="sq-muted"/>
 					</b-row>
@@ -22,7 +22,7 @@
 		</b-container>
 		<CustomModal modalId="sq-the-modal-edit-squad" :modalTitle="isEditModal ? 'Edit squad' : 'Add new squad'">
 			<b-form @submit.prevent="onSubmit">
-				<b-form-group>
+				<!--b-form-group>
 					<b-row no-gutters class="text-left">
 						<label class="sq-text">Squad image (optional)</label>
 					</b-row>
@@ -34,7 +34,7 @@
 						</b-button>
 					</b-avatar>
 				</b-form-group>
-				<ImageCropModal modalId="sq-the-modal-cropper" @hide="resetFileInput" :imgDataURL="squadForm.image"/>
+				<ImageCropModal modalId="sq-the-modal-cropper" @hide="resetFileInput" :imgDataURL="squadForm.image"/-->
 				<FormInputGroup modal label="Squad title" v-model="squadForm.title" :validationModel="$v.squadForm.title" placeholder="A catchy name"
 					:invalidFeedbacks="{
 						required: 'Please set a title for your squad',

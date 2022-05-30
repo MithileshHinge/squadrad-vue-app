@@ -102,6 +102,10 @@ body {
 	// margin-top: 3.375rem;
 }
 
+.cursor-pointer {
+	cursor: pointer;
+}
+
 /* --------------- Form --------------- */
 $placeholder-color: rgba($color: $my-color-dark, $alpha: 0.33);
 

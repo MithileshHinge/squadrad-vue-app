@@ -47,85 +47,96 @@
 				<div class="sq-text sq-muted">One time</div>
 			</b-col>
 		</b-row-->
-		<b-row no-gutters align-h="center" class="mt-5 mb-2">
-			<b-col cols="1"/><!--for centering heading-->
-			<b-col cols="auto" class="sq-creator-section-heading">
-				<span v-if="squads.length>0">Select a membership squad</span>
-				<span v-else>Add a membership squad</span>
-			</b-col>
-			<b-col cols="1">
-				<b-icon-plus-circle-fill font-scale="1.5"/>
-			</b-col>
-		</b-row>
 		<b-row no-gutters align-h="center">
-			<b-col v-for="(squad, i) in squadsSorted" :key="squad.id" class="mt-3 mx-2" cols="auto">
-				<SquadCard :squad="squad" :creator="creator" :manualSub="manualSub" :squadNo="i" :totalSquads="squads.length"/>
+			<b-col cols="12" lg="auto" order-lg="1" align-self="start">
+				<b-row no-gutters align-h="center" class="mt-5 mb-2">
+					<b-col cols="1"/><!--for centering heading-->
+					<b-col cols="auto" class="sq-creator-section-heading">
+						<span v-if="squads.length>0">Select a membership squad</span>
+						<span v-else>Add a membership squad</span>
+					</b-col>
+					<b-col cols="1">
+						<!--b-icon-plus-circle-fill font-scale="1.5"/-->
+					</b-col>
+				</b-row>
+				<b-row no-gutters align-h="center">
+					<b-col cols="auto">
+					<!--b-col v-for="(squad, i) in squadsSorted" :key="squad.id" class="mt-3 mx-2" cols="auto"-->
+						<div v-for="(squad, i) in squadsSorted" :key="squad.id" class="mt-3 mx-2">
+							<SquadCard :squad="squad" :creator="creator" :manualSub="manualSub" :squadNo="i" :totalSquads="squads.length"/>
+						</div>
+					</b-col>
+				</b-row>
 			</b-col>
-		</b-row>
-		<b-row no-gutters align-h="center" class="mt-5 mb-2">
-			<b-col cols="1"/><!--for centering heading-->
-			<b-col cols="auto" class="sq-creator-section-heading">
-				About
+			<b-col cols="12" lg="auto" order-lg="3">
+				<b-row no-gutters align-h="center" class="mt-5 mb-2">
+					<b-col cols="1"/><!--for centering heading-->
+					<b-col cols="auto" class="sq-creator-section-heading">
+						<span>Goals</span>
+					</b-col>
+					<b-col cols="1">
+						<!--b-iconstack font-scale="1.5">
+							<b-icon icon="circle-fill" stacked/>
+							<b-icon icon="pencil-fill" variant="light" scale="0.45" stacked/>
+						</b-iconstack-->
+					</b-col>
+				</b-row>
+				<b-row no-gutters align-h="center">
+					<b-col style="max-width: 20.75rem;" align-self="center">
+						<b-carousel ref="sqRefGoalCarousel" indicators :interval="0" class="sq-carousel">
+							<b-carousel-slide v-for="goal in goalsSorted" :key="goal.goalId">
+								<template #img>
+									<GoalCard :goal="goal" :progress="creator.goalsTypeEarnings ? monthlyIncome : totalMembers" style="margin: 1rem;"/>
+								</template>
+							</b-carousel-slide>
+							<a href="#" role="button" class="carousel-control-prev" @click.prevent="goalPrev">
+								<b-icon-chevron-left variant="dark" font-scale="1.1"/>
+							</a>
+							<a href="#" role="button" class="carousel-control-next" @click.prevent="goalNext">
+								<b-icon-chevron-right variant="dark" font-scale="1.1"/>
+							</a>
+						</b-carousel>
+					</b-col>
+				</b-row>
 			</b-col>
-			<b-col cols="1">
-				<b-iconstack font-scale="1.5">
-					<b-icon icon="circle-fill" stacked/>
-					<b-icon icon="pencil-fill" variant="light" scale="0.45" stacked/>
-				</b-iconstack>
-			</b-col>
-		</b-row>
-		<b-row no-gutters align-h="center">
-			<b-col class="mt-2 px-3" cols="auto">
-				<b-card class="sq-card-flat sq-card p-2">
-					<b-card-text class="sq-text text-center">
-						{{ creator.about }}
-					</b-card-text>
-				</b-card>
-			</b-col>
-		</b-row>
-		<b-row no-gutters align-h="center" class="mt-5 mb-2">
-			<b-col cols="1"/><!--for centering heading-->
-			<b-col cols="auto" class="sq-creator-section-heading">
-				<span>Goals</span>
-			</b-col>
-			<b-col cols="1">
-				<b-iconstack font-scale="1.5">
-					<b-icon icon="circle-fill" stacked/>
-					<b-icon icon="pencil-fill" variant="light" scale="0.45" stacked/>
-				</b-iconstack>
-			</b-col>
-		</b-row>
-		<b-row no-gutters align-h="center">
-			<b-col style="max-width: 20.75rem;" align-self="center">
-				<b-carousel ref="sqRefGoalCarousel" indicators :interval="0" class="sq-carousel">
-					<b-carousel-slide v-for="goal in goalsSorted" :key="goal.goalId">
-						<template #img>
-							<GoalCard :goal="goal" :progress="creator.goalsTypeEarnings ? monthlyIncome : totalMembers" style="margin: 1rem;"/>
-						</template>
-					</b-carousel-slide>
-					<a href="#" role="button" class="carousel-control-prev" @click.prevent="goalPrev">
-						<b-icon-chevron-left variant="dark" font-scale="1.1"/>
-					</a>
-					<a href="#" role="button" class="carousel-control-next" @click.prevent="goalNext">
-						<b-icon-chevron-right variant="dark" font-scale="1.1"/>
-					</a>
-				</b-carousel>
-			</b-col>
-		</b-row>
-		<b-row no-gutters align-h="center" class="mt-5 mb-2">
-			<b-col cols="1"/><!--for centering heading-->
-			<b-col cols="auto" class="sq-creator-section-heading">
-				Posts
-			</b-col>
-			<b-col cols="1">
-				<b-icon-plus-circle-fill font-scale="1.5"/>
-			</b-col>
-		</b-row>
-		<b-row no-gutters align-h="center">
-			<b-col class="mt-2" cols="12">
-				<b-card class="sq-card-flat p-1">
-					<PostComp v-for="post in posts" :key="post.postId" :post="post" :squad="squads.find((squad) => squad.squadId === post.squadId)" :squadNo="squadsSorted.findIndex((squad) => squad.squadId === post.squadId)" :totalSquads="squads.length" :creator="creator"></PostComp>
-				</b-card>
+			<b-col id="sq-the-about-and-posts-col" cols="12" lg="5" order-lg="2">
+				<b-row no-gutters align-h="center" class="mt-5 mb-2">
+					<b-col cols="1"/><!--for centering heading-->
+					<b-col cols="auto" class="sq-creator-section-heading">
+						About
+					</b-col>
+					<b-col cols="1">
+						<!--b-iconstack font-scale="1.5">
+							<b-icon icon="circle-fill" stacked/>
+							<b-icon icon="pencil-fill" variant="light" scale="0.45" stacked/>
+						</b-iconstack-->
+					</b-col>
+				</b-row>
+				<b-row no-gutters align-h="center">
+					<b-col class="mt-2 px-3 w-100" cols="auto">
+						<b-card class="sq-card-flat sq-card mw-100 w-100 p-2">
+							<b-card-text class="sq-text text-center w-100">
+								{{ creator.about }}
+							</b-card-text>
+						</b-card>
+					</b-col>
+				</b-row>
+				<b-row no-gutters align-h="center" class="mt-5 mb-2">
+					<b-col cols="1"/><!--for centering heading-->
+					<b-col cols="auto" class="sq-creator-section-heading">
+						Posts
+					</b-col>
+					<b-col cols="1">
+						<!--b-icon-plus-circle-fill font-scale="1.5"/-->
+					</b-col>
+				</b-row>
+				<b-row no-gutters align-h="center">
+					<b-col class="mt-2" cols="12">
+						<b-card class="sq-card-flat p-1">
+							<PostComp v-for="post in posts" :key="post.postId" :post="post" :squad="squads.find((squad) => squad.squadId === post.squadId)" :squadNo="squadsSorted.findIndex((squad) => squad.squadId === post.squadId)" :totalSquads="squads.length" :creator="creator"></PostComp>
+						</b-card>
+					</b-col>
+				</b-row>
 			</b-col>
 		</b-row>
 	</b-container>
@@ -327,6 +338,13 @@ export default {
 	font-weight: 500;
 	color: $my-color-dark;
 	letter-spacing: -0.01em;
+}
+
+@media (min-width: $lg) {
+	#sq-the-about-and-posts-col {
+		padding-left: 2rem;
+		padding-right: 2rem;
+	}
 }
 
 </style>
