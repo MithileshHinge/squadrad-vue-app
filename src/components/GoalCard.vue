@@ -1,5 +1,5 @@
 <template>
-	<b-card class="sq-card p-2">
+	<b-card class="sq-card p-2 mx-auto">
 		<b-row v-if="edit" no-gutters class="mb-2 mx-n3 mt-n3">
 			<b-col cols="auto" align-self="start" class="p-0">
 				<span v-if="$store.state.creator.goalsTypeEarnings" class="sq-rupee"/>

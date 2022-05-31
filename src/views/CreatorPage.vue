@@ -83,10 +83,10 @@
 				</b-row>
 				<b-row no-gutters align-h="center">
 					<b-col style="max-width: 20.75rem;" align-self="center">
-						<b-carousel ref="sqRefGoalCarousel" indicators :interval="0" class="sq-carousel">
+						<b-carousel ref="sqRefGoalCarousel" indicators :interval="0" class="sq-carousel sq-card m-auto">
 							<b-carousel-slide v-for="goal in goalsSorted" :key="goal.goalId">
 								<template #img>
-									<GoalCard :goal="goal" :progress="creator.goalsTypeEarnings ? monthlyIncome : totalMembers" style="margin: 1rem;"/>
+									<GoalCard class="shadow-none" :goal="goal" :progress="creator.goalsTypeEarnings ? monthlyIncome : totalMembers" style="margin: 1rem;"/>
 								</template>
 							</b-carousel-slide>
 							<a href="#" role="button" class="carousel-control-prev" @click.prevent="goalPrev">

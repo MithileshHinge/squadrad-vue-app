@@ -22,8 +22,10 @@
 				</b-card>
 			</b-row>
 			<b-row no-gutters align-h="center">
-				<b-col v-for="goal in goals" :key="goal.goalId" class="mt-3 mx-2" cols="auto">
-					<GoalCard :goal="goal" edit @edit="editGoal(goal)" @delete="deleteGoal(goal)" @archive="setArchivedGoal(goal.goalId, true)" @unarchive="setArchivedGoal(goal.goalId, false)"/>
+				<b-col cols="12">
+					<div v-for="goal in goals" :key="goal.goalId" class="mt-3 mx-2">
+						<GoalCard :goal="goal" edit @edit="editGoal(goal)" @delete="deleteGoal(goal)" @archive="setArchivedGoal(goal.goalId, true)" @unarchive="setArchivedGoal(goal.goalId, false)"/>
+					</div>
 				</b-col>
 			</b-row>
 			<div style="height: 1.5rem"/>
