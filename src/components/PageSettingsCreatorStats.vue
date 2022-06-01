@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<div class="sq-page-title">Creator stats</div>
-		<div class="px-3 pt-1">
-			<b-container class="position-relative">
+		<div class="px-3 pt-1 pb-4">
+			<b-container class="position-relative px-lg-5">
 				<div class="sq-text text-center mb-2">Earnings each month</div>
 				<Bar v-if="chartDataEarnings"
 				:chart-options="chartOptions"
@@ -10,7 +10,7 @@
 				:chart-id="chartId"
 				/>
 			</b-container>
-			<b-container class="position-relative mt-5">
+			<b-container class="position-relative mt-5 px-lg-5">
 				<div class="sq-text text-center mb-2">Active members each month</div>
 				<Bar v-if="chartDataMembers"
 				:chart-options="chartOptions"
@@ -90,7 +90,7 @@ export default {
 					labels,
 					datasets: [{
 						label: 'Number of paying members',
-						data: earningsData,
+						data: membersData,
 						backgroundColor: `${scssColors.mulberryCrayola}DD`,
 					}],
 				};
