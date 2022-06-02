@@ -1,42 +1,66 @@
 <template>
 	<div>
-		<b-tabs v-if="posts && posts.length > 0" id="sq-the-all-paid-post-tabs" align="left" nav-wrapper-class="sq-shadow">
-			<b-tab title="All posts" title-item-class="sq-nav-item">
-				<div class="sq-background-gray">
-					<div class="pt-3">
-						<PostComp v-for="{ creator, squad, squadNo, totalSquads, ...post } in posts" :key="post.id" :post="post" :creator="creator" :squad="squad" :squadNo="squadNo" :totalSquads="totalSquads"></PostComp>
-					</div>
+		<b-row no-gutters align-h="center">
+			<b-col sm="0" lg="1" class="d-none d-lg-block"/>
+			<b-col sm="0" lg="2" class="d-none d-lg-block pt-5 mx-3">
+				<b-card class="sq-card-user-info-flat sq-card-flat-lg">
+					<b-card-img :src="getProfilePicSrc($store.state.user.profilePicSrc)" class="rounded-circle mb-2 sq-card-img" top/>
+					<b-card-title :title="$store.state.user.fullName" class="sq-card-heading"/>
+					<b-card-body class="p-0">
+						<div class="sq-text text-center p-2">My Creators</div>
+						<div class="sq-card-creators-list">
+							<UserList v-if="creators && creators.length > 0" size="sm" :users="creators.map((creator) => ({ userId: creator.userId, name: creator.pageName, profilePicSrc: creator.profilePicSrc }))" :showSubtext="false" :showBorders="false" @click="$router.push(`/creator/${$event.userId}`)"/>
+							<div v-else class="sq-text sq-subtext p-3">You are not a member of any squad</div>
+						</div>
+					</b-card-body>
+				</b-card>
+			</b-col>
+			<b-col sm="12" lg="4">
+				<b-tabs v-if="posts && posts.length > 0" id="sq-the-all-paid-post-tabs" align="left">
+					<b-tab title="All posts" title-item-class="sq-nav-item">
+						<div class="sq-card-flat sq-card-flat-lg">
+							<div class="pt-3 pb-1 px-3">
+								<PostComp v-for="{ creator, squad, squadNo, totalSquads, ...post } in posts" :key="post.id" :post="post" :creator="creator" :squad="squad" :squadNo="squadNo" :totalSquads="totalSquads"></PostComp>
+							</div>
+						</div>
+					</b-tab>
+					<b-tab title="Paid posts" title-item-class="sq-nav-item">
+						<div class="sq-card-flat sq-card-flat-lg">
+							<div class="pt-3 pb-1 px-3">
+								<PostComp v-for="{ creator, squad, squadNo, totalSquads, ...post } in paidPosts" :key="post.id" :post="post" :creator="creator" :squad="squad" :squadNo="squadNo" :totalSquads="totalSquads"></PostComp>
+							</div>
+						</div>
+					</b-tab>
+				</b-tabs>
+				<div v-else-if="posts && posts.length === 0">
+					<b-img class="sq-empty-state-img-full" src="@/assets/feed-empty-state.jpg"></b-img>
+					<div class="sq-empty-state-text sq-text text-center">Support creators to see their posts in your feed</div>
+					<b-button id="sq-the-find-creators-btn" class="sq-btn sq-btn-cta sq-btn-empty-state" to="/explore">Find creators you may know</b-button>
 				</div>
-			</b-tab>
-			<b-tab title="Paid posts" title-item-class="sq-nav-item">
-				<div class="sq-background-gray">
-					<div class="pt-3">
-						<PostComp v-for="{ creator, squad, squadNo, totalSquads, ...post } in paidPosts" :key="post.id" :post="post" :creator="creator" :squad="squad" :squadNo="squadNo" :totalSquads="totalSquads"></PostComp>
-					</div>
-				</div>
-			</b-tab>
-		</b-tabs>
-		<div v-else-if="posts && posts.length === 0">
-			<b-img class="sq-empty-state-img-full" src="@/assets/feed-empty-state.jpg"></b-img>
-			<div class="sq-empty-state-text sq-text text-center">Support creators to see their posts in your feed</div>
-			<b-button id="sq-the-find-creators-btn" class="sq-btn sq-btn-cta sq-btn-empty-state" to="/explore">Find creators you may know</b-button>
-		</div>
+			</b-col>
+			<b-col sm="0" lg="3">
+			</b-col>
+		</b-row>
 	</div>
 </template>
 
 <script>
 import PostComp from '@/components/PostComp.vue';
+import UserList from '../components/UserList.vue';
 import postService from '../services/post.service';
 import manualSubService from '../services/manualSubs.service';
 import { forEachAsync } from '../common/helpers';
 import manualSubStatuses from '../common/manualSubStatuses';
 import creatorService from '../services/creator.service';
 import squadService from '../services/squad.service';
+import getProfilePicSrc from '../common/getProfilePicSrc';
 
 export default {
 	data() {
 		return {
+			getProfilePicSrc,
 			posts: null,
+			creators: [],
 		};
 	},
 	computed: {
@@ -46,6 +70,7 @@ export default {
 	},
 	components: {
 		PostComp,
+		UserList,
 	},
 	methods: {
 		populateFeed() {
@@ -83,9 +108,20 @@ export default {
 				}));
 			});
 		},
+		async fetchCreators() {
+			try {
+				const res = await manualSubService.getAllManualSubbedCreatorsInfo();
+				if (res && res.status === 200) {
+					this.creators = [res.data[0], { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }];
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		},
 	},
 	mounted() {
 		this.populateFeed();
+		this.fetchCreators();
 	},
 	watch: {
 		// eslint-disable-next-line quote-props
@@ -111,6 +147,17 @@ export default {
 
 #sq-the-all-paid-post-tabs .nav-link {
 	padding: 0.75rem 0 0.75rem 0.75rem;
+}
+
+.sq-card-user-info-flat {
+	background: $my-color-light;
+	border: 1px solid $my-color-gray5;
+}
+
+.sq-card-creators-list {
+	background: $my-color-gray7;
+	border-radius: 0.5rem;
+	border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 </style>

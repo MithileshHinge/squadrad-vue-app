@@ -13,14 +13,14 @@
 		<b-navbar-nav v-if="isAuthenticated" class="d-none d-lg-flex ml-auto align-items-center">
 			<b-nav-item style="width: 15rem" class="position-relative">
 				<SearchBar v-model="searchText" searchPlaceholder="Search creators" :renderFocused="false" size="sm" @focus="navSearchBarFocus" @blur="isNavSearchBarFocused = false"/>
-				<div v-if="isNavSearchBarFocused && searchText.length > 1" id="sq-the-nav-search-results">
+				<div v-if="isNavSearchBarFocused && searchText.length > 1" id="sq-the-nav-search-results" class="sq-shadow">
 					<UserList size="sm" :showSubtext="true" :users="creatorsSearchFiltered"/>
 				</div>
 			</b-nav-item>
 			<b-nav-item class="px-1" link-classes="p-0" to="/create-post"><b-icon-plus font-scale="2.5"/></b-nav-item>
 			<b-nav-item class="px-1"><b-icon-bell-fill/></b-nav-item>
 			<b-nav-item class="px-1" to="/messages"><b-icon-chat-fill/></b-nav-item>
-			<b-dropdown right no-caret toggle-class="shadow-none bg-transparent border-0" menu-class="my-n1">
+			<b-dropdown right no-caret toggle-class="shadow-none bg-transparent border-0" menu-class="my-n1 sq-shadow">
 				<template #button-content>
 					<b-avatar v-if="isAuthenticated" :src='getProfilePicSrc($store.state.creator.profilePicSrc || $store.state.user.profilePicSrc, isCreator)' size="2rem"></b-avatar>
 				</template>

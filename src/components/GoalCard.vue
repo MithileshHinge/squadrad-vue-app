@@ -15,7 +15,7 @@
 				<b-icon-trash font-scale="0.9" class="sq-muted" @click="$emit('delete')"/>
 			</b-col>
 		</b-row>
-		<b-card-title :title="goal.title" :class="'sq-card-heading justify-content-center mb-2' + (goal.archived ? ' sq-muted' : '' )"/>
+		<b-card-title :title="goal.title" :class="'sq-card-heading mb-2' + (goal.archived ? ' sq-muted' : '' )"/>
 		<b-card-text :class="'sq-text mb-4 text-center' + (goal.archived ? ' sq-muted' : '' )">
 			{{ goal.description }}
 		</b-card-text>

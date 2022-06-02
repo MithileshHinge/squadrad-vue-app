@@ -173,6 +173,7 @@ export default {
 
 .sq-post-container {
 	background-color: $my-color-light;
+	border-radius: 0.25rem;
 }
 
 .sq-post-menu-button {

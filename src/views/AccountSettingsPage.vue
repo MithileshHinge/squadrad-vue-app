@@ -1,41 +1,45 @@
 <template>
 	<div>
 		<div class="sq-page-title">Account settings</div>
-		<b-form class="overflow-auto" @submit.prevent="saveUser">
-			<b-card class="sq-form-card">
-				<b-form-group>
-					<b-form-file ref="sqRefUserProfilePicFileInput" id="sq-the-profile-pic-file-input" accept="image/bmp, image/jpeg, image/png, image/tiff" style="display: none;" @change="selectProfilePic"/>
-					<b-avatar size="8.5rem">
-						<b-img :src="getProfilePicSrc($store.state.user.profilePicSrc, false)" class="w-100 h-100"></b-img>
-						<b-button class="sq-btn-change-profile-pic" @click="onEditProfilePicBtnClick">
-							<b-icon-pencil-fill/>
-						</b-button>
-					</b-avatar>
-				</b-form-group>
-				<FormInputGroup label="Name" inputId="sq-the-form-fullName" v-model="userInfoForm.fullName" :validationModel="$v.userInfoForm.fullName" size="lg" trim autocomplete="off"
-					:invalidFeedbacks="{
-						required: 'Please enter your full name',
-						alphaSplit: 'Are you sure you entered your name correctly?',
-						maxLength: 'Exceeded max character limit',
-					}"
-				/>
-				<b-form-group label="Email" label-class="sq-form-label" label-for="sq-the-form-email" label-align="left">
-					<b-form-input id="sq-the-form-email" class="sq-form-input" v-model="userInfoForm.email" size="lg" readonly/>
-				</b-form-group>
-			</b-card>
-			<div class="sq-form-card">
-				<b-form-group label="Danger zone" label-class="sq-form-label sq-color-danger" label-align="left">
-					<div class="sq-card-flat sq-card-flat-lg p-4">
-						<b-button class="sq-btn sq-shadow w-75 mb-2" v-b-modal.sq-the-modal-change-password>Change password</b-button>
-						<b-button class="sq-btn sq-shadow w-75 mb-2">Deactivate account</b-button>
-						<b-button class="sq-btn sq-shadow w-75 sq-color-danger" v-b-modal.sq-the-modal-delete-user>Delete account</b-button>
+		<b-row no-gutters align-h="center">
+			<b-col sm="12" lg="6">
+				<b-form class="overflow-auto" @submit.prevent="saveUser">
+					<b-card class="sq-form-card">
+						<b-form-group>
+							<b-form-file ref="sqRefUserProfilePicFileInput" id="sq-the-profile-pic-file-input" accept="image/bmp, image/jpeg, image/png, image/tiff" style="display: none;" @change="selectProfilePic"/>
+							<b-avatar size="8.5rem">
+								<b-img :src="getProfilePicSrc($store.state.user.profilePicSrc, false)" class="w-100 h-100"></b-img>
+								<b-button class="sq-btn-change-profile-pic" @click="onEditProfilePicBtnClick">
+									<b-icon-pencil-fill/>
+								</b-button>
+							</b-avatar>
+						</b-form-group>
+						<FormInputGroup label="Name" inputId="sq-the-form-fullName" v-model="userInfoForm.fullName" :validationModel="$v.userInfoForm.fullName" size="lg" trim autocomplete="off"
+							:invalidFeedbacks="{
+								required: 'Please enter your full name',
+								alphaSplit: 'Are you sure you entered your name correctly?',
+								maxLength: 'Exceeded max character limit',
+							}"
+						/>
+						<b-form-group label="Email" label-class="sq-form-label" label-for="sq-the-form-email" label-align="left">
+							<b-form-input id="sq-the-form-email" class="sq-form-input" v-model="userInfoForm.email" size="lg" readonly/>
+						</b-form-group>
+					</b-card>
+					<div class="sq-form-card">
+						<b-form-group label="Danger zone" label-class="sq-form-label sq-color-danger" label-align="left">
+							<div class="sq-card-flat sq-card-flat-lg p-4">
+								<b-button class="sq-btn sq-shadow w-75 mb-2" v-b-modal.sq-the-modal-change-password>Change password</b-button>
+								<b-button class="sq-btn sq-shadow w-75 mb-2">Deactivate account</b-button>
+								<b-button class="sq-btn sq-shadow w-75 sq-color-danger" v-b-modal.sq-the-modal-delete-user>Delete account</b-button>
+							</div>
+						</b-form-group>
 					</div>
-				</b-form-group>
-			</div>
-			<ButtonSubmit :isProcessing="isSaving" :isProcessed="isSaved"/>
-			<!-- div to clear fixed submit button from occluding last card-->
-			<div style="height: 3.5rem;"/>
-		</b-form>
+					<ButtonSubmit :isProcessing="isSaving" :isProcessed="isSaved"/>
+					<!-- div to clear fixed submit button from occluding last card-->
+					<div style="height: 3.5rem;"/>
+				</b-form>
+			</b-col>
+		</b-row>
 		<CustomModal modalId="sq-the-modal-change-password" modalTitle="Change password">
 			<b-form @submit.prevent="changePassword">
 				<FormInputGroup label="Old password" modal v-model="changePasswordForm.oldPassword" :validationModel="$v.changePasswordForm.oldPassword" type="password"

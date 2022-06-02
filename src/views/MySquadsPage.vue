@@ -5,7 +5,7 @@
 			<b-row v-for="squad in squads" :key="squad.squadId" no-gutters>
 				<b-card class="sq-card p-2">
 					<b-card-img :src="getProfilePicSrc(squad.creator.profilePicSrc, true)" class="sq-squad-card-img rounded-circle mb-2" top/>
-					<b-card-title :title="squad.title" class="sq-card-heading justify-content-center mb-2"/>
+					<b-card-title :title="squad.title" class="sq-card-heading mb-2"/>
 					<b-card-sub-title :sub-title="`by ${squad.creator.pageName}`" class="sq-text text-center justify-content-center mb-2"/>
 					<b-card-text class="sq-text text-center">
 						<span class="sq-muted mt-2 justify-content-center"><span class="sq-rupee"/>{{squad.amount}}/month</span>
@@ -25,7 +25,7 @@
 			<b-card v-if="selectedSquad" class="p-0 border-0 bg-transparent" no-body>
 				<b-card-body class="py-0">
 					<b-card-img :src="getProfilePicSrc(selectedSquad.creator.profilePicSrc, true)" class="sq-squad-card-img rounded-circle mb-2" top/>
-					<b-card-title :title="selectedSquad.title" class="sq-card-heading justify-content-center mb-2"/>
+					<b-card-title :title="selectedSquad.title" class="sq-card-heading mb-2"/>
 					<b-card-sub-title :sub-title="`by ${selectedSquad.creator.pageName}`" class="sq-text text-center justify-content-center mb-2"/>
 					<b-card-text class="sq-text text-center">
 						<div class="sq-muted mt-2 justify-content-center"><span class="sq-rupee"/>{{selectedSquad.amount}}/month</div>

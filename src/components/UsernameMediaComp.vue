@@ -1,5 +1,5 @@
 <template>
-	<div @click="$emit('click')" :class="`sq-username-media-${size}`">
+	<div @click="$emit('click')" :class="`sq-username-media-${size} cursor-pointer`">
 		<b-skeleton-wrapper :loading="loading">
 			<template #loading>
 				<b-row no-gutters class="p-2">

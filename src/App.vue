@@ -487,10 +487,16 @@ $cta-shadow-opacity: 0.4;
 .sq-card-heading {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	font-size: 1rem;
 	font-weight: 500;
 	color: $my-color-dark;
 	letter-spacing: -0.01em;
+}
+
+.sq-card-img {
+	width: 4rem;
+	height: 4rem;
 }
 
 .sq-card-btn {
