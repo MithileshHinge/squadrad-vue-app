@@ -51,7 +51,7 @@
 			<b-col cols="auto" class="px-1 sq-text">
 				{{ totalLikes === 0 ? '' : totalLikes }}
 			</b-col>
-			<b-col cols="auto" class="sq-post-action-icon">
+			<b-col cols="auto" class="sq-post-action-icon cursor-pointer">
 				<b-icon-heart-fill v-if="liked" @click="toggleLike"></b-icon-heart-fill>
 				<b-icon-heart v-else @click="toggleLike"></b-icon-heart>
 			</b-col>

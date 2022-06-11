@@ -7,7 +7,7 @@
 						Replying to <strong>{{ replyingTo }}</strong>
 					</div>
 				</b-col>
-				<b-col cols="auto" align-self="center" @click="$emit('resetReplyTo')">
+				<b-col cols="auto" align-self="center" class="cursor-pointer" @click="$emit('resetReplyTo')">
 					<span class="sq-close-icon-bar"></span>
 				</b-col>
 			</b-row>

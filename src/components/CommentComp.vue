@@ -20,7 +20,7 @@
 						</b-col>
 					</b-row>
 					<b-row no-gutters class="mt-2">
-						<b-col cols="auto">
+						<b-col cols="auto" class="cursor-pointer">
 							<b-icon-heart-fill v-if="liked" @click="toggleLikeComment"></b-icon-heart-fill>
 							<b-icon-heart v-else @click="toggleLikeComment"></b-icon-heart>
 						</b-col>
@@ -33,13 +33,13 @@
 						<b-col v-else cols="auto" class="ml-1 mr-3" @click="toggleLikeComment">
 							Like
 						</b-col-->
-						<b-col cols="auto" class="ml-1 mr-3" @click="toggleLikeComment">
+						<b-col cols="auto" class="ml-1 mr-3 cursor-pointer" @click="toggleLikeComment">
 							Like
 						</b-col>
-						<b-col cols="auto">
+						<b-col cols="auto" class="cursor-pointer">
 							<b-icon-reply></b-icon-reply>
 						</b-col>
-						<b-col cols="auto" class="ml-1 mr-3" @click="$emit('replyTo', comment.name)">
+						<b-col cols="auto" class="ml-1 mr-3 cursor-pointer" @click="$emit('replyTo', comment.name)">
 							Reply
 						</b-col>
 					</b-row>
