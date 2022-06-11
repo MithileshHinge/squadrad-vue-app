@@ -557,6 +557,10 @@ $cta-shadow-opacity: 0.4;
 	background-color: $my-color-gray7;
 }
 
+.sq-background-light {
+	background-color: $my-color-light;
+}
+
 .sq-text {
 	font-size: 0.875rem;
 	font-weight: 300;

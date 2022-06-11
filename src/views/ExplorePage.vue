@@ -2,7 +2,7 @@
 	<b-container class="pt-4">
 		<SearchBar v-model="searchText" searchPlaceholder="Search creators" :renderFocused="true"/>
 		<div class="mt-3">
-			<UserList size="md" :showSubtext="true" :users="creatorsSearchFiltered" @click="$router.push(`/creator/${$event.userId}`)"/>
+			<UserList :loading="loadingCreators" size="md" :showSubtext="true" :users="creatorsSearchFiltered" @click="$router.push(`/creator/${$event.userId}`)"/>
 		</div>
 	</b-container>
 </template>
@@ -17,6 +17,7 @@ export default {
 		return {
 			searchText: '',
 			creators: [],
+			loadingCreators: false,
 		};
 	},
 	computed: {
@@ -33,9 +34,11 @@ export default {
 	methods: {
 		async fetchCreators() {
 			try {
+				this.loadingCreators = true;
 				const res = await creatorService.getAllCreators();
 				if (res && res.status === 200) {
 					this.creators = res.data;
+					this.loadingCreators = false;
 				}
 			} catch (err) {
 				console.log(err);

@@ -2,7 +2,7 @@
 	<div>
 		<b-row no-gutters align-h="center">
 			<b-col sm="0" lg="1" class="d-none d-lg-block"/>
-			<b-col sm="0" lg="2" class="d-none d-lg-block pt-5 mx-3">
+			<b-col sm="0" lg="2" class="d-none d-lg-block pt-5 mx-5">
 				<b-card class="sq-card-user-info-flat sq-card-flat-lg">
 					<b-card-img :src="getProfilePicSrc($store.state.user.profilePicSrc)" class="rounded-circle mb-2 sq-card-img" top/>
 					<b-card-title :title="$store.state.user.fullName" class="sq-card-heading"/>
@@ -61,6 +61,7 @@ export default {
 			getProfilePicSrc,
 			posts: null,
 			creators: [],
+			loadingCreators: true,
 		};
 	},
 	computed: {

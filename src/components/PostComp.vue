@@ -1,6 +1,6 @@
 <template>
 	<b-container class="sq-post-container p-0 mb-3">
-		<UsernameMediaComp :name="creator.pageName" :profilePicSrc="getProfilePicSrc(creator.profilePicSrc, true)" subtext="2h" showMenuButton/>
+		<UsernameMediaComp :name="creator.pageName" :profilePicSrc="getProfilePicSrc(creator.profilePicSrc, true)" subtext="2h" showMenuButton @click="$router.push(`/creator/${creator.userId}`)"/>
 		<b-row no-gutters class="p-2">
 			<b-col align-self="center">
 				<div class="sq-text">

@@ -1,13 +1,18 @@
 <template>
-	<div v-if="post">
-		<PostComp :post="post" :creator="creator"></PostComp>
-		<b-container>
-			<CommentComp v-for="comment in comments" :key="comment.commentId" :comment="comment" :isReply="false" class="mb-2" @replyTo="setReplyTo($event, comment.commentId)"></CommentComp>
-		</b-container>
-		<CommentInputBox :isReplying="isReplying" :replyingTo="replyingToName" @submit="submitComment" @resetReplyTo="resetReplyTo"/>
-		<!-- div to clear fixed commentinputbox from occluding last comment-->
-		<div style="height: 3.5rem;"/>
-	</div>
+	<b-row no-gutters align-h="center" class="sq-background-gray">
+		<b-col sm="12" lg="4" class="m-lg-4">
+			<div v-if="post" class="sq-background-light">
+				<PostComp :post="post" :creator="creator"></PostComp>
+				<b-container>
+					<CommentComp v-for="comment in comments" :key="comment.commentId" :comment="comment" :isReply="false" class="mb-2" @replyTo="setReplyTo($event, comment.commentId)"></CommentComp>
+				</b-container>
+				<CommentInputBox class="d-block d-lg-none fixed-bottom" :isReplying="isReplying" :replyingTo="replyingToName" @submit="submitComment" @resetReplyTo="resetReplyTo"/>
+				<CommentInputBox class="d-none d-lg-block" :isReplying="isReplying" :replyingTo="replyingToName" @submit="submitComment" @resetReplyTo="resetReplyTo"/>
+				<!-- div to clear fixed commentinputbox from occluding last comment-->
+				<div style="height: 3.5rem;" class="d-block d-lg-none"/>
+			</div>
+		</b-col>
+	</b-row>
 </template>
 
 <script>
@@ -96,11 +101,11 @@ export default {
 			this.replyingToCommentId = undefined;
 		},
 	},
-	beforeRouteEnter(to, from, next) {
-		postService.getPostById(to.params.postId).then(async (resPost) => {
+	mounted() {
+		postService.getPostById(this.$route.params.postId).then(async (resPost) => {
 			if (resPost && resPost.status === 200 && !resPost.data.locked) {
-				if (resPost.data.userId === store.state.creator.userId) { // post is from self
-					return [resPost.data, store.state.creator];
+				if (resPost.data.userId === this.$store.state.creator.userId) { // post is from self
+					return [resPost.data, this.$store.state.creator];
 				}
 				const resCreator = await creatorService.getCreatorById(resPost.data.userId);
 				if (resCreator && resCreator.status === 200) {
@@ -113,21 +118,17 @@ export default {
 			const comments = await populateComments(post.postId, creator);
 			return [post, creator, comments];
 		}).then(([post, creator, comments]) => {
-			next((vm) => {
-				vm.post = post;
-				vm.creator = creator;
-				vm.comments = comments;
-			});
+			this.post = post;
+			this.creator = creator;
+			this.comments = comments;
 		})
 			.catch((err) => {
 				console.log(err);
-				next((vm) => {
-					vm.$bvToast.toast((err.response.msg, {
-						noCloseButton: true,
-						variant: 'danger',
-						toaster: 'b-toaster-bottom-center',
-					}));
-				});
+				this.$bvToast.toast((err.response.msg, {
+					noCloseButton: true,
+					variant: 'danger',
+					toaster: 'b-toaster-bottom-center',
+				}));
 			});
 	},
 	components: {

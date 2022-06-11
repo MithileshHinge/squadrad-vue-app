@@ -1,5 +1,5 @@
 <template>
-	<div class="fixed-bottom sq-comment-input">
+	<div class="sq-comment-input">
 		<div class="position-relative">
 			<b-row no-gutters :class="`w-100 px-3 py-2 bg-light sq-comment-input-replyingto ${isReplying ? '' : 'sq-comment-input-replyingto-hidden'}`">
 				<b-col>
@@ -59,7 +59,7 @@ export default {
 }
 
 .sq-comment-input-media {
-	background-color: #ffffff;
+	background-color: $my-color-light;
 	z-index: 1;
 	box-shadow: 0 4px 20px 0 rgba($color: $my-color-dark, $alpha: 0.15);
 }

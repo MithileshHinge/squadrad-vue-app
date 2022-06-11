@@ -13,8 +13,8 @@
 		<b-navbar-nav v-if="isAuthenticated" class="d-none d-lg-flex ml-auto align-items-center">
 			<b-nav-item style="width: 15rem" class="position-relative">
 				<SearchBar v-model="searchText" searchPlaceholder="Search creators" :renderFocused="false" size="sm" @focus="navSearchBarFocus" @blur="isNavSearchBarFocused = false"/>
-				<div v-if="isNavSearchBarFocused && searchText.length > 1" id="sq-the-nav-search-results" class="sq-shadow">
-					<UserList size="sm" :showSubtext="true" :users="creatorsSearchFiltered"/>
+				<div id="sq-the-nav-search-results" class="sq-shadow">
+					<UserList :loading="loadingCreators" size="sm" :showSubtext="true" :users="creatorsSearchFiltered" @click="$router.push(`/creator/${$event.userId}`)"/>
 				</div>
 			</b-nav-item>
 			<b-nav-item class="px-1" link-classes="p-0" to="/create-post"><b-icon-plus font-scale="2.5"/></b-nav-item>
@@ -100,12 +100,14 @@ export default {
 			isNavSearchBarFocused: false,
 			searchText: '',
 			creators: undefined,
+			loadingCreators: false,
 		};
 	},
 	computed: {
 		creatorsSearchFiltered() {
 			if (this.creators === undefined) return undefined;
 			if (this.searchText.length < 2) return [];
+			if (!this.isNavSearchBarFocused) return [];
 			return this.creators.filter((creator) => creator.pageName.toLowerCase().includes(this.searchText.toLowerCase())).map((creator) => ({
 				userId: creator.userId,
 				name: creator.pageName,
@@ -118,10 +120,12 @@ export default {
 		async navSearchBarFocus() {
 			this.isNavSearchBarFocused = true;
 			if (!this.creators) {
+				this.loadingCreators = true;
 				try {
 					const res = await creatorService.getAllCreators();
 					if (res && res.status === 200) {
 						this.creators = res.data;
+						this.loadingCreators = false;
 					}
 				} catch (err) {
 					console.log(err);

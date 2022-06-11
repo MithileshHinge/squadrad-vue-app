@@ -1,6 +1,6 @@
 <template>
 	<div :class="`sq-user-list ${showBorders ? 'sq-user-list-borders' : ''}`">
-		<b-list-group v-if="!users">
+		<b-list-group v-if="loading">
 			<b-list-group-item v-for="index in 5" :key="index" class="p-0">
 				<UsernameMediaComp loading/>
 			</b-list-group-item>
@@ -39,6 +39,10 @@ export default {
 			default: 'md',
 		},
 		showBorders: {
+			type: Boolean,
+			default: true,
+		},
+		loading: {
 			type: Boolean,
 			default: true,
 		},
