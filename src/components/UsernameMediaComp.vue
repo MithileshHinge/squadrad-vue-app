@@ -1,5 +1,5 @@
 <template>
-	<div @click="$emit('click')" :class="`sq-username-media-${size} cursor-pointer`">
+	<div :class="`sq-username-media-${size}`">
 		<b-skeleton-wrapper :loading="loading">
 			<template #loading>
 				<b-row no-gutters class="p-2">
@@ -13,10 +13,10 @@
 				</b-row>
 			</template>
 			<b-row no-gutters class="p-2">
-				<b-col cols="auto" class="px-0">
+				<b-col cols="auto" class="px-0 cursor-pointer" @click="$emit('click')">
 					<b-avatar :src="profilePicSrc" :size="size === 'sm' ? '2rem' : '3rem'"></b-avatar>
 				</b-col>
-				<b-col align-self="center" class="pl-2">
+				<b-col align-self="center" class="pl-2 cursor-pointer" @click="$emit('click')">
 					<div class="sq-text">
 						{{ name }}
 					</div>
