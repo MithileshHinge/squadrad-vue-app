@@ -25,7 +25,12 @@
 					</div>
 				</b-col>
 				<b-col v-if="showMenuButton" cols="auto" align-self="center">
-					<b-icon-three-dots-vertical class="sq-post-menu-button"/>
+					<b-dropdown no-caret toggle-class="shadow-none bg-transparent border-0 py-1 pl-2 pr-0" menu-class="my-n1 sq-shadow border-0">
+						<template #button-content>
+							<b-icon-three-dots-vertical class="sq-post-menu-button"/>
+						</template>
+						<b-dropdown-item v-for="menuItem in menu" :key="menuItem.id" class="sq-menu-item" link-class="py-2 px-3 sq-text" @click="$emit('menuItemClick', menuItem.id)">{{ menuItem.text }}</b-dropdown-item>
+					</b-dropdown>
 				</b-col>
 			</b-row>
 		</b-skeleton-wrapper>
@@ -39,6 +44,7 @@ export default {
 		profilePicSrc: String,
 		subtext: String,
 		showMenuButton: Boolean,
+		menu: Array,
 		loading: Boolean,
 		size: {
 			type: String,
@@ -57,5 +63,11 @@ export default {
 }
 .sq-username-media-sm .sq-subtext {
 	font-size: 0.6rem;
+}
+
+.sq-post-menu-button {
+	font-size: 1.25rem;
+	color: $my-color-gray1;
+	float: right;
 }
 </style>

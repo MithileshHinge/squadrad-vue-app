@@ -141,13 +141,6 @@ export default {
 
 <style lang="scss" scoped>
 
-.sq-post-menu-button {
-	font-size: 1.25rem;
-	color: $my-color-gray1;
-	float: right;
-	margin-right: 0.5rem;
-}
-
 .sq-post-num-comments {
 	line-height: 1.25rem;
 	color: $my-color-gray1;

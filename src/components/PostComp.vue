@@ -1,6 +1,6 @@
 <template>
 	<b-container class="sq-post-container p-0 mb-3">
-		<UsernameMediaComp :name="creator.pageName" :profilePicSrc="getProfilePicSrc(creator.profilePicSrc, true)" subtext="2h" showMenuButton @click="$router.push(`/creator/${creator.userId}`)"/>
+		<UsernameMediaComp :name="creator.pageName" :profilePicSrc="getProfilePicSrc(creator.profilePicSrc, true)" subtext="2h" @click="$router.push(`/creator/${creator.userId}`)" :showMenuButton="menu.length > 0" :menu="menu" @menuItemClick="menuItemClicked"/>
 		<b-row no-gutters class="p-2">
 			<b-col align-self="center">
 				<div class="sq-text">
@@ -83,6 +83,7 @@ export default {
 			liked: false,
 			totalLikes: 0,
 			totalComments: 0,
+			menu: [],
 		};
 	},
 	computed: {
@@ -115,6 +116,16 @@ export default {
 		},
 		openPost() {
 			this.$router.push(`/post/${this.post.postId}`);
+		},
+		menuItemClicked(menuItem) {
+			switch (menuItem) {
+			case 'edit':
+				break;
+			case 'delete':
+				break;
+			default:
+				break;
+			}
 		},
 	},
 	beforeMount() {
@@ -160,6 +171,16 @@ export default {
 					toaster: 'b-toaster-bottom-center',
 				});
 			});
+
+		if (this.creator.userId === this.$store.state.creator.userId) {
+			this.menu = [{
+				id: 'edit',
+				text: 'Edit post',
+			}, {
+				id: 'delete',
+				text: 'Delete post',
+			}];
+		}
 	},
 	components: {
 		LinkAttachment,
@@ -174,12 +195,6 @@ export default {
 .sq-post-container {
 	background-color: $my-color-light;
 	border-radius: 0.25rem;
-}
-
-.sq-post-menu-button {
-	font-size: 1.25rem;
-	color: $my-color-gray1;
-	float: right;
 }
 
 .sq-post-num-comments {
