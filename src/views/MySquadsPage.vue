@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<div class="sq-page-title">My Squads</div>
-		<div v-if="squads && squads.length > 0" class="d-flex justify-content-center">
-			<b-row v-for="squad in squads" :key="squad.squadId" no-gutters>
-				<b-card class="sq-card p-2">
+		<b-container v-if="squads && squads.length > 0">
+			<b-row v-for="squad in squads" :key="squad.squadId" no-gutters align-h="center">
+				<b-card class="sq-card p-2 my-3">
 					<b-card-img :src="getProfilePicSrc(squad.creator.profilePicSrc, true)" class="sq-squad-card-img rounded-circle mb-2" top/>
 					<b-card-title :title="squad.title" class="sq-card-heading mb-2"/>
 					<b-card-sub-title :sub-title="`by ${squad.creator.pageName}`" class="sq-text text-center justify-content-center mb-2"/>
@@ -15,7 +15,7 @@
 					</b-button>
 				</b-card>
 			</b-row>
-		</div>
+		</b-container>
 		<div v-else-if="squads && squads.length === 0">
 			<b-img class="sq-empty-state-img-full" src="@/assets/feed-empty-state.jpg"></b-img>
 			<div class="sq-empty-state-text sq-text text-center">You have not joined any squads</div>
