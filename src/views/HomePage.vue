@@ -9,7 +9,7 @@
 					<b-card-body class="p-0">
 						<div class="sq-text text-center p-2">My Creators</div>
 						<div class="sq-card-creators-list">
-							<UserList v-if="creators && creators.length > 0" size="sm" :users="creators.map((creator) => ({ userId: creator.userId, name: creator.pageName, profilePicSrc: creator.profilePicSrc }))" :showSubtext="false" :showBorders="false" @click="$router.push(`/creator/${$event.userId}`)"/>
+							<UserList v-if="creators && creators.length > 0" :loading="false" size="sm" :users="creators.map((creator) => ({ userId: creator.userId, name: creator.pageName, profilePicSrc: creator.profilePicSrc }))" :showSubtext="false" :showBorders="false" @click="$router.push(`/creator/${$event.userId}`)"/>
 							<div v-else class="sq-text sq-subtext p-3">You are not a member of any squad</div>
 						</div>
 					</b-card-body>
@@ -61,7 +61,6 @@ export default {
 			getProfilePicSrc,
 			posts: null,
 			creators: [],
-			loadingCreators: true,
 		};
 	},
 	computed: {
@@ -113,7 +112,7 @@ export default {
 			try {
 				const res = await manualSubService.getAllManualSubbedCreatorsInfo();
 				if (res && res.status === 200) {
-					this.creators = [res.data[0], { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }, { userId: Math.floor(1 + Math.random() * 1000), ...res.data[0] }];
+					this.creators = res.data;
 				}
 			} catch (err) {
 				console.log(err);
