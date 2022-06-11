@@ -120,6 +120,7 @@ export default {
 		menuItemClicked(menuItem) {
 			switch (menuItem) {
 			case 'edit':
+				this.$router.push(`/edit-post/${this.post.postId}`);
 				break;
 			case 'delete':
 				break;

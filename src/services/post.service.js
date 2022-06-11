@@ -30,4 +30,12 @@ export default {
 		return api.get(`/post/${postId}`)
 			.catch((err) => handleError(err));
 	},
+	editPost(postId, updateData) {
+		return api.patch(`/post/${postId}`, updateData)
+			.catch((err) => handleError(err));
+	},
+	deletePostById(postId) {
+		return api.delete(`/post/${postId}`)
+			.catch((err) => handleError(err));
+	},
 };

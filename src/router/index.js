@@ -14,6 +14,7 @@ import PageSettingsPage from '../views/PageSettingsPage.vue';
 import VerifyEmailPage from '../views/VerifyEmailPage.vue';
 import VerifyEmailSentPage from '../views/VerifyEmailSentPage.vue';
 import CreatePostPage from '../views/CreatePostPage.vue';
+import EditPostPage from '../views/EditPostPage.vue';
 import MessagesPage from '../views/MessagesPage.vue';
 import MySquadsPage from '../views/MySquadsPage.vue';
 
@@ -147,6 +148,11 @@ const routes = [
 		path: '/create-post',
 		name: 'CreatePostPage',
 		component: CreatePostPage,
+	},
+	{
+		path: '/edit-post/:postId',
+		name: 'EditPostPage',
+		component: EditPostPage,
 	},
 	// {
 	// 	path: '/about',
