@@ -180,67 +180,6 @@ export default {
 			return (this.creator.review && this.creator.review.status === this.reviewPageStatuses.SUBMITTED);
 		},
 	},
-	beforeRouteEnter(to, from, next) {
-		console.log('debug1');
-		if (to.params.userId) {
-			const fetchData = [
-				creatorService.getCreatorById(to.params.userId),
-				squadService.getAllSquads(to.params.userId),
-				goalService.getAllGoals(to.params.userId),
-				postService.getAllPostsByCreator(to.params.userId),
-				manualSubService.getManualSubByCreatorId(to.params.userId),
-			];
-
-			Promise.all(fetchData).then(([resCreator, resSquads, resGoals, resPosts, resManualSub]) => {
-				if (resCreator && resSquads && resGoals && resPosts && resManualSub && resCreator.status === 200 && resSquads.status === 200 && resGoals.status === 200 && resPosts.status === 200 && resManualSub.status === 200) {
-					next((vm) => {
-						vm.creator = resCreator.data;
-						vm.squads = resSquads.data;
-						vm.goals = resGoals.data.goals;
-						if (resCreator.data.goalsTypeEarnings) {
-							vm.monthlyIncome = resGoals.data.monthlyIncome;
-						} else {
-							vm.totalMembers = resGoals.data.totalMembers;
-						}
-						vm.posts = resPosts.data;
-						vm.manualSub = resManualSub.data;
-					});
-				} else {
-					console.log(resCreator);
-					console.log(resSquads);
-					console.log(resGoals);
-					console.log(resPosts);
-					console.log(resManualSub);
-				}
-			}).catch((err) => {
-				next((vm) => {
-					vm.$bvToast.toast((err.response.msg, {
-						noCloseButton: true,
-						variant: 'danger',
-						toaster: 'b-toaster-bottom-center',
-					}));
-				});
-			});
-		} else {
-			next((vm) => {
-				vm.$store.dispatch('fetchAllSquads').finally(() => {
-					vm.$store.dispatch('fetchAllGoals').finally(() => {
-						postService.getAllPostsByCreator(vm.$store.state.creator.userId).then((resPosts) => {
-							manualSubService.getManualSubByCreatorId(vm.$store.state.creator.userId).then((resManualSub) => {
-								vm.creator = vm.$store.state.creator;
-								vm.squads = vm.$store.state.squads;
-								vm.goals = vm.$store.state.goals.filter((goal) => !goal.archived);
-								vm.monthlyIncome = vm.$store.state.monthlyIncome;
-								vm.totalMembers = vm.$store.state.totalMembers;
-								vm.posts = resPosts.data.map((post) => ({ ...post, pageName: vm.creator.pageName }));
-								vm.manualSub = resManualSub.data;
-							});
-						});
-					});
-				});
-			});
-		}
-	},
 	mounted() {
 		if (document.getElementById('myRzpScript')) return;
 		const src = 'https://checkout.razorpay.com/v1/checkout.js';
@@ -249,6 +188,60 @@ export default {
 		script.setAttribute('type', 'text/javascript');
 		script.setAttribute('id', 'myRzpScript');
 		document.head.appendChild(script);
+
+		console.log('debug1');
+		if (this.$route.params.userId) {
+			const fetchData = [
+				creatorService.getCreatorById(this.$route.params.userId),
+				squadService.getAllSquads(this.$route.params.userId),
+				goalService.getAllGoals(this.$route.params.userId),
+				postService.getAllPostsByCreator(this.$route.params.userId),
+				manualSubService.getManualSubByCreatorId(this.$route.params.userId),
+			];
+
+			Promise.all(fetchData).then(([resCreator, resSquads, resGoals, resPosts, resManualSub]) => {
+				if (resCreator && resSquads && resGoals && resPosts && resManualSub && resCreator.status === 200 && resSquads.status === 200 && resGoals.status === 200 && resPosts.status === 200 && resManualSub.status === 200) {
+					this.creator = resCreator.data;
+					this.squads = resSquads.data;
+					this.goals = resGoals.data.goals;
+					if (resCreator.data.goalsTypeEarnings) {
+						this.monthlyIncome = resGoals.data.monthlyIncome;
+					} else {
+						this.totalMembers = resGoals.data.totalMembers;
+					}
+					this.posts = resPosts.data;
+					this.manualSub = resManualSub.data;
+				} else {
+					console.log(resCreator);
+					console.log(resSquads);
+					console.log(resGoals);
+					console.log(resPosts);
+					console.log(resManualSub);
+				}
+			}).catch((err) => {
+				this.$bvToast.toast((err.response.msg, {
+					noCloseButton: true,
+					variant: 'danger',
+					toaster: 'b-toaster-bottom-center',
+				}));
+			});
+		} else {
+			this.$store.dispatch('fetchAllSquads').finally(() => {
+				this.$store.dispatch('fetchAllGoals').finally(() => {
+					postService.getAllPostsByCreator(this.$store.state.creator.userId).then((resPosts) => {
+						manualSubService.getManualSubByCreatorId(this.$store.state.creator.userId).then((resManualSub) => {
+							this.creator = this.$store.state.creator;
+							this.squads = this.$store.state.squads;
+							this.goals = this.$store.state.goals.filter((goal) => !goal.archived);
+							this.monthlyIncome = this.$store.state.monthlyIncome;
+							this.totalMembers = this.$store.state.totalMembers;
+							this.posts = resPosts.data.map((post) => ({ ...post, pageName: this.creator.pageName }));
+							this.manualSub = resManualSub.data;
+						});
+					});
+				});
+			});
+		}
 	},
 	beforeDestroy() {
 		const el = document.getElementById('myRzpScript');
