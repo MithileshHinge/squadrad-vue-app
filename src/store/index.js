@@ -46,6 +46,42 @@ export default new Vuex.Store({
 		totalMembers: 0,
 	},
 	mutations: {
+		resetState(state) {
+			state.user = {
+				userId: 0,
+				email: '',
+				fullName: '',
+				profilePicSrc: '',
+				emailVerified: null,
+				deactivated: null,
+				blocked: null,
+			};
+			state.creator = {
+				userId: 0,
+				pageName: '',
+				isPlural: null,
+				bio: '',
+				profilePicSrc: '',
+				coverPic: '',
+				about: '',
+				introVideo: '',
+				slug: '',
+				supportersVisibility: null,
+				earningsVisibility: null,
+				otpVisibility: null,
+				thanksMessage: '',
+				goalsTypeEarnings: null,
+				youtubeLink: '',
+				instagramLink: '',
+				facebookLink: '',
+				deactivated: null,
+				blocked: null,
+			};
+			state.squads = [];
+			state.goals = [];
+			state.monthlyIncome = 0;
+			state.totalMembers = 0;
+		},
 		updateUser(state, user) {
 			state.user = { ...state.user, ...user };
 		},
@@ -110,6 +146,16 @@ export default new Vuex.Store({
 				}
 			} catch (err) {
 				console.error(err);
+			}
+		},
+		async logoutUser({ commit }) {
+			try {
+				const res = await userService.logout();
+				if (res && res.status === 200) {
+					await commit('resetState');
+				}
+			} catch (err) {
+				console.log(err);
 			}
 		},
 		async fetchCreator({ commit }) {

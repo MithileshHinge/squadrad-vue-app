@@ -83,7 +83,6 @@
 </template>
 
 <script>
-import userService from '@/services/user.service';
 import getProfilePicSrc from '../common/getProfilePicSrc';
 import SearchBar from './SearchBar.vue';
 import UserList from './UserList.vue';
@@ -133,11 +132,8 @@ export default {
 			}
 		},
 		logout() {
-			userService.logout().then((res) => {
-				if (res && res.status === 200) {
-					this.$store.commit('updateUser', {});
-					this.$router.push('/');
-				}
+			this.$store.dispatch('logoutUser').then(() => {
+				this.$router.push('/');
 			});
 		},
 	},
