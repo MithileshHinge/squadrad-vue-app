@@ -1,7 +1,7 @@
 <template>
 	<b-container class="pt-4">
 		<SearchBar v-model="searchText" searchPlaceholder="Search creators" :renderFocused="true"/>
-		<div class="mt-3">
+		<div class="mt-3" v-if="searchText.length > 1">
 			<UserList :loading="loadingCreators" size="md" :showSubtext="true" :users="creatorsSearchFiltered" @click="$router.push(`/creator/${$event.userId}`)"/>
 		</div>
 	</b-container>

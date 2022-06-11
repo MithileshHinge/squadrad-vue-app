@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="col-lg-6 m-auto">
 		<div class="sq-page-title">Start your membership page</div>
 		<b-form @submit.prevent="becomeCreator">
 			<b-card class="sq-form-card">

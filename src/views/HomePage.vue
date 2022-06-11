@@ -122,6 +122,18 @@ export default {
 	mounted() {
 		this.populateFeed();
 		this.fetchCreators();
+
+		if (document.getElementById('myRzpScript')) return;
+		const src = 'https://checkout.razorpay.com/v1/checkout.js';
+		const script = document.createElement('script');
+		script.setAttribute('src', src);
+		script.setAttribute('type', 'text/javascript');
+		script.setAttribute('id', 'myRzpScript');
+		document.head.appendChild(script);
+	},
+	beforeDestroy() {
+		const el = document.getElementById('myRzpScript');
+		if (el) el.remove();
 	},
 	watch: {
 		// eslint-disable-next-line quote-props
