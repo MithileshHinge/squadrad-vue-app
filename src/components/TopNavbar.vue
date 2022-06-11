@@ -24,8 +24,9 @@
 				<template #button-content>
 					<b-avatar v-if="isAuthenticated" :src='getProfilePicSrc($store.state.creator.profilePicSrc || $store.state.user.profilePicSrc, isCreator)' size="2rem"></b-avatar>
 				</template>
+				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text sq-link" :to="isCreator ? '/creator' : '/feed'">{{ isCreator ? $store.state.creator.pageName : $store.state.user.fullName }}</b-dropdown-item>
 				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" v-if="isCreator" to="/creator/settings/info">Page settings</b-dropdown-item>
-				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" to="/feed">Post from my Creators</b-dropdown-item>
+				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" v-if="isCreator" to="/feed">Post from my Creators</b-dropdown-item>
 				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" to="/user/squads">My Squads</b-dropdown-item>
 				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" v-if="!isCreator" to="/creator/start">Start a membership page</b-dropdown-item>
 				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" to="/user/settings">Account settings</b-dropdown-item>
@@ -52,8 +53,9 @@
 						<b-form-input id="the-searchinput" size="sm" class="p-0" placeholder="search"></b-form-input>
 					</b-input-group>
 				</b-nav-form-->
+				<b-nav-item class="sq-menu-item" link-classes="sq-link" :to="isCreator ? '/creator' : '/feed'">{{ isCreator ? $store.state.creator.pageName : $store.state.user.fullName }}</b-nav-item>
 				<b-nav-item class="sq-menu-item" v-if="isCreator" to="/creator/settings">Page settings</b-nav-item>
-				<b-nav-item class="sq-menu-item" to="/feed">Post from my Creators</b-nav-item>
+				<b-nav-item class="sq-menu-item" v-if="isCreator" to="/feed">Post from my Creators</b-nav-item>
 				<b-nav-item class="sq-menu-item" to="/user/squads">My Squads</b-nav-item>
 				<b-nav-item class="sq-menu-item" v-if="!isCreator" to="/creator/start">Start a membership page</b-nav-item>
 				<b-nav-item class="sq-menu-item" to="/user/settings">Account settings</b-nav-item>
