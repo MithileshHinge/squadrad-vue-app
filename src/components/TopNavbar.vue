@@ -1,6 +1,6 @@
 <template>
 	<b-navbar id="sq-the-navbar" type="dark" class="pl-lg-3" toggleable="lg" fixed="top">
-		<b-navbar-brand id="sq-the-navbrand">
+		<b-navbar-brand id="sq-the-navbrand" class="cursor-pointer" :to="isCreator ? '/creator' : '/feed'">
 			<b-img id="sq-the-navlogo" src="@/assets/squadrad-fav.png" fluid left></b-img>
 		</b-navbar-brand>
 		<b-navbar-toggle id="sq-the-navmenubtn" target="sq-the-navmenu">
