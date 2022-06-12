@@ -36,18 +36,24 @@
 						<b-col cols="auto" class="ml-1 mr-3 cursor-pointer" @click="toggleLikeComment">
 							Like
 						</b-col>
-						<b-col cols="auto" class="cursor-pointer">
+						<b-col cols="auto" class="cursor-pointer" @click="$emit('replyClick', comment.name)">
 							<b-icon-reply></b-icon-reply>
 						</b-col>
-						<b-col cols="auto" class="ml-1 mr-3 cursor-pointer" @click="$emit('replyTo', comment.name)">
+						<b-col cols="auto" class="ml-1 mr-3 cursor-pointer" @click="$emit('replyClick', comment.name)">
 							Reply
+						</b-col>
+						<b-col v-if="showDelete" cols="auto" class="cursor-pointer">
+							<b-icon-trash/>
+						</b-col>
+						<b-col v-if="showDelete" cols="auto" class="ml-1 mr-3 cursor-pointer" @click="$emit('deleteClick', comment.commentId)">
+							Delete
 						</b-col>
 					</b-row>
 				</b-container>
 			</b-media-body>
 		</b-media>
 		<div v-if="!isReply">
-			<CommentComp v-for="reply in comment.replies" :key="reply.commentId" :comment="reply" :isReply="true" @replyTo="$emit('replyTo', $event)"/>
+			<CommentComp v-for="reply in comment.replies" :key="reply.commentId" :comment="reply" :post="post" :isReply="true" class="mb-2" @replyClick="$emit('replyClick', $event)" @deleteClick="$emit('deleteClick', $event)"/>
 		</div>
 	</div>
 </template>
@@ -56,6 +62,7 @@
 export default {
 	name: 'CommentComp',
 	props: {
+		post: Object,
 		comment: Object,
 		isReply: Boolean,
 	},
@@ -63,6 +70,11 @@ export default {
 		return {
 			liked: false,
 		};
+	},
+	computed: {
+		showDelete() {
+			return this.post.userId === this.$store.state.creator.userId || this.comment.userId === this.$store.state.user.userId;
+		},
 	},
 	methods: {
 		toggleLikeComment() {

@@ -4,10 +4,10 @@
 			<div v-if="post" class="sq-background-light">
 				<PostComp :post="post" :creator="creator"></PostComp>
 				<b-container>
-					<CommentComp v-for="comment in comments" :key="comment.commentId" :comment="comment" :isReply="false" class="mb-2" @replyTo="setReplyTo($event, comment.commentId)"></CommentComp>
+					<CommentComp v-for="comment in comments" :key="comment.commentId" :comment="comment" :post="post" :isReply="false" class="mb-2" @replyClick="setReplyTo($event, comment.commentId)" @deleteClick="deleteComment($event)"></CommentComp>
 				</b-container>
-				<CommentInputBox class="d-block d-lg-none fixed-bottom" :post="post" :isReplying="isReplying" :replyingTo="replyingToName" @submit="submitComment" @resetReplyTo="resetReplyTo"/>
-				<CommentInputBox class="d-none d-lg-block" :post="post" :isReplying="isReplying" :replyingTo="replyingToName" @submit="submitComment" @resetReplyTo="resetReplyTo"/>
+				<CommentInputBox id="sq-the-post-page-comment-input-box-sm" class="d-block d-lg-none fixed-bottom" :post="post" :isReplying="isReplying" :replyingTo="replyingToName" @submit="submitComment" @resetReplyTo="resetReplyTo"/>
+				<CommentInputBox id="sq-the-post-page-comment-input-box-lg" class="d-none d-lg-block" :post="post" :isReplying="isReplying" :replyingTo="replyingToName" @submit="submitComment" @resetReplyTo="resetReplyTo"/>
 				<!-- div to clear fixed commentinputbox from occluding last comment-->
 				<div style="height: 3.5rem;" class="d-block d-lg-none"/>
 			</div>
@@ -94,11 +94,29 @@ export default {
 			this.isReplying = true;
 			this.replyingToName = name;
 			this.replyingToCommentId = commentId;
+			// Check if lg screen comment input box is displayed (only for lg+ screens)
+			const commentInputBoxLg = document.querySelector('#sq-the-post-page-comment-input-box-lg');
+			const commentInputFormInputLg = commentInputBoxLg.querySelector('.sq-comment-input-form-input');
+			const commentInputFormInputSm = document.querySelector('#sq-the-post-page-comment-input-box-sm .sq-comment-input-form-input');
+			const cssLg = window.getComputedStyle(commentInputBoxLg);
+			if (cssLg.display === 'block') {
+				commentInputFormInputLg.focus();
+			} else {
+				commentInputFormInputSm.focus();
+			}
 		},
 		resetReplyTo() {
 			this.isReplying = false;
 			this.replyingToName = undefined;
 			this.replyingToCommentId = undefined;
+		},
+		async deleteComment(commentId) {
+			try {
+				await commentService.deleteComment(commentId);
+				this.comments = await populateComments(this.post.postId, this.creator);
+			} catch (err) {
+				console.log(err);
+			}
 		},
 	},
 	mounted() {
