@@ -14,7 +14,7 @@
 			<b-row no-gutters>
 				<b-media class="sq-comment-input-media w-100" no-body>
 					<b-media-aside class="mx-2" vertical-align="center">
-						<b-avatar src="@/assets/tushar.png" size="2rem"></b-avatar>
+						<b-avatar :src="profilePicSrc" size="2rem"></b-avatar>
 					</b-media-aside>
 					<b-media-body>
 						<b-form @submit.prevent="onSubmitComment" class="sq-comment-input-form sq-text">
@@ -31,8 +31,11 @@
 </template>
 
 <script>
+import getProfilePicSrc from '../common/getProfilePicSrc';
+
 export default {
 	props: {
+		post: Object,
 		isReplying: Boolean,
 		replyingTo: String,
 	},
@@ -40,6 +43,12 @@ export default {
 		return {
 			commentInput: '',
 		};
+	},
+	computed: {
+		profilePicSrc() {
+			if (!this.$store.state.creator.userId || this.post.userId !== this.$store.state.creator.userId) return getProfilePicSrc(this.$store.state.user.profilePicSrc, false);
+			return getProfilePicSrc(this.$store.state.creator.profilePicSrc, true);
+		},
 	},
 	methods: {
 		onSubmitComment() {

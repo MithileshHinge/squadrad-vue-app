@@ -6,8 +6,8 @@
 				<b-container>
 					<CommentComp v-for="comment in comments" :key="comment.commentId" :comment="comment" :isReply="false" class="mb-2" @replyTo="setReplyTo($event, comment.commentId)"></CommentComp>
 				</b-container>
-				<CommentInputBox class="d-block d-lg-none fixed-bottom" :isReplying="isReplying" :replyingTo="replyingToName" @submit="submitComment" @resetReplyTo="resetReplyTo"/>
-				<CommentInputBox class="d-none d-lg-block" :isReplying="isReplying" :replyingTo="replyingToName" @submit="submitComment" @resetReplyTo="resetReplyTo"/>
+				<CommentInputBox class="d-block d-lg-none fixed-bottom" :post="post" :isReplying="isReplying" :replyingTo="replyingToName" @submit="submitComment" @resetReplyTo="resetReplyTo"/>
+				<CommentInputBox class="d-none d-lg-block" :post="post" :isReplying="isReplying" :replyingTo="replyingToName" @submit="submitComment" @resetReplyTo="resetReplyTo"/>
 				<!-- div to clear fixed commentinputbox from occluding last comment-->
 				<div style="height: 3.5rem;" class="d-block d-lg-none"/>
 			</div>
