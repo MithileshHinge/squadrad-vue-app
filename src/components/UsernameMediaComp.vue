@@ -25,7 +25,7 @@
 					</div>
 				</b-col>
 				<b-col v-if="showMenuButton" cols="auto" align-self="center">
-					<b-dropdown no-caret toggle-class="shadow-none bg-transparent border-0 py-1 pl-2 pr-0" menu-class="my-n1 sq-shadow border-0">
+					<b-dropdown right no-caret toggle-class="shadow-none bg-transparent border-0 py-1 pl-2 pr-0" menu-class="my-n1 sq-shadow border-0">
 						<template #button-content>
 							<b-icon-three-dots-vertical class="sq-post-menu-button"/>
 						</template>

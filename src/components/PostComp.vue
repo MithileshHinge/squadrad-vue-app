@@ -67,6 +67,7 @@ import JoinButton from './JoinButton.vue';
 import commentService from '../services/comment.service';
 import getProfilePicSrc from '../common/getProfilePicSrc';
 import UsernameMediaComp from './UsernameMediaComp.vue';
+import postService from '../services/post.service';
 
 export default {
 	props: {
@@ -123,6 +124,13 @@ export default {
 				this.$router.push(`/edit-post/${this.post.postId}`);
 				break;
 			case 'delete':
+				postService.deletePostById(this.post.postId).then((res) => {
+					if (res && res.status === 200) {
+						this.$router.push('/creator');
+					}
+				}).catch((err) => {
+					console.log(err);
+				});
 				break;
 			default:
 				break;
