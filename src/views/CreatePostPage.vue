@@ -7,7 +7,7 @@
 			</b-form-group>
 			<b-card class="sq-form-card">
 				<b-form-row class="m-0">
-					<b-form-textarea id="sq-the-form-post-description" class="sq-form-textarea" v-model="$v.postForm.description.$model" :state="validateState($v.postForm.description)" placeholder="Write a description" size="lg" rows="8" trim/>
+					<b-form-textarea id="sq-the-form-post-description" class="sq-form-textarea" v-model="$v.postForm.description.$model" :state="validateState($v.postForm.description)" placeholder="Write a description" size="lg" rows="8"/>
 					<b-form-invalid-feedback class="sq-form-invalid-feedback">
 						Exceeded max character limit
 					</b-form-invalid-feedback>
