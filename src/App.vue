@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<TopNavbar :isAuthenticated="isAuthenticated" :isCreator="isCreator"></TopNavbar>
+		<TopNavbar :isAuthenticated="isAuthenticated" :isCreator="isCreator" :isUnseenNotifs="isUnseenNotifs"></TopNavbar>
 		<b-col cols="auto" class="p-0" style="z-index: -1000;">
 			<div style="width: 100%; height: 3.375rem" />
 		</b-col>
@@ -10,7 +10,7 @@
 		<b-col cols="auto" style="z-index: 100; z-index: -1000;">
 			<div v-if="isAuthenticated && showBottomNav" style="height: 3rem;"><!-- empty div same size as bottomnavbar, without this router-view is hidden behind bottomnavbar --></div>
 		</b-col>
-		<BottomNavbar v-if="isAuthenticated && showBottomNav" :isCreator="isCreator"></BottomNavbar>
+		<BottomNavbar v-if="isAuthenticated && showBottomNav" :isCreator="isCreator" :isUnseenNotifs="isUnseenNotifs"></BottomNavbar>
 		<!--FloatingCreatePostButton v-if="isAuthenticated && showBottomNav && isCreator" /-->
 	</div>
 </template>
@@ -19,12 +19,18 @@
 import TopNavbar from '@/components/TopNavbar.vue';
 import BottomNavbar from '@/components/BottomNavbar.vue';
 import FloatingCreatePostButton from './components/FloatingCreatePostButton.vue';
+import notifService from './services/notif.service';
 
 export default {
 	components: {
 		TopNavbar,
 		BottomNavbar,
 		FloatingCreatePostButton,
+	},
+	data() {
+		return {
+			isUnseenNotifs: undefined,
+		};
 	},
 	computed: {
 		isAuthenticated() {
@@ -40,6 +46,15 @@ export default {
 			}
 			return false;
 		},
+	},
+	mounted() {
+		notifService.fetchIsUnseenNotifs().then((res) => {
+			if (res && res.status === 200) {
+				this.isUnseenNotifs = res.data.isUnseenNotifs;
+			}
+		}).catch((err) => {
+			console.log(err);
+		});
 	},
 };
 </script>

@@ -13,12 +13,22 @@
 		<b-navbar-nav v-if="isAuthenticated" class="d-none d-lg-flex ml-auto align-items-center">
 			<b-nav-item style="width: 15rem" class="position-relative">
 				<SearchBar v-model="searchText" searchPlaceholder="Search creators" :renderFocused="false" size="sm" @focus="navSearchBarFocus" @blur="isNavSearchBarFocused = false"/>
-				<div id="sq-the-nav-search-results" class="sq-shadow">
+				<div id="sq-the-nav-search-results" :class="`sq-shadow ${!creatorsSearchFiltered || creatorsSearchFiltered.length <= 0 ? 'd-none' : ''}`">
 					<UserList :loading="loadingCreators" size="sm" :showSubtext="true" :users="creatorsSearchFiltered" @click="$router.push(`/creator/${$event.userId}`)"/>
 				</div>
 			</b-nav-item>
-			<b-nav-item class="px-1" link-classes="p-0" to="/create-post"><b-icon-plus font-scale="2.5"/></b-nav-item>
-			<b-nav-item class="px-1"><b-icon-bell-fill/></b-nav-item>
+			<b-nav-item class="px-1" link-classes="p-0" to="/create-post">
+				<b-icon-plus font-scale="2.5"/>
+			</b-nav-item>
+			<b-nav-item-dropdown class="px-1 position-relative" right no-caret toggle-class="shadow-none bg-transparent border-0" menu-class="p-0 border-0" lazy @shown="showNewNotifsIndicator = false">
+				<template #button-content>
+					<b-icon-bell-fill/>
+					<b-icon-circle-fill v-if="showNewNotifsIndicator" variant="primary" font-scale="0.375" class="position-absolute ml-n1"/>
+				</template>
+				<div id="sq-the-nav-notifications-list" class="sq-shadow">
+					<NotificationsList />
+				</div>
+			</b-nav-item-dropdown>
 			<b-nav-item class="px-1" to="/messages"><b-icon-chat-fill/></b-nav-item>
 			<b-dropdown right no-caret toggle-class="shadow-none bg-transparent border-0" menu-class="my-n1 sq-shadow border-0">
 				<template #button-content>
@@ -88,12 +98,14 @@
 import getProfilePicSrc from '../common/getProfilePicSrc';
 import SearchBar from './SearchBar.vue';
 import UserList from './UserList.vue';
+import NotificationsList from './NotificationsList.vue';
 import creatorService from '../services/creator.service';
 
 export default {
 	props: {
 		isAuthenticated: Boolean,
 		isCreator: Boolean,
+		isUnseenNotifs: Boolean,
 	},
 	data() {
 		return {
@@ -102,7 +114,14 @@ export default {
 			searchText: '',
 			creators: undefined,
 			loadingCreators: false,
+			showNewNotifsIndicator: this.isUnseenNotifs,
+			showNotificationsList: false,
 		};
+	},
+	watch: {
+		isUnseenNotifs(val) {
+			if (this.showNewNotifsIndicator === undefined) this.showNewNotifsIndicator = val;
+		},
 	},
 	computed: {
 		creatorsSearchFiltered() {
@@ -142,6 +161,7 @@ export default {
 	components: {
 		SearchBar,
 		UserList,
+		NotificationsList,
 	},
 };
 </script>
@@ -254,6 +274,12 @@ export default {
 		left: 50%;
 		transform: translateX(-50%);
 		max-height: 17rem;
+		overflow: scroll;
+	}
+
+	#sq-the-nav-notifications-list {
+		width: 20rem;
+		max-height: 19rem;
 		overflow: scroll;
 	}
 

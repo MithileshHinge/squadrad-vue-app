@@ -17,6 +17,7 @@ import CreatePostPage from '../views/CreatePostPage.vue';
 import EditPostPage from '../views/EditPostPage.vue';
 import MessagesPage from '../views/MessagesPage.vue';
 import MySquadsPage from '../views/MySquadsPage.vue';
+import NotificationsPage from '../views/NotificationsPage.vue';
 
 // Children components
 import LoginModal from '../components/LoginModal.vue';
@@ -60,6 +61,11 @@ const routes = [
 		path: '/messages',
 		name: 'Messages',
 		component: MessagesPage,
+	},
+	{
+		path: '/notifications',
+		name: 'Notifications',
+		component: NotificationsPage,
 	},
 	{
 		path: '/post/:postId',

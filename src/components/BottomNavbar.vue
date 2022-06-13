@@ -1,11 +1,25 @@
 <template>
 	<div class="d-block d-lg-none">
 		<b-nav id="sq-the-bottom-navbar" tabs justified class="fixed-bottom">
-			<b-nav-item to="/feed" class="sq-nav-item" exact exact-active-class="active"><b-icon :icon="navIcons[0]"></b-icon></b-nav-item>
-			<b-nav-item to="/explore" id="sq-the-bottomnav-explore" class="sq-nav-item" exact exact-active-class="active"><span v-html="navIcons[1]"></span></b-nav-item>
-			<b-nav-item v-if="isCreator" to="/create-post" id="sq-the-bottomnav-create-post" :class="`${$route.path === '/messages' ? 'sq-bottomnav-create-post-small' : ''} sq-nav-item`" exact exact-active-class="active"><b-iconstack><b-icon icon="circle-fill" stacked/><b-icon icon="plus" variant="light" scale="0.75" stacked/></b-iconstack></b-nav-item>
-			<b-nav-item to="/notifications" class="sq-nav-item" exact exact-active-class="active"><b-icon :icon="navIcons[2]"></b-icon></b-nav-item>
-			<b-nav-item to="/messages" class="sq-nav-item" exact exact-active-class="active"><b-icon :icon="navIcons[3]"></b-icon></b-nav-item>
+			<b-nav-item to="/feed" class="sq-nav-item" exact exact-active-class="active">
+				<b-icon :icon="navIcons[0]"></b-icon>
+			</b-nav-item>
+			<b-nav-item to="/explore" id="sq-the-bottomnav-explore" class="sq-nav-item" exact exact-active-class="active">
+				<span v-html="navIcons[1]"></span>
+			</b-nav-item>
+			<b-nav-item v-if="isCreator" to="/create-post" id="sq-the-bottomnav-create-post" :class="`${$route.path === '/messages' ? 'sq-bottomnav-create-post-small' : ''} sq-nav-item`" exact exact-active-class="active">
+				<b-iconstack>
+					<b-icon icon="circle-fill" stacked/>
+					<b-icon icon="plus" variant="light" scale="0.75" stacked/>
+				</b-iconstack>
+			</b-nav-item>
+			<b-nav-item to="/notifications" class="sq-nav-item" exact exact-active-class="active">
+				<b-icon :icon="navIcons[2]"></b-icon>
+				<b-icon-circle-fill v-if="showNewNotifsIndicator" variant="primary" font-scale="0.375" class="position-absolute ml-n1"/>
+			</b-nav-item>
+			<b-nav-item to="/messages" class="sq-nav-item" exact exact-active-class="active">
+				<b-icon :icon="navIcons[3]"></b-icon>
+			</b-nav-item>
 		</b-nav>
 	</div>
 </template>
@@ -14,6 +28,20 @@
 export default {
 	props: {
 		isCreator: Boolean,
+		isUnseenNotifs: Boolean,
+	},
+	data() {
+		return {
+			showNewNotifsIndicator: this.isUnseenNotifs,
+		};
+	},
+	watch: {
+		isUnseenNotifs(val) {
+			if (this.showNewNotifsIndicator === undefined) this.showNewNotifsIndicator = val; // Only set once
+		},
+		'$route.path': function path(val) {
+			if (val === '/notifications') this.showNewNotifsIndicator = false;
+		},
 	},
 	computed: {
 		navIcons() {
