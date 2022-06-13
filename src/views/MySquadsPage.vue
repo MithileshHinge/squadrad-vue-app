@@ -47,6 +47,7 @@ import squadService from '../services/squad.service';
 import CustomModal from '../components/CustomModal.vue';
 import { forEachAsync } from '../common/helpers';
 import getProfilePicSrc from '../common/getProfilePicSrc';
+import manualSubStatuses from '../common/manualSubStatuses';
 
 export default {
 	data() {
@@ -57,43 +58,56 @@ export default {
 		};
 	},
 	methods: {
+		async populateSubbedSquads() {
+			try {
+				const squads = [];
+				const resManualSubs = await manualSubService.getAllManualSubs();
+				if (!resManualSubs || resManualSubs.status !== 200) throw new Error('Error in fetching manualSubs');
+				let manualSubs = resManualSubs.data;
+				manualSubs = manualSubs.filter((manualSub) => manualSub.subscriptionStatus !== manualSubStatuses.CANCELLED);
+				await forEachAsync(manualSubs, async (manualSub) => {
+					const resCreator = await creatorService.getCreatorById(manualSub.creatorUserId);
+					if (!resCreator || resCreator.status !== 200) throw new Error('Error in fetching creator');
+					const creator = resCreator.data;
+					const resSquads = await squadService.getAllSquads(creator.userId);
+					if (!resSquads || resSquads.status !== 200) throw new Error('Error in fetching squads of a creator');
+					const squad = resSquads.data.find((s) => s.squadId === manualSub.squadId);
+					squads.push({
+						squadId: squad.squadId,
+						title: squad.title,
+						amount: squad.amount,
+						description: squad.description,
+						creator: {
+							userId: creator.userId,
+							pageName: creator.pageName,
+							profilePicSrc: creator.profilePicSrc,
+						},
+					});
+				});
+
+				this.squads = squads;
+			} catch (err) {
+				console.log(err);
+			}
+		},
 		moreInfo(squad) {
 			this.selectedSquad = squad;
 			this.$bvModal.show('sq-the-modal-squad-info');
 		},
-		unsubscribe() {
-
+		async unsubscribe() {
+			try {
+				const res = await manualSubService.cancelManualSub(this.selectedSquad.creator.userId);
+				if (res && res.status === 200) {
+					await this.populateSubbedSquads();
+					this.$bvModal.hide('sq-the-modal-squad-info');
+				}
+			} catch (err) {
+				console.log(err);
+			}
 		},
 	},
 	mounted() {
-		const squads = [];
-		manualSubService.getAllManualSubs().then(async (resManualSubs) => {
-			if (!resManualSubs || resManualSubs.status !== 200) throw new Error('Error in fetching manualSubs');
-			const manualSubs = resManualSubs.data;
-			await forEachAsync(manualSubs, async (manualSub) => {
-				const resCreator = await creatorService.getCreatorById(manualSub.creatorUserId);
-				if (!resCreator || resCreator.status !== 200) throw new Error('Error in fetching creator');
-				const creator = resCreator.data;
-				const resSquads = await squadService.getAllSquads(creator.userId);
-				if (!resSquads || resSquads.status !== 200) throw new Error('Error in fetching squads of a creator');
-				const squad = resSquads.data.find((s) => s.squadId === manualSub.squadId);
-				squads.push({
-					squadId: squad.squadId,
-					title: squad.title,
-					amount: squad.amount,
-					description: squad.description,
-					creator: {
-						userId: creator.userId,
-						pageName: creator.pageName,
-						profilePicSrc: creator.profilePicSrc,
-					},
-				});
-			});
-
-			this.squads = squads;
-		}).catch((err) => {
-			console.log(err);
-		});
+		this.populateSubbedSquads();
 	},
 	components: {
 		CustomModal,

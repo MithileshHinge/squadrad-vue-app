@@ -26,4 +26,8 @@ export default {
 		return api.get('/manualSubs/active/users')
 			.catch((err) => handleError(err));
 	},
+	cancelManualSub(creatorUserId) {
+		return api.patch(`/manualSub/${creatorUserId}/cancel`)
+			.catch((err) => handleError(err));
+	},
 };
