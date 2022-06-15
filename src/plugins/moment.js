@@ -9,7 +9,7 @@ moment.locale('en', {
 		mm: '%dm',
 		h: '1h',
 		hh: '%dh',
-		d: 'd',
+		d: '1d',
 		dd: '%dd',
 		M: '1mo',
 		MM: '%dmo',

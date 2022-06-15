@@ -41,6 +41,7 @@ export default {
 		},
 		'$route.path': function path(val) {
 			if (val === '/notifications') this.showNewNotifsIndicator = false;
+			else this.showNewNotifsIndicator = undefined;
 		},
 	},
 	computed: {

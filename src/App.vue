@@ -47,14 +47,26 @@ export default {
 			return false;
 		},
 	},
-	mounted() {
-		notifService.fetchIsUnseenNotifs().then((res) => {
-			if (res && res.status === 200) {
-				this.isUnseenNotifs = res.data.isUnseenNotifs;
+	methods: {
+		async checkUnseenNotifs() {
+			try {
+				const res = await notifService.fetchIsUnseenNotifs();
+				if (res && res.status === 200) {
+					this.isUnseenNotifs = res.data.isUnseenNotifs;
+				}
+			} catch (err) {
+				console.log(err);
 			}
-		}).catch((err) => {
-			console.log(err);
-		});
+		},
+	},
+	watch: {
+		'$route.path': function path() {
+			this.isUnseenNotifs = undefined;
+			this.checkUnseenNotifs();
+		},
+	},
+	mounted() {
+		this.checkUnseenNotifs();
 	},
 };
 </script>

@@ -122,6 +122,9 @@ export default {
 		isUnseenNotifs(val) {
 			if (this.showNewNotifsIndicator === undefined) this.showNewNotifsIndicator = val;
 		},
+		'$route.path': function path() {
+			this.showNewNotifsIndicator = undefined;
+		},
 	},
 	computed: {
 		creatorsSearchFiltered() {
