@@ -248,6 +248,7 @@ export default {
 	font-size: 0.875rem;
 	padding-left: 0.75rem;
 	padding-right: 0.75rem;
+	background-color: $my-color-gray8;
 }
 
 #sq-the-login-modal .sq-or-hidebox {
