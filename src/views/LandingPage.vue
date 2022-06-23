@@ -8,7 +8,7 @@
 			</b-row>
 			<b-row>
 				<b-col class="sq-text text-center pb-5">
-					Website is under maintenance<br>We thank you for your patience
+					Squadrad is under maintenance<br>We thank you for your patience
 				</b-col>
 			</b-row>
 		</b-col>
