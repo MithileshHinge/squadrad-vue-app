@@ -12,6 +12,7 @@
 				</b-col>
 			</b-row>
 		</b-col>
+		<router-view></router-view>
 	</b-row>
 </template>
 
