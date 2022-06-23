@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import beaconService from '../services/beacon.service';
+
 export default {
 	props: {
 		isAuthenticated: Boolean,
@@ -30,6 +32,11 @@ export default {
 	},
 	watch: {
 		isAuthenticated: 'redirectIfAuthenticated',
+	},
+	mounted() {
+		if (this.$route.query.ref === 'gh7rx4w') {
+			beaconService.landingTrigger(this.$route.query.ref);
+		}
 	},
 };
 </script>
