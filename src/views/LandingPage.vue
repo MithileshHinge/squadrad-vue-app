@@ -34,7 +34,7 @@ export default {
 		isAuthenticated: 'redirectIfAuthenticated',
 	},
 	mounted() {
-		if (this.$route.query.ref === 'gh7rx4w') {
+		if (this.$route.query.ref) {
 			beaconService.landingTrigger(this.$route.query.ref);
 		}
 	},
