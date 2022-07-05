@@ -181,13 +181,14 @@ export default {
 		},
 	},
 	mounted() {
-		if (document.getElementById('myRzpScript')) return;
-		const src = 'https://checkout.razorpay.com/v1/checkout.js';
-		const script = document.createElement('script');
-		script.setAttribute('src', src);
-		script.setAttribute('type', 'text/javascript');
-		script.setAttribute('id', 'myRzpScript');
-		document.head.appendChild(script);
+		if (!document.getElementById('myRzpScript')) {
+			const src = 'https://checkout.razorpay.com/v1/checkout.js';
+			const script = document.createElement('script');
+			script.setAttribute('src', src);
+			script.setAttribute('type', 'text/javascript');
+			script.setAttribute('id', 'myRzpScript');
+			document.head.appendChild(script);
+		}
 
 		console.log('debug1');
 		if (this.$route.params.userId) {
