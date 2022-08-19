@@ -65,8 +65,8 @@ export default {
 					key: myKeys.RZP_TEST_KEY_ID,
 					amount: rzpOrder.amount,
 					currency: 'INR',
-					name: 'Test name',
-					description: 'Test description bla ba dsv asd cas cdas dc adc a',
+					name: 'Squadrad',
+					description: 'Join a squad',
 					order_id: rzpOrder.id,
 					handler: (response) => {
 						if (response.razorpay_payment_id) {
