@@ -1,6 +1,6 @@
 <template>
 	<b-navbar id="sq-the-navbar" type="dark" class="pl-lg-3" toggleable="lg" fixed="top">
-		<b-navbar-brand id="sq-the-navbrand" class="cursor-pointer" :to="isCreator ? '/creator' : '/feed'">
+		<b-navbar-brand id="sq-the-navbrand" class="cursor-pointer" :to="isAuthenticated ? (isCreator ? '/creator' : '/feed') : '/'">
 			<b-img id="sq-the-navlogo" src="@/assets/squadrad-fav.png" fluid left></b-img>
 		</b-navbar-brand>
 		<b-navbar-toggle id="sq-the-navmenubtn" target="sq-the-navmenu">
@@ -12,9 +12,9 @@
 		</b-navbar-toggle>
 		<b-navbar-nav v-if="isAuthenticated" class="d-none d-lg-flex ml-auto align-items-center">
 			<b-nav-item style="width: 15rem" class="position-relative">
-				<SearchBar v-model="searchText" searchPlaceholder="Search creators" :renderFocused="false" size="sm" @focus="navSearchBarFocus" @blur="isNavSearchBarFocused = false"/>
+				<SearchBar v-model="searchText" searchPlaceholder="Search creators" :renderFocused="false" size="sm" @focus="navSearchBarFocus" @blur="navSearchBarBlur"/>
 				<div id="sq-the-nav-search-results" :class="`sq-shadow ${!creatorsSearchFiltered || creatorsSearchFiltered.length <= 0 ? 'd-none' : ''}`">
-					<UserList :loading="loadingCreators" size="sm" :showSubtext="true" :users="creatorsSearchFiltered" @click="$router.push(`/creator/${$event.userId}`)"/>
+					<UserList :loading="loadingCreators" size="sm" :showSubtext="true" :users="creatorsSearchFiltered" @click="navSearchCreatorClicked"/>
 				</div>
 			</b-nav-item>
 			<b-nav-item class="px-1" link-classes="p-0" to="/create-post">
@@ -41,15 +41,16 @@
 				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" v-if="!isCreator" to="/creator/start">Start a membership page</b-dropdown-item>
 				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" to="/user/settings">Account settings</b-dropdown-item>
 				<!--b-nav-item class="sq-menu-item" to="/user/billing">Billing</b-nav-item-->
-				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text">Help and FAQ</b-dropdown-item>
-				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text">Contact us</b-dropdown-item>
+				<!-- <b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text">Help and FAQ</b-dropdown-item> -->
+				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" href="mailto:support@squadrad.com">Contact us</b-dropdown-item>
 				<b-dropdown-item class="sq-menu-item" link-class="py-2 px-3 sq-text" @click="logout">Log out</b-dropdown-item>
 			</b-dropdown>
 		</b-navbar-nav>
 		<b-navbar-nav v-else class="d-none d-lg-flex w-100 align-items-center">
-			<b-nav-item class="sq-navbar-nav-item">Explore creators</b-nav-item>
-			<b-nav-item class="sq-navbar-nav-item">Pricing</b-nav-item>
-			<b-nav-item class="sq-navbar-nav-item mr-auto">Help and FAQ</b-nav-item>
+			<b-nav-item class="sq-navbar-nav-item" to="/explore">Explore creators</b-nav-item>
+			<!-- <b-nav-item class="sq-navbar-nav-item">Pricing</b-nav-item> -->
+			<!-- <b-nav-item class="sq-navbar-nav-item">Help and FAQ</b-nav-item> -->
+			<b-nav-item class="sq-navbar-nav-item mr-auto" href="mailto:support@squadrad.com">Contact us</b-nav-item>
 			<b-nav-item class="sq-navbar-nav-item mr-2" id="sq-the-navbar-login-button" link-classes="sq-btn-cta sq-btn" to="/login">Log in</b-nav-item>
 			<b-nav-item class="sq-navbar-nav-item mr-3" to="/signup">Sign up</b-nav-item>
 		</b-navbar-nav>
@@ -70,8 +71,8 @@
 				<b-nav-item class="sq-menu-item" v-if="!isCreator" to="/creator/start">Start a membership page</b-nav-item>
 				<b-nav-item class="sq-menu-item" to="/user/settings">Account settings</b-nav-item>
 				<!--b-nav-item class="sq-menu-item" to="/user/billing">Billing</b-nav-item-->
-				<b-nav-item class="sq-menu-item">Help and FAQ</b-nav-item>
-				<b-nav-item class="sq-menu-item">Contact us</b-nav-item>
+				<!-- <b-nav-item class="sq-menu-item">Help and FAQ</b-nav-item> -->
+				<b-nav-item class="sq-menu-item" href="mailto:support@squadrad.com">Contact us</b-nav-item>
 				<b-nav-item class="sq-menu-item" @click="logout">Log out</b-nav-item>
 			</b-navbar-nav>
 			<b-navbar-nav v-else class="ml-auto">
@@ -85,10 +86,10 @@
 				</b-nav-form-->
 				<b-nav-item class="sq-menu-item" to="/login">Log in</b-nav-item>
 				<b-nav-item class="sq-menu-item" to="/signup">Sign up</b-nav-item>
-				<b-nav-item class="sq-menu-item">Explore creators</b-nav-item>
-				<b-nav-item class="sq-menu-item">Pricing</b-nav-item>
-				<b-nav-item class="sq-menu-item">Help and FAQ</b-nav-item>
-				<b-nav-item class="sq-menu-item">Contact us</b-nav-item>
+				<b-nav-item class="sq-menu-item" to="/explore">Explore creators</b-nav-item>
+				<!-- <b-nav-item class="sq-menu-item">Pricing</b-nav-item> -->
+				<!-- <b-nav-item class="sq-menu-item">Help and FAQ</b-nav-item> -->
+				<b-nav-item class="sq-menu-item" href="mailto:support@squadrad.com">Contact us</b-nav-item>
 			</b-navbar-nav>
 		</b-sidebar>
 	</b-navbar>
@@ -154,6 +155,15 @@ export default {
 					console.log(err);
 				}
 			}
+		},
+		navSearchBarBlur() {
+			setTimeout(() => {
+				this.isNavSearchBarFocused = false;
+			}, 200);
+		},
+		navSearchCreatorClicked($event) {
+			this.searchText = '';
+			this.$router.push(`/creator/${$event.userId}`);
 		},
 		logout() {
 			this.$store.dispatch('logoutUser').then(() => {
