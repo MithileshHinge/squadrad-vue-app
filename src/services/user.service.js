@@ -23,6 +23,7 @@ export default {
 			.catch((err) => handleError(err));
 	},
 	logout() {
+		// TODO: should log out even if there is error on server side (case: offline user should be able to logout)
 		return api.post('/user/logout')
 			.catch((err) => handleError(err));
 	},
