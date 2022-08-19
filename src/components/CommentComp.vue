@@ -11,7 +11,7 @@
 							{{ comment.name }}
 						</b-col>
 						<b-col cols="auto" class="sq-subtext">
-							{{ '2h' }}
+							{{ timestamp }}
 						</b-col>
 					</b-row>
 					<b-row no-gutters>
@@ -59,6 +59,8 @@
 </template>
 
 <script>
+import moment from '../plugins/moment';
+
 export default {
 	name: 'CommentComp',
 	props: {
@@ -74,6 +76,9 @@ export default {
 	computed: {
 		showDelete() {
 			return this.post.userId === this.$store.state.creator.userId || this.comment.userId === this.$store.state.user.userId;
+		},
+		timestamp() {
+			return moment().to(this.comment.timestamp);
 		},
 	},
 	methods: {

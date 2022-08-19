@@ -48,7 +48,9 @@ async function populateComments(postId, creator) {
 					} else throw new Error('Could not fetch commentor');
 				}
 			});
+			comment.replies.sort((a, b) => a.timestamp - b.timestamp);
 		});
+		comments.sort((a, b) => a.timestamp - b.timestamp);
 		return comments;
 	}
 	throw new Error('Could not fetch comments');
