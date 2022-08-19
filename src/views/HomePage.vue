@@ -20,14 +20,14 @@
 					<b-tab title="All posts" title-item-class="sq-nav-item">
 						<div class="sq-card-flat sq-card-flat-lg">
 							<div class="pt-3 pb-1 px-3">
-								<PostComp v-for="{ creator, squad, squadNo, totalSquads, ...post } in posts" :key="post.id" :post="post" :creator="creator" :squad="squad" :squadNo="squadNo" :totalSquads="totalSquads"></PostComp>
+								<PostComp v-for="{ creator, squad, squadNo, totalSquads, ...post } in postsSorted" :key="post.id" :post="post" :creator="creator" :squad="squad" :squadNo="squadNo" :totalSquads="totalSquads"></PostComp>
 							</div>
 						</div>
 					</b-tab>
 					<b-tab title="Paid posts" title-item-class="sq-nav-item">
 						<div class="sq-card-flat sq-card-flat-lg">
 							<div class="pt-3 pb-1 px-3">
-								<PostComp v-for="{ creator, squad, squadNo, totalSquads, ...post } in paidPosts" :key="post.id" :post="post" :creator="creator" :squad="squad" :squadNo="squadNo" :totalSquads="totalSquads"></PostComp>
+								<PostComp v-for="{ creator, squad, squadNo, totalSquads, ...post } in paidPostsSorted" :key="post.id" :post="post" :creator="creator" :squad="squad" :squadNo="squadNo" :totalSquads="totalSquads"></PostComp>
 							</div>
 						</div>
 					</b-tab>
@@ -64,8 +64,11 @@ export default {
 		};
 	},
 	computed: {
+		postsSorted() {
+			return [...this.posts].sort((a, b) => b.timestamp - a.timestamp);
+		},
 		paidPosts() {
-			return this.posts.filter((post) => (post.squad !== undefined && post.locked === false));
+			return [...this.posts].filter((post) => (post.squad !== undefined && post.locked === false)).sort((a, b) => b.timestamp - a.timestamp);
 		},
 	},
 	components: {

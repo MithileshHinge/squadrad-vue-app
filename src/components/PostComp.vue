@@ -1,6 +1,6 @@
 <template>
 	<b-container class="sq-post-container p-0 mb-3">
-		<UsernameMediaComp :name="creator.pageName" :profilePicSrc="getProfilePicSrc(creator.profilePicSrc, true)" subtext="2h" @click="$router.push(`/creator/${creator.userId}`)" :showMenuButton="menu.length > 0" :menu="menu" @menuItemClick="menuItemClicked"/>
+		<UsernameMediaComp :name="creator.pageName" :profilePicSrc="getProfilePicSrc(creator.profilePicSrc, true)" :subtext="timestamp" @click="$router.push(`/creator/${creator.userId}`)" :showMenuButton="menu.length > 0" :menu="menu" @menuItemClick="menuItemClicked"/>
 		<b-row no-gutters class="p-2">
 			<b-col align-self="center">
 				<div class="sq-text">
@@ -68,6 +68,7 @@ import commentService from '../services/comment.service';
 import getProfilePicSrc from '../common/getProfilePicSrc';
 import UsernameMediaComp from './UsernameMediaComp.vue';
 import postService from '../services/post.service';
+import moment from '../plugins/moment';
 
 export default {
 	props: {
@@ -95,6 +96,9 @@ export default {
 				return urlNormalized;
 			}
 			return undefined;
+		},
+		timestamp() {
+			return moment().to(this.post.timestamp);
 		},
 	},
 	methods: {

@@ -133,7 +133,7 @@
 				<b-row no-gutters align-h="center">
 					<b-col class="mt-2" cols="12">
 						<b-card class="sq-card-flat p-1">
-							<PostComp v-for="post in posts" :key="post.postId" :post="post" :squad="squads.find((squad) => squad.squadId === post.squadId)" :squadNo="squadsSorted.findIndex((squad) => squad.squadId === post.squadId)" :totalSquads="squads.length" :creator="creator"></PostComp>
+							<PostComp v-for="post in postsSorted" :key="post.postId" :post="post" :squad="squads.find((squad) => squad.squadId === post.squadId)" :squadNo="squadsSorted.findIndex((squad) => squad.squadId === post.squadId)" :totalSquads="squads.length" :creator="creator"></PostComp>
 						</b-card>
 					</b-col>
 				</b-row>
@@ -175,6 +175,9 @@ export default {
 		},
 		goalsSorted() {
 			return [...this.goals].sort((a, b) => a.goalNumber - b.goalNumber);
+		},
+		postsSorted() {
+			return [...this.posts].sort((a, b) => b.timestamp - a.timestamp);
 		},
 		showReviewSubmittedAlert() {
 			return (this.creator.review && this.creator.review.status === this.reviewPageStatuses.SUBMITTED);
