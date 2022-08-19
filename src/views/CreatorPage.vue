@@ -197,11 +197,11 @@ export default {
 				squadService.getAllSquads(this.$route.params.userId),
 				goalService.getAllGoals(this.$route.params.userId),
 				postService.getAllPostsByCreator(this.$route.params.userId),
-				manualSubService.getManualSubByCreatorId(this.$route.params.userId),
+				// manualSubService.getManualSubByCreatorId(this.$route.params.userId),
 			];
 
-			Promise.all(fetchData).then(([resCreator, resSquads, resGoals, resPosts, resManualSub]) => {
-				if (resCreator && resSquads && resGoals && resPosts && resManualSub && resCreator.status === 200 && resSquads.status === 200 && resGoals.status === 200 && resPosts.status === 200 && resManualSub.status === 200) {
+			Promise.all(fetchData).then(([resCreator, resSquads, resGoals, resPosts]) => {
+				if (resCreator && resSquads && resGoals && resPosts && resCreator.status === 200 && resSquads.status === 200 && resGoals.status === 200 && resPosts.status === 200) {
 					this.creator = resCreator.data;
 					this.squads = resSquads.data;
 					this.goals = resGoals.data.goals;
@@ -211,13 +211,17 @@ export default {
 						this.totalMembers = resGoals.data.totalMembers;
 					}
 					this.posts = resPosts.data;
-					this.manualSub = resManualSub.data;
+					manualSubService.getManualSubByCreatorId(this.$route.params.userId).then((resManualSub) => {
+						this.manualSub = resManualSub.data;
+					}).catch((err) => {
+						// Maybe not logged in (doesn't matter)
+						console.log(err);
+					});
 				} else {
 					console.log(resCreator);
 					console.log(resSquads);
 					console.log(resGoals);
 					console.log(resPosts);
-					console.log(resManualSub);
 				}
 			}).catch((err) => {
 				this.$bvToast.toast((err.response.msg, {
