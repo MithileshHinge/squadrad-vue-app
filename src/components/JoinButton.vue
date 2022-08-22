@@ -83,6 +83,7 @@ export default {
 								console.log(err);
 							}).then((res) => {
 								console.log(res);
+								this.$emit('joined');
 							});
 						}
 					},

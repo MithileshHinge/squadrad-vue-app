@@ -20,14 +20,14 @@
 					<b-tab title="All posts" title-item-class="sq-nav-item">
 						<div class="sq-card-flat sq-card-flat-lg">
 							<div class="pt-3 pb-1 px-3">
-								<PostComp v-for="{ creator, squad, squadNo, totalSquads, ...post } in postsSorted" :key="post.id" :post="post" :creator="creator" :squad="squad" :squadNo="squadNo" :totalSquads="totalSquads"></PostComp>
+								<PostComp v-for="{ creator, squad, squadNo, totalSquads, ...post } in postsSorted" :key="post.id" :post="post" :creator="creator" :squad="squad" :squadNo="squadNo" :totalSquads="totalSquads" @joined="populateHomePage"></PostComp>
 							</div>
 						</div>
 					</b-tab>
 					<b-tab title="Paid posts" title-item-class="sq-nav-item">
 						<div class="sq-card-flat sq-card-flat-lg">
 							<div class="pt-3 pb-1 px-3">
-								<PostComp v-for="{ creator, squad, squadNo, totalSquads, ...post } in paidPostsSorted" :key="post.id" :post="post" :creator="creator" :squad="squad" :squadNo="squadNo" :totalSquads="totalSquads"></PostComp>
+								<PostComp v-for="{ creator, squad, squadNo, totalSquads, ...post } in paidPostsSorted" :key="post.id" :post="post" :creator="creator" :squad="squad" :squadNo="squadNo" :totalSquads="totalSquads" @joined="populateHomePage"></PostComp>
 							</div>
 						</div>
 					</b-tab>
@@ -121,10 +121,13 @@ export default {
 				console.log(err);
 			}
 		},
+		populateHomePage() {
+			this.populateFeed();
+			this.fetchCreators();
+		},
 	},
 	mounted() {
-		this.populateFeed();
-		this.fetchCreators();
+		this.populateHomePage();
 
 		if (!document.getElementById('myRzpScript')) {
 			const src = 'https://checkout.razorpay.com/v1/checkout.js';

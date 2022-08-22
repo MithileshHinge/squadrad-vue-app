@@ -133,7 +133,7 @@
 				<b-row no-gutters align-h="center">
 					<b-col class="mt-2" cols="12">
 						<b-card class="sq-card-flat p-1">
-							<PostComp v-for="post in postsSorted" :key="post.postId" :post="post" :squad="squads.find((squad) => squad.squadId === post.squadId)" :squadNo="squadsSorted.findIndex((squad) => squad.squadId === post.squadId)" :totalSquads="squads.length" :creator="creator" @deleted="posts = posts.filter((p) => p.postId !== post.postId)"></PostComp>
+							<PostComp v-for="post in postsSorted" :key="post.postId" :post="post" :squad="squads.find((squad) => squad.squadId === post.squadId)" :squadNo="squadsSorted.findIndex((squad) => squad.squadId === post.squadId)" :totalSquads="squads.length" :creator="creator" @deleted="posts = posts.filter((p) => p.postId !== post.postId)" @joined="populateCreatorPage"></PostComp>
 						</b-card>
 					</b-col>
 				</b-row>
@@ -194,68 +194,71 @@ export default {
 		}
 
 		console.log('debug1');
-		if (this.$route.params.userId) {
-			const fetchData = [
-				creatorService.getCreatorById(this.$route.params.userId),
-				squadService.getAllSquads(this.$route.params.userId),
-				goalService.getAllGoals(this.$route.params.userId),
-				postService.getAllPostsByCreator(this.$route.params.userId),
-				// manualSubService.getManualSubByCreatorId(this.$route.params.userId),
-			];
-
-			Promise.all(fetchData).then(([resCreator, resSquads, resGoals, resPosts]) => {
-				if (resCreator && resSquads && resGoals && resPosts && resCreator.status === 200 && resSquads.status === 200 && resGoals.status === 200 && resPosts.status === 200) {
-					this.creator = resCreator.data;
-					this.squads = resSquads.data;
-					this.goals = resGoals.data.goals;
-					if (resCreator.data.goalsTypeEarnings) {
-						this.monthlyIncome = resGoals.data.monthlyIncome;
-					} else {
-						this.totalMembers = resGoals.data.totalMembers;
-					}
-					this.posts = resPosts.data;
-					manualSubService.getManualSubByCreatorId(this.$route.params.userId).then((resManualSub) => {
-						this.manualSub = resManualSub.data;
-					}).catch((err) => {
-						// Maybe not logged in (doesn't matter)
-						console.log(err);
-					});
-				} else {
-					console.log(resCreator);
-					console.log(resSquads);
-					console.log(resGoals);
-					console.log(resPosts);
-				}
-			}).catch((err) => {
-				this.$bvToast.toast((err.response.msg, {
-					noCloseButton: true,
-					variant: 'danger',
-					toaster: 'b-toaster-bottom-center',
-				}));
-			});
-		} else {
-			this.$store.dispatch('fetchAllSquads').finally(() => {
-				this.$store.dispatch('fetchAllGoals').finally(() => {
-					postService.getAllPostsByCreator(this.$store.state.creator.userId).then((resPosts) => {
-						manualSubService.getManualSubByCreatorId(this.$store.state.creator.userId).then((resManualSub) => {
-							this.creator = this.$store.state.creator;
-							this.squads = this.$store.state.squads;
-							this.goals = this.$store.state.goals.filter((goal) => !goal.archived);
-							this.monthlyIncome = this.$store.state.monthlyIncome;
-							this.totalMembers = this.$store.state.totalMembers;
-							this.posts = resPosts.data.map((post) => ({ ...post, pageName: this.creator.pageName }));
-							this.manualSub = resManualSub.data;
-						});
-					});
-				});
-			});
-		}
+		this.populateCreatorPage();
 	},
 	beforeDestroy() {
 		const el = document.getElementById('myRzpScript');
 		if (el) el.remove();
 	},
 	methods: {
+		populateCreatorPage() {
+			if (this.$route.params.userId) {
+				const fetchData = [
+					creatorService.getCreatorById(this.$route.params.userId),
+					squadService.getAllSquads(this.$route.params.userId),
+					goalService.getAllGoals(this.$route.params.userId),
+					postService.getAllPostsByCreator(this.$route.params.userId),
+					// manualSubService.getManualSubByCreatorId(this.$route.params.userId),
+				];
+
+				Promise.all(fetchData).then(([resCreator, resSquads, resGoals, resPosts]) => {
+					if (resCreator && resSquads && resGoals && resPosts && resCreator.status === 200 && resSquads.status === 200 && resGoals.status === 200 && resPosts.status === 200) {
+						this.creator = resCreator.data;
+						this.squads = resSquads.data;
+						this.goals = resGoals.data.goals;
+						if (resCreator.data.goalsTypeEarnings) {
+							this.monthlyIncome = resGoals.data.monthlyIncome;
+						} else {
+							this.totalMembers = resGoals.data.totalMembers;
+						}
+						this.posts = resPosts.data;
+						manualSubService.getManualSubByCreatorId(this.$route.params.userId).then((resManualSub) => {
+							this.manualSub = resManualSub.data;
+						}).catch((err) => {
+							// Maybe not logged in (doesn't matter)
+							console.log(err);
+						});
+					} else {
+						console.log(resCreator);
+						console.log(resSquads);
+						console.log(resGoals);
+						console.log(resPosts);
+					}
+				}).catch((err) => {
+					this.$bvToast.toast((err.response.msg, {
+						noCloseButton: true,
+						variant: 'danger',
+						toaster: 'b-toaster-bottom-center',
+					}));
+				});
+			} else {
+				this.$store.dispatch('fetchAllSquads').finally(() => {
+					this.$store.dispatch('fetchAllGoals').finally(() => {
+						postService.getAllPostsByCreator(this.$store.state.creator.userId).then((resPosts) => {
+							manualSubService.getManualSubByCreatorId(this.$store.state.creator.userId).then((resManualSub) => {
+								this.creator = this.$store.state.creator;
+								this.squads = this.$store.state.squads;
+								this.goals = this.$store.state.goals.filter((goal) => !goal.archived);
+								this.monthlyIncome = this.$store.state.monthlyIncome;
+								this.totalMembers = this.$store.state.totalMembers;
+								this.posts = resPosts.data.map((post) => ({ ...post, pageName: this.creator.pageName }));
+								this.manualSub = resManualSub.data;
+							});
+						});
+					});
+				});
+			}
+		},
 		goalPrev() {
 			this.$refs.sqRefGoalCarousel.prev();
 		},

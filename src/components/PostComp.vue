@@ -20,7 +20,7 @@
 								<b-icon-lock-fill font-scale="2" class="sq-post-locked-text sq-post-locked-icon m-4"/>
 							</b-row>
 							<b-row class="justify-content-center">
-								<JoinButton :squad="squad" :creator="creator" :squadNo="squadNo" :totalSquads="totalSquads"/>
+								<JoinButton :squad="squad" :creator="creator" :squadNo="squadNo" :totalSquads="totalSquads" @joined="$emit('joined')"/>
 							</b-row>
 						</b-col>
 					</b-row>
