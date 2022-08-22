@@ -1,7 +1,7 @@
 <template>
 	<b-row id="sq-the-landing-features-section" no-gutters align-h="center" align-v="center">
 		<b-col cols="0" lg="1"/>
-		<b-col id="sq-the-img-container" cols="12" lg="5" class="d-flex justify-content-lg-end align-items-center mb-5 mb-lg-0 position-relative h-100">
+		<b-col id="sq-the-img-container" cols="12" lg="5" class="d-flex justify-content-lg-end align-items-center mb-5 mb-lg-0 position-relative">
 			<div class="position-absolute">
 				<div id="sq-the-member-img-container-halo">
 					<div id="sq-the-member-img-container">
@@ -29,7 +29,7 @@
 				</div>
 			</div>
 			<div id="sq-the-merch-img-container" class="position-absolute">
-				<b-img class="invisible" src="@/assets/feature-anim-merch/tee.svg" fluid/>
+				<b-img class="invisible" src="@/assets/feature-anim-merch/tee.svg" style="height: 50vw; max-height: 15.25rem;" fluid/>
 				<div class="position-absolute h-100 w-100" style="top: 0;">
 					<div id="sq-the-merch-img-3d-container">
 						<div id="sq-the-merch-img-tee-container" class="position-absolute">
@@ -152,37 +152,37 @@ export default {
 			}, 1100)
 			.add({
 				targets: '#sq-the-merch-img-tee-container',
-				translateX: ['-50%', '-100%'],
+				translateX: ['0%', '-50%'],
 				translateZ: ['0rem', '-1rem'],
 				duration: 200,
 			}, 1300)
 			.add({
 				targets: '#sq-the-merch-img-cup-container',
-				translateX: ['0%', '-50%'],
+				translateX: ['50%', '0%'],
 				translateZ: ['-1rem', '0rem'],
 				duration: 200,
 			}, 1300)
 			.add({
 				targets: '#sq-the-merch-img-cap-container',
-				translateX: ['-100%', '0%'],
+				translateX: ['-50%', '50%'],
 				translateZ: ['-1rem', '-1rem'],
 				duration: 200,
 			}, 1300)
 			.add({
 				targets: '#sq-the-merch-img-cup-container',
-				translateX: ['-50%', '-100%'],
+				translateX: ['0%', '-50%'],
 				translateZ: ['0rem', '-1rem'],
 				duration: 200,
 			}, 1500)
 			.add({
 				targets: '#sq-the-merch-img-cap-container',
-				translateX: ['0%', '-50%'],
+				translateX: ['50%', '0%'],
 				translateZ: ['-1rem', '0rem'],
 				duration: 200,
 			}, 1500)
 			.add({
 				targets: '#sq-the-merch-img-tee-container',
-				translateX: ['-100%', '0%'],
+				translateX: ['-50%', '50%'],
 				translateZ: ['-1rem', '-1rem'],
 				duration: 200,
 			}, 1500);
@@ -208,6 +208,12 @@ export default {
 #sq-the-text-container {
 	text-align: center;
 	justify-content: center;
+	max-width: 80%;
+	top: 3rem;
+
+	div {
+		position: absolute;
+	}
 
 	div h3 {
 		font-weight: 400;
@@ -219,11 +225,8 @@ export default {
 }
 
 #sq-the-img-container {
-	right: 3rem;
-}
-
-#sq-the-text-container {
-	left: 3rem;
+	max-width: 80%;
+	bottom: 1rem;
 }
 
 #sq-the-member-img-container-halo {
@@ -243,7 +246,8 @@ export default {
 }
 
 #sq-the-member-img-container {
-	height: 20rem;
+	height: 60vw;
+	max-height: 20rem;
 	overflow: hidden;
 	border-radius: 20px;
 }
@@ -282,16 +286,17 @@ export default {
 	opacity: 0;
 }
 
+#sq-the-merch-img-container {
+	opacity: 0;
+	right: 20%;
+}
+
 #sq-the-merch-img-3d-container {
 	position: relative;
 	transform-style: preserve-3d;
 	perspective: 10rem;
 	height: 100%;
 	width: 100%;
-}
-
-#sq-the-merch-img-container {
-	opacity: 0;
 }
 
 .sq-img-halo {
@@ -311,18 +316,18 @@ export default {
 }
 
 #sq-the-merch-img-tee-container {
-	transform: translateX(-50%);
+	transform: translateX(0%);
 	filter: drop-shadow(0px 20px 20px rgba(28, 31, 51, 0.4));
 }
 
 #sq-the-merch-img-cup-container {
 	top: 0;
-	transform: translateZ(-1rem);
+	transform: translateX(50%) translateZ(-1rem);
 	filter: drop-shadow(0px 20px 20px rgba(28, 31, 51, 0.4));
 }
 
 #sq-the-merch-img-cap-container {
-	transform: translateX(-100%) translateZ(-1rem);
+	transform: translateX(-50%) translateZ(-1rem);
 	filter: drop-shadow(0px 20px 20px rgba(28, 31, 51, 0.4));
 }
 
@@ -332,14 +337,23 @@ export default {
 	height: 100%;
 	right: 0;
 	opacity: 0.4;
-	transform: translateZ(-0.5rem);
+	transform: translateX(25%) translateZ(-0.5rem);
 }
 
 @media (min-width: $lg) {
-	#sq-the-text-container div {
-		position: absolute;
-		left: 0;
-		max-width: 24rem;
+	#sq-the-text-container{
+		top: unset;
+		left: 7rem;
+		div {
+			left: 0;
+			max-width: 24rem;
+		}
+	}
+
+	#sq-the-img-container {
+		bottom: unset;
+		height: 100%;
+		right: 3rem;
 	}
 }
 
