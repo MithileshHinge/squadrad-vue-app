@@ -2,7 +2,7 @@
 	<b-row no-gutters align-h="center" class="sq-background-gray">
 		<b-col sm="12" lg="4" class="m-lg-4">
 			<div v-if="post" class="sq-background-light">
-				<PostComp :post="post" :creator="creator"></PostComp>
+				<PostComp :post="post" :creator="creator" @deleted="$router.push('/creator')"></PostComp>
 				<b-container>
 					<CommentComp v-for="comment in comments" :key="comment.commentId" :comment="comment" :post="post" :isReply="false" class="mb-2" @replyClick="setReplyTo($event, comment.commentId)" @deleteClick="deleteComment($event)"></CommentComp>
 				</b-container>

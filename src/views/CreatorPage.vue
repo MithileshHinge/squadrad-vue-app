@@ -133,7 +133,7 @@
 				<b-row no-gutters align-h="center">
 					<b-col class="mt-2" cols="12">
 						<b-card class="sq-card-flat p-1">
-							<PostComp v-for="post in postsSorted" :key="post.postId" :post="post" :squad="squads.find((squad) => squad.squadId === post.squadId)" :squadNo="squadsSorted.findIndex((squad) => squad.squadId === post.squadId)" :totalSquads="squads.length" :creator="creator"></PostComp>
+							<PostComp v-for="post in postsSorted" :key="post.postId" :post="post" :squad="squads.find((squad) => squad.squadId === post.squadId)" :squadNo="squadsSorted.findIndex((squad) => squad.squadId === post.squadId)" :totalSquads="squads.length" :creator="creator" @deleted="$router.go()"></PostComp>
 						</b-card>
 					</b-col>
 				</b-row>

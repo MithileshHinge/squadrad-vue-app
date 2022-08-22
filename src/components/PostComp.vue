@@ -56,6 +56,14 @@
 				<b-icon-heart v-else @click="toggleLike"></b-icon-heart>
 			</b-col>
 		</b-row>
+		<CustomModal :modalId="`sq-the-modal-post-delete-${post.postId}`" modalTitle="Delete post?">
+			<div>
+				<div class="sq-text mb-2">
+					This action cannot be undone. Are you sure you want to delete this post?
+				</div>
+				<ButtonSubmit modal :isProcessing="isDeleting" :isProcessed="isDeleted" buttonText="Confirm delete" buttonTextDone="Post deleted" @click="deletePost"/>
+			</div>
+		</CustomModal>
 	</b-container>
 </template>
 
@@ -67,6 +75,8 @@ import JoinButton from './JoinButton.vue';
 import commentService from '../services/comment.service';
 import getProfilePicSrc from '../common/getProfilePicSrc';
 import UsernameMediaComp from './UsernameMediaComp.vue';
+import CustomModal from './CustomModal.vue';
+import ButtonSubmit from './ButtonSubmit.vue';
 import postService from '../services/post.service';
 import moment from '../plugins/moment';
 
@@ -86,6 +96,8 @@ export default {
 			totalLikes: 0,
 			totalComments: 0,
 			menu: [],
+			isDeleting: false,
+			isDeleted: false,
 		};
 	},
 	computed: {
@@ -128,17 +140,25 @@ export default {
 				this.$router.push(`/edit-post/${this.post.postId}`);
 				break;
 			case 'delete':
-				postService.deletePostById(this.post.postId).then((res) => {
-					if (res && res.status === 200) {
-						this.$router.push('/creator');
-					}
-				}).catch((err) => {
-					console.log(err);
-				});
+				this.$bvModal.show(`sq-the-modal-post-delete-${this.post.postId}`);
 				break;
 			default:
 				break;
 			}
+		},
+		deletePost() {
+			this.isDeleting = true;
+			postService.deletePostById(this.post.postId).then((res) => {
+				if (res && res.status === 200) {
+					this.isDeleted = true;
+					this.$emit('deleted');
+					this.$bvModal.hide(`sq-the-modal-post-delete-${this.post.postId}`);
+				}
+			}).catch((err) => {
+				console.log(err);
+			}).finally(() => {
+				this.isDeleting = false;
+			});
 		},
 	},
 	beforeMount() {
@@ -199,6 +219,8 @@ export default {
 		LinkAttachment,
 		JoinButton,
 		UsernameMediaComp,
+		CustomModal,
+		ButtonSubmit,
 	},
 };
 </script>
