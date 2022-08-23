@@ -20,7 +20,7 @@
 								<b-icon-lock-fill font-scale="2" class="sq-post-locked-text sq-post-locked-icon m-4"/>
 							</b-row>
 							<b-row class="justify-content-center">
-								<JoinButton :squad="squad" :creator="creator" :squadNo="squadNo" :totalSquads="totalSquads" @joined="$emit('joined')"/>
+								<JoinButton :ref="`sqRefJoinBtn${post.postId}`" :squad="squad" :creator="creator" :squadNo="squadNo" :totalSquads="totalSquads" @joined="$emit('joined')"/>
 							</b-row>
 						</b-col>
 					</b-row>
@@ -132,7 +132,11 @@ export default {
 				});
 		},
 		openPost() {
-			this.$router.push(`/post/${this.post.postId}`);
+			if (this.post.locked) {
+				this.$refs[`sqRefJoinBtn${this.post.postId}`].joinSquad();
+			} else {
+				this.$router.push(`/post/${this.post.postId}`);
+			}
 		},
 		menuItemClicked(menuItem) {
 			switch (menuItem) {
