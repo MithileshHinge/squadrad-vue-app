@@ -8,8 +8,11 @@
 			<b-card class="sq-form-card">
 				<b-form-row class="m-0">
 					<b-form-textarea id="sq-the-form-post-description" class="sq-form-textarea" v-model="$v.postForm.description.$model" :state="validateState($v.postForm.description)" placeholder="Write a description" size="lg" rows="8"/>
-					<b-form-invalid-feedback class="sq-form-invalid-feedback">
+					<b-form-invalid-feedback v-if="!$v.postForm.description.maxLength" class="sq-form-invalid-feedback">
 						Exceeded max character limit
+					</b-form-invalid-feedback>
+					<b-form-invalid-feedback v-if="!$v.postForm.description.requiredIf" class="sq-form-invalid-feedback">
+						Post cannot be empty. Please write a description or add an attachment.
 					</b-form-invalid-feedback>
 				</b-form-row>
 				<b-form-row v-if="!postForm.postImage && !postForm.postVideo && !postForm.link" class="float-left m-0 mt-3">
@@ -50,7 +53,7 @@
 
 <script>
 /* eslint-disable no-param-reassign */
-import { maxLength, required } from 'vuelidate/lib/validators';
+import { maxLength, required, requiredIf } from 'vuelidate/lib/validators';
 import validateStateMixin from '@/mixins/validateStateMixin';
 import ButtonSubmit from '@/components/ButtonSubmit.vue';
 import ImageCropModal from '@/components/ImageCropModal.vue';
@@ -173,6 +176,7 @@ export default {
 			postForm: {
 				description: {
 					maxLength: maxLength(2000),
+					requiredIf: requiredIf(() => !this.postForm.link && !this.postForm.postImage && !this.postForm.postVideo),
 				},
 			},
 			linkModalInput: {
