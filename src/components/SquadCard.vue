@@ -17,7 +17,7 @@
 		<b-button v-if="edit" class="sq-card-btn sq-btn sq-shadow" @click="$emit('edit')">
 			<b-row no-gutters align-h="center" align-v="center"><b-icon-pencil-fill font-scale="0.95" class="mr-2"/>Edit squad</b-row>
 		</b-button>
-		<JoinButton v-else :squad="squad" :creator="creator" :manualSub="manualSub" :squadNo="squadNo" :totalSquads="totalSquads"/>
+		<JoinButton v-else :squad="squad" :creator="creator" :manualSub="manualSub" :squadNo="squadNo" :totalSquads="totalSquads" @joined="$emit('joined')"/>
 	</b-card>
 </template>
 

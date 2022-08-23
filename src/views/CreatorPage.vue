@@ -63,7 +63,7 @@
 					<b-col cols="auto">
 					<!--b-col v-for="(squad, i) in squadsSorted" :key="squad.id" class="mt-3 mx-2" cols="auto"-->
 						<div v-for="(squad, i) in squadsSorted" :key="squad.id" class="mt-3 mx-2">
-							<SquadCard :squad="squad" :creator="creator" :manualSub="manualSub" :squadNo="i" :totalSquads="squads.length"/>
+							<SquadCard :squad="squad" :creator="creator" :manualSub="manualSub" :squadNo="i" :totalSquads="squads.length" @joined="populateCreatorPage"/>
 						</div>
 					</b-col>
 				</b-row>
@@ -202,6 +202,9 @@ export default {
 	},
 	methods: {
 		populateCreatorPage() {
+			this.posts = [];
+			this.squads = [];
+			this.goals = [];
 			if (this.$route.params.userId) {
 				const fetchData = [
 					creatorService.getCreatorById(this.$route.params.userId),
