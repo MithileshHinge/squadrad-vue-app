@@ -29,7 +29,8 @@
 						<b-icon-bar-chart-line v-else class="sq-menu-icon"/>
 						Creator stats
 					</b-nav-item>
-					<b-nav-item class="sq-menu-item" link-classes="sq-link" @click="$bvModal.show('sq-the-modal-submit-review')"><b-icon-check2-circle class="sq-menu-icon"/>Submit for review</b-nav-item>
+					<b-nav-item v-if="$store.state.creator.review.status === reviewPageStatuses.NOT_SUBMITTED" class="sq-menu-item" link-classes="sq-link" @click="$bvModal.show('sq-the-modal-submit-review')"><b-icon-check2-circle class="sq-menu-icon"/>Submit for review</b-nav-item>
+					<b-nav-item v-else-if="$store.state.creator.review.status === reviewPageStatuses.SUBMITTED" class="sq-menu-item" link-classes="sq-link"><b-icon-check2-circle class="sq-menu-icon"/>Review in progress</b-nav-item>
 					<div class="d-none d-lg-block sq-menu-item-selector">
 						<div class="sq-menu-item-selector-bar"/>
 					</div>
@@ -53,8 +54,14 @@
 import CustomModal from '../components/CustomModal.vue';
 import ButtonSubmit from '../components/ButtonSubmit.vue';
 import creatorService from '../services/creator.service';
+import reviewPageStatuses from '../common/reviewPageStatuses';
 
 export default {
+	data() {
+		return {
+			reviewPageStatuses,
+		};
+	},
 	methods: {
 		submitForReview() {
 			creatorService.submitForReview().then((res) => {
