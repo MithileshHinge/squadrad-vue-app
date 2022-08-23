@@ -44,7 +44,7 @@
 					</b-form-radio>
 				</b-form-group>
 			</b-card>
-			<b-card class="sq-form-card">
+			<!--b-card class="sq-form-card">
 				<b-form-group class="align-items-center" label="Display number of members:" label-class="sq-form-label" label-for="sq-the-supporters-visibility" label-align="left" label-cols="auto">
 					<b-form-checkbox id="sq-the-supporters-visibility" v-model="creatorInfoForm.supportersVisibility" switch size="lg" class="text-right"/>
 				</b-form-group>
@@ -54,7 +54,7 @@
 				<b-form-group class="align-items-center mb-0" label="Display one time earnings:" label-class="sq-form-label" label-for="sq-the-otp-visibility" label-align="left" label-cols="auto">
 					<b-form-checkbox id="sq-the-otp-visibility" v-model="creatorInfoForm.otpVisibility" switch size="lg" class="text-right"/>
 				</b-form-group>
-			</b-card>
+			</b-card-->
 			<b-card class="sq-form-card">
 				<b-form-group class="align-items-center" label="About section:" label-class="sq-form-label" label-for="sq-the-form-about-section" label-align="left">
 					<b-form-textarea id="sq-the-form-about-section" class="sq-form-textarea text-center" v-model="creatorInfoForm.about" placeholder="Tell your fans about this page" rows="3" size="lg"/>
