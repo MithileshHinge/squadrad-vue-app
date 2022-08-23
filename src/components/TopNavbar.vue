@@ -17,7 +17,7 @@
 					<UserList :loading="loadingCreators" size="sm" :showSubtext="true" :users="creatorsSearchFiltered" @click="navSearchCreatorClicked"/>
 				</div>
 			</b-nav-item>
-			<b-nav-item class="px-1" link-classes="p-0" to="/create-post">
+			<b-nav-item v-if="isCreator" class="px-1" link-classes="p-0" to="/create-post">
 				<b-icon-plus font-scale="2.5"/>
 			</b-nav-item>
 			<b-nav-item-dropdown class="px-1 position-relative" right no-caret toggle-class="shadow-none bg-transparent border-0" menu-class="p-0 border-0" lazy @shown="showNewNotifsIndicator = false">
