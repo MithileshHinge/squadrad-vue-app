@@ -69,7 +69,7 @@ export default {
 			this.cropperZoom = event;
 		},
 		cropPicture() {
-			this.$refs.cropper.getCroppedCanvas({ maxHeight: 300, maxWidth: 300 }).toBlob((blob) => {
+			this.$refs.cropper.getCroppedCanvas({ maxHeight: 1080, maxWidth: 1080 }).toBlob((blob) => {
 				this.$emit('cropped', blob);
 			}, 'image/jpeg');
 		},
