@@ -31,11 +31,19 @@
 						<div class="sq-muted mt-2 justify-content-center"><span class="sq-rupee"/>{{selectedSquad.amount}}/month</div>
 						<div class="sq-text mt-4 text-center justify-content-center">{{ selectedSquad.description }}</div>
 					</b-card-text>
-					<b-button class="sq-btn sq-shadow px-4 mt-2" @click="unsubscribe">
+					<b-button class="sq-btn sq-shadow px-4 mt-2" @click="leaveSquad">
 						<b-row no-gutters align-h="center" align-v="center"><b-icon-person-x-fill font-scale="0.95" class="mr-2"/>Leave Squad</b-row>
 					</b-button>
 				</b-card-body>
 			</b-card>
+		</CustomModal>
+		<CustomModal modalId="sq-the-modal-squad-leave" modalTitle="Leave squad?">
+			<div>
+				<div class="sq-text mb-2">
+					This action cannot be undone. You will lose access to all the paid posts of this creator. Are you sure you want to leave this squad?
+				</div>
+				<ButtonSubmit modal :isProcessing="isLeaving" :isProcessed="isLeft" buttonText="Leave squad" buttonTextDone="Left squad" @click="confirmLeaveSquad"/>
+			</div>
 		</CustomModal>
 	</div>
 </template>
@@ -45,6 +53,7 @@ import manualSubService from '../services/manualSubs.service';
 import creatorService from '../services/creator.service';
 import squadService from '../services/squad.service';
 import CustomModal from '../components/CustomModal.vue';
+import ButtonSubmit from '../components/ButtonSubmit.vue';
 import { forEachAsync } from '../common/helpers';
 import getProfilePicSrc from '../common/getProfilePicSrc';
 import manualSubStatuses from '../common/manualSubStatuses';
@@ -55,6 +64,8 @@ export default {
 			squads: null,
 			selectedSquad: null,
 			getProfilePicSrc,
+			isLeaving: false,
+			isLeft: false,
 		};
 	},
 	methods: {
@@ -94,16 +105,25 @@ export default {
 			this.selectedSquad = squad;
 			this.$bvModal.show('sq-the-modal-squad-info');
 		},
-		async unsubscribe() {
+		leaveSquad() {
+			this.isLeaving = false;
+			this.isLeft = false;
+			this.$bvModal.hide('sq-the-modal-squad-info');
+			this.$bvModal.show('sq-the-modal-squad-leave');
+		},
+		async confirmLeaveSquad() {
+			this.isLeaving = true;
 			try {
 				const res = await manualSubService.cancelManualSub(this.selectedSquad.creator.userId);
 				if (res && res.status === 200) {
+					this.isLeft = true;
 					await this.populateSubbedSquads();
-					this.$bvModal.hide('sq-the-modal-squad-info');
+					this.$bvModal.hide('sq-the-modal-squad-leave');
 				}
 			} catch (err) {
 				console.log(err);
 			}
+			this.isLeaving = false;
 		},
 	},
 	mounted() {
@@ -111,6 +131,7 @@ export default {
 	},
 	components: {
 		CustomModal,
+		ButtonSubmit,
 	},
 };
 </script>
